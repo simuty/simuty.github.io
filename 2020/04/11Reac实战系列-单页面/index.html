@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="知识上的投资总能得到最好的回报。 ——本杰明.富兰克林 (美国开国元勋 物理学家 作家)">
+<meta name="keywords" content="实战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reac实战系列-单页面&lt;1&gt;">
+<meta property="og:url" content="https://simuty.com/2020/04/11Reac实战系列-单页面/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="知识上的投资总能得到最好的回报。 ——本杰明.富兰克林 (美国开国元勋 物理学家 作家)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/01.jpg">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/03.gif">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/02.png">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/04.png">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/05.png">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/06.png">
+<meta property="og:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/07.png">
+<meta property="og:updated_time" content="2020-05-15T18:54:01.378Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Reac实战系列-单页面&lt;1&gt;">
+<meta name="twitter:description" content="知识上的投资总能得到最好的回报。 ——本杰明.富兰克林 (美国开国元勋 物理学家 作家)">
+<meta name="twitter:image" content="https://simuty.com/2020/04/11Reac实战系列-单页面/01.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="简单即是美" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://simuty.com/2020/04/11Reac实战系列-单页面/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Reac实战系列-单页面<1> | 简单即是美</1></title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简单即是美</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/04/11Reac实战系列-单页面/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Reac实战系列-单页面<1>
+
+              
+            
+          </1></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-11 13:43:07" itemprop="dateCreated datePublished" datetime="2020-04-11T13:43:07+08:00">2020-04-11</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/2020/04/11Reac实战系列-单页面/01.jpg" width="80%"></p>
+<p>知识上的投资总能得到最好的回报。 ——本杰明.富兰克林 (美国开国元勋 物理学家 作家)</p>
+<a id="more"></a>
+<p>目标: 结合前几篇文章，汇总一个小Demo.</p>
+<h1 id="react实战">React实战</h1>
+<p>本示例依照<a href="https://www.yuque.com/ant-design/course/wybhm9" target="_blank" rel="noopener">Ant Design 实战教程（beta 版）</a>进行编写，非常感谢各位大佬的倾情付出！谢谢🙏</p>
+<blockquote>
+<p>正是江南好风景，落花时节学代码</p>
+</blockquote>
+<figure>
+<img src="/2020/04/11Reac实战系列-单页面/03.gif" alt><figcaption>react1.gif</figcaption>
+</figure>
+<p>有了前两节的铺垫，这个<a href="https://www.yuque.com/ant-design/course/wybhm9" target="_blank" rel="noopener">Ant Design 实战教程（beta 版）</a>也觉得挺顺手的，汇总下编写的流程以及接下来要进一步学习的内容。</p>
+<h3 id="第一部分-整体概述">第一部分 整体概述</h3>
+<p>该demo是个典型的SPA项目，实现功能如布局、侧边栏、列表、表格、弹窗等，其中包含：</p>
+<ul>
+<li>应用框架：<a href="https://umijs.org/zh-CN/docs" target="_blank" rel="noopener">Umi</a></li>
+<li>数据流：<a href="https://dvajs.com/guide/" target="_blank" rel="noopener">DvaJs</a></li>
+<li>UI: <a href="https://ant.design/docs/react/introduce-cn" target="_blank" rel="noopener">Antd</a></li>
+</ul>
+<blockquote>
+<p><a href="https://umijs.org/zh-CN/docs" target="_blank" rel="noopener">Umi</a>，中文可发音为<strong>乌米</strong>, 是可扩展的企业级前端应用框架。Umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。然后配以生命周期完善的插件体系，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求。</p>
+</blockquote>
+<blockquote>
+<p><a href="https://dvajs.com/guide/" target="_blank" rel="noopener">DvaJs</a>首先是一个基于 <a href="https://github.com/reduxjs/redux" target="_blank" rel="noopener">redux</a> 和 <a href="https://github.com/redux-saga/redux-saga" target="_blank" rel="noopener">redux-saga</a> 的数据流方案，然后为了简化开发体验，dva 还额外内置了 <a href="https://github.com/ReactTraining/react-router" target="_blank" rel="noopener">react-router</a> 和 <a href="https://github.com/github/fetch" target="_blank" rel="noopener">fetch</a>，所以也可以理解为一个轻量级的应用框架。</p>
+</blockquote>
+<blockquote>
+<p><a href="https://ant.design/docs/react/introduce-cn" target="_blank" rel="noopener">Antd</a> 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">hhw-4:antd-course hhw$ tree -L 4 -I node_modules</span><br><span class="line">.</span><br><span class="line">├── config #配置文件</span><br><span class="line">│   └── config.js</span><br><span class="line">├── dist</span><br><span class="line">│   ├── index.html</span><br><span class="line">│   └── umi.js</span><br><span class="line">├── mock</span><br><span class="line">│   └── articleMock.js</span><br><span class="line">├── package.json</span><br><span class="line">└── src</span><br><span class="line">    ├── layout</span><br><span class="line">    │   └── index.js</span><br><span class="line">    ├── models</span><br><span class="line">    │   ├── articleModel.js</span><br><span class="line">    │   ├── chartModel.js</span><br><span class="line">    │   └── complexArticleModel.js</span><br><span class="line">    ├── pages</span><br><span class="line">    │   ├── Chart</span><br><span class="line">    │   │   └── ChartClass.js</span><br><span class="line">    │   ├── Complex</span><br><span class="line">    │   │   ├── Article.js</span><br><span class="line">    │   │   └── ComplexArticle.js</span><br><span class="line">    │   ├── Dashboard</span><br><span class="line">    │   │   ├── Analysis.js</span><br><span class="line">    │   │   ├── Monitor.js</span><br><span class="line">    │   │   └── Workplace.js</span><br><span class="line">    │   └── HelloWorld.js</span><br><span class="line">    ├── service</span><br><span class="line">    │   └── chart.js</span><br><span class="line">    └── util</span><br><span class="line">        └── request.js</span><br></pre></td></tr></table></figure>
+<p>其实有了React、Redux的基础，示例代码很容易看懂，在这里就不贴代码了，罗列一些操作中疑惑的地方。</p>
+<h2 id="第二部分">第二部分</h2>
+<h3 id="一dvajs--effect">一、DvaJs--Effect</h3>
+<p>Reducer如果做了异步操作，将破坏redux中reducer是纯函数的机制，effect 就是专门处理这些具有 "副作用" 的操作的执行单元。 #### <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  namespace: <span class="string">'some_namespace'</span>,</span><br><span class="line">  state: &#123;&#125;,</span><br><span class="line">  effects: &#123; <span class="comment">// 定义 effects 成员</span></span><br><span class="line">    <span class="string">'someEffect'</span>: <span class="function"><span class="keyword">function</span>*(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">    <span class="string">'someOtherEffect'</span>: <span class="function"><span class="keyword">function</span>*(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>宏观上看，effect 是一层中间件。</li>
+<li>局部上看 effect 就是一个一个的 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*" target="_blank" rel="noopener">generator function</a>。 #### #### 1. 中间层 &gt; 什么是中间层？ &gt; " Middleware is some code you can put between the framework receiving a request, and the framework generating a response. "</li>
+</ul>
+<p>       当 action 被 dispatch 之后，会先到达 effect 处理副作用，然后该 effect 最终会促使新的 action 发送出去，这个新的 action 可能被其他的 effect 再捕获继续处理，也可能被 reducer 捕获并结束，无论怎样，最终处理逻辑的终点都将是 reducer。 #### 2. generator function。</p>
+<figure>
+<img src="/2020/04/11Reac实战系列-单页面/02.png" alt><figcaption>image.png</figcaption>
+</figure>
+<p>异步的实质是事件发生促使程序的执行点来回跳转。我们使用 callback 本质上是描述跳转的一种手段。generator function 并没有改变异步的本质，只是改变了描述的方式，使得程序看起来像是同步一样。 一个 generator function 在执行时有 <strong>两方</strong>。一方是 generator function 本身，另一方是 generator function 的句柄持有者，而这一般都是框架所持有。我们姑且称这个句柄为 genStub。当框架调用 genStub.next() 时，generator function 会执行到下一个 <code>yield</code> 然后暂停，并把 yield 后面表达式的计算值返还给框架，同时把程序执行权交给框架。框架拿到值后做处理，比如就是异步处理，处理结束拿到结果，再次调用 genStub.next()，返还值给 generator function 同时驱动它恢复执行。当恢复执行时，你可以认为 <strong>返回的处理结果会整体替换 <code>yield &lt;expression&gt;</code></strong>，然后程序继续执行到下一个 yield。</p>
+<blockquote>
+<p>yield 这个单词用在这里特别形象：yield 本身有「让步」的意思，也有「产出」的意思。</p>
+</blockquote>
+<p><strong>「generator function yield 到外部的值」和「外部返还给 generator function 的值」不是一回事！！！</strong> <strong> #### 3. 使用 入参有两个对象，第一个对象就是匹配这个 effect 的 action 对象，因此可以取到约定的 </strong>payload** 这个字段，第二个对象是** <em>effect 原语集</em>**，其中 <code>call</code>, <code>put</code> 最为常用，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">call: 阻塞 用于调用异步逻辑，支持 promise</span><br><span class="line">put: 不阻塞 用于触发 action,一般来触发reducer改变state</span><br><span class="line">select: 不阻塞 用于从 state 里获取数据</span><br><span class="line">take: 阻塞 dva封装了take，可以监听action的开始和结束阶段，take会阻塞到监听的事件触发，才执行下一步</span><br></pre></td></tr></table></figure>
+<p><strong>示例</strong> <img src="/2020/04/11Reac实战系列-单页面/04.png" alt="image.png"></p>
+<h3 id="二代理">二、代理</h3>
+<p>在前端开发中，一种常见的规避跨域的方法就是：把 ajax 请求发送到你的本地开发服务器，然后本地开发服务器再把 ajax 请求转发到远端去，从网络拓扑上看本地开发服务器起着「反向代理」的作用。本地服务器和远端服务器是「服务器和服务器间的通信」，就不存在跨域问题了。</p>
+<p>配置代理也很简单，只需要您在配置文件 config/config.js 中与 routes 同级处增加 proxy 字段，代码如下，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+  proxy: &#123;</span><br><span class="line">+    <span class="string">'/dev'</span>: &#123;</span><br><span class="line">+      target: <span class="string">'https://08ad1pao69.execute-api.us-east-1.amazonaws.com'</span>,</span><br><span class="line">+      changeOrigin: <span class="literal">true</span>,</span><br><span class="line">+    &#125;,</span><br><span class="line">+  &#125;,</span><br></pre></td></tr></table></figure>
+<p>配置的含义是：去往本地服务器 localhost:8000 的 ajax 调用中，如果是以 <code>/dev</code> 开头的，那么就转发到远端的 <code>https://08ad1pao69.execute-api.us-east-1.amazonaws.com</code> 服务器当中，<code>/dev</code> 也会保留在转发地址中。</p>
+<figure>
+<img src="/2020/04/11Reac实战系列-单页面/05.png" alt><figcaption>image.png</figcaption>
+</figure>
+<h3 id="三二次封装">三、二次封装</h3>
+<p>Antd真的很赞！对于开发者而言，公共的代码其实可以二次封装一下，比如from表单等，可以减少不少的代码。</p>
+<h3 id="四css-modules">四、CSS Modules</h3>
+<figure>
+<img src="/2020/04/11Reac实战系列-单页面/06.png" alt><figcaption>image.png</figcaption>
+</figure>
+<p><a href="https://github.com/camsong/blog/issues/5" target="_blank" rel="noopener">CSS Modules 详解及 React 中实践</a> <a href>CSS MODULES用法教程</a></p>
+<p><strong>CSS modules</strong> 将生成全局唯一的hash值【标签实际的class】。通过全局唯一的class name 变相的就可以获取到<strong>局部作用域【scoped css】，</strong>如果一个 CSS 文件仅仅是作用在某个局部的话，我们称这样一个 CSS 文件为 <em>CSS module</em>。 <strong>注意：很多 CSS 选择器是不会被 CSS Modules 处理的，比如 body、div 、a 这样的 HTML 标签名就不会。我们推荐如果要定义局部 css 样式/动画， 只使用 class 或 <span class="citation" data-cites="keyframe">@keyframe</span>。</strong></p>
+<p><strong><a href="https://less.bootcss.com/" target="_blank" rel="noopener">Less 官方文档</a></strong> <strong> &gt; <a href="http://lesscss.org/usage/" target="_blank" rel="noopener">Less</a> 是一个 CSS 的超集，Less 允许我们</strong>_定义变量_<strong>，使用</strong>_嵌套式声明，定义函数_**等。严格说 Less 包含两部分：1. Less 的语法。2. Less 预处理器（Less preprocessor）。浏览器终究只认识 CSS，所以 Less 文件需要经过 Less 预处理器编译成为 CSS。 &gt; &gt; 在工具的支持下，一个 Less 文件首先会经过 CSS modules 的编译，把类名全局唯一化，然后才被 Less preprocessor 编译成为 CSS 文件。正因此，Less 文件可以和 CSS modules 无缝联合使用。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// less 文件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 常量</span><br><span class="line">@grey-color: rgba(0, 0, 0, 0.25);</span><br><span class="line"></span><br><span class="line">// 类嵌套</span><br><span class="line"><span class="selector-class">.hello</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">32px</span>;</span><br><span class="line">  <span class="attribute">font-weight</span>: bold;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#30b767</span>;</span><br><span class="line">  .deleted &#123;</span><br><span class="line">    <span class="selector-tag">text-decoration</span>: <span class="selector-tag">line-through</span>;</span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="keyword">@grey-color</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 重写Antd样式</span><br><span class="line"><span class="selector-class">.override-ant-btn</span> &#123;</span><br><span class="line">  // CSS Modules 允许使用:global(.className)的语法，声明一个全局规则。凡是这样声明的class，都不会被编译成哈希字符串。</span><br><span class="line">  <span class="selector-pseudo">:global(.ant-btn)</span> &#123;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">16px</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;commonStyles.hello&#125;</span>&gt;</span> css module <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;lessStyles.hello&#125;</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">span</span> <span class="attr">className</span>=<span class="string">&#123;lessStyles.deleted&#125;</span>&gt;</span>Less class 嵌套<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">span</span> <span class="attr">className</span>=<span class="string">&#123;lessStyles[</span>'<span class="attr">override-ant-btn</span>']&#125;&gt;</span></span><br><span class="line">                     <span class="tag">&lt;<span class="name">Button</span>&gt;</span>圆角样式按妞<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">Button</span>&gt;</span>antd 原始按钮<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/2020/04/11Reac实战系列-单页面/07.png" alt><figcaption>image.png</figcaption>
+</figure>
+<p>最后强调，global 不应该被滥用，特别地我们建议：若想在某个文件中覆盖 antd 样式，请加上一个类似 <code>.override-ant-btn</code> 的类包裹住 global 修饰的名称，以避免全局样式声明分散在项目各处。</p>
+<p>还有很多待补充的内容，边做边学</p>
+<p>参考链接</p>
+<ul>
+<li>阮一峰老师的 <a href="http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html" target="_blank" rel="noopener">redux 三部曲</a>。</li>
+<li>redux-saga 的<a href="http://leonshi.com/redux-saga-in-chinese/docs/api/index.html" target="_blank" rel="noopener">中文文档</a>。</li>
+<li><a href="https://dvajs.com/guide/develop-complex-spa.html#%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BDmodel" target="_blank" rel="noopener">使用 Dva 开发复杂 SPA</a></li>
+<li><a href="https://dvajs.com/guide/source-code-explore.html#%E9%9A%90%E8%97%8F%E5%9C%A8-package-json-%E9%87%8C%E7%9A%84%E7%A7%98%E5%AF%86" target="_blank" rel="noopener">Dva源码解析</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    你瞧～
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatSub.png" alt="Howard 关注不关注都无所谓">
+        <p>关注不关注都无所谓</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://simuty.com/2020/04/11Reac实战系列-单页面/" title="Reac实战系列-单页面<1>">https://simuty.com/2020/04/11Reac实战系列-单页面/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/实战/" rel="tag"><i class="fa fa-tags"></i> 实战</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/10React系列-Redux/" rel="next" title="React系列-Redux<2>">
+                <i class="fa fa-chevron-left"></i> React系列-Redux<2>
+              </2></a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/12React系列-setState/" rel="prev" title="React系列-setState<3>">
+                React系列-setState<3> <i class="fa fa-chevron-right"></i>
+              </3></a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Howard</p>
+              <div class="site-description motion-element" itemprop="description">记录点滴、分享所得</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/simuty" title="GitHub &rarr; https://github.com/simuty" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2020/05/16推理判断-类比/" title="判断推理--类比" target="_blank">判断推理--类比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15推理判断-逻辑/" title="判断推理--逻辑" target="_blank">判断推理--逻辑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15关于人生--我的世界观/" title="爱因斯坦--我的世界观" target="_blank">爱因斯坦--我的世界观</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15判断推理-图形/" title="判断推理-图形" target="_blank">判断推理-图形</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/14言语理解-积累4/" title="言语理解-积累" target="_blank">言语理解-积累</a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#react实战"><span class="nav-number">1.</span> <span class="nav-text">React实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分-整体概述"><span class="nav-number">1.0.1.</span> <span class="nav-text">第一部分 整体概述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部分"><span class="nav-number">1.1.</span> <span class="nav-text">第二部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一dvajs--effect"><span class="nav-number">1.1.1.</span> <span class="nav-text">一、DvaJs--Effect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二代理"><span class="nav-number">1.1.2.</span> <span class="nav-text">二、代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三二次封装"><span class="nav-number">1.1.3.</span> <span class="nav-text">三、二次封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四css-modules"><span class="nav-number">1.1.4.</span> <span class="nav-text">四、CSS Modules</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">170k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:34</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+     我的第 <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 位朋友，
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="site-pv">
+     历经 <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次回眸才与你相遇
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'f88581d92eb32794b280',
+    clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+    repo: 'simutyComment',
+    owner: 'simuty',
+    admin: ['simuty'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+ 
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.min.js"></script>
+<script>
+  function timer() {
+    var ages = moment.preciseDiff(moment(),moment(,"YYYYMMDD"));
+    ages = ages.replace(/years?/, "年");
+    ages = ages.replace(/months?/, "月");
+    ages = ages.replace(/days?/, "天");
+    ages = ages.replace(/hours?/, "小时");
+    ages = ages.replace(/minutes?/, "分");
+    ages = ages.replace(/seconds?/, "秒");
+    ages = ages.replace(/\d+/g, '<span style="color:">$&</span>');
+    div.innerHTML = `我已在此等候你 ${ages}`;
+  }
+  var div = document.createElement("div");
+  //插入到copyright之后
+  var copyright = document.querySelector(".copyright");
+  document.querySelector(".footer-inner").insertBefore(div, copyright.nextSibling);
+  timer();
+  setInterval("timer()",1000)
+</script>
+
+</body>
+</html>
