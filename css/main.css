@@ -1856,7 +1856,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff222f;
+  background: #9aaaff;
 }
 .feed-link,
 .chat {
@@ -2947,7 +2947,7 @@ pre {
   top: 3px;
 }
 .back-to-top .fa-arrow-up:before {
-  color: #fff5ff;
+  color: #ffc1bb;
 }
 .geyan {
   font-weight: bold;
