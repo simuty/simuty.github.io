@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="目标  温故函数很多概念 掌握 Python 装饰器   如果能准确的表述下侧代码的结果 就不用往下看啦，想必你已经掌握了 Python 装饰器  123456789101112131415161718192021def outer(func):    def inner():        print(&quot;1&quot;)        print(&quot;foo---%s&quot; % func)        re">
+<meta name="keywords" content="Python,装饰器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python基础系列之装饰器【12】">
+<meta property="og:url" content="https://simuty.com/2019/05/19/index/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="目标  温故函数很多概念 掌握 Python 装饰器   如果能准确的表述下侧代码的结果 就不用往下看啦，想必你已经掌握了 Python 装饰器  123456789101112131415161718192021def outer(func):    def inner():        print(&quot;1&quot;)        print(&quot;foo---%s&quot; % func)        re">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://simuty.com/2019/05/19/index/cheap.png">
+<meta property="og:image" content="https://simuty.com/2019/05/19/index/doc1.jpg">
+<meta property="og:updated_time" content="2020-05-15T18:54:00.906Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python基础系列之装饰器【12】">
+<meta name="twitter:description" content="目标  温故函数很多概念 掌握 Python 装饰器   如果能准确的表述下侧代码的结果 就不用往下看啦，想必你已经掌握了 Python 装饰器  123456789101112131415161718192021def outer(func):    def inner():        print(&quot;1&quot;)        print(&quot;foo---%s&quot; % func)        re">
+<meta name="twitter:image" content="https://simuty.com/2019/05/19/index/cheap.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="简单即是美" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://simuty.com/2019/05/19/index/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python基础系列之装饰器【12】 | 简单即是美</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简单即是美</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/19/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python基础系列之装饰器【12】
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-19 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-19T10:38:59+08:00">2019-05-19</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/2019/05/19/index/cheap.png"></p>
+<h2 id="目标">目标</h2>
+<ul>
+<li>温故函数很多概念</li>
+<li>掌握 Python 装饰器</li>
+</ul>
+<blockquote>
+<p>如果能准确的表述下侧代码的结果</p>
+<p>就不用往下看啦，想必你已经掌握了 Python 装饰器</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"1"</span>)</span><br><span class="line">        print(<span class="string">"foo---%s"</span> % func)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"2"</span></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"3"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"4"</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"===foo===="</span>)</span><br><span class="line">print(foo)</span><br><span class="line">print(<span class="string">"===foo()===="</span>)</span><br><span class="line">print(foo())</span><br><span class="line">print(<span class="string">"===outer(foo)===="</span>)</span><br><span class="line">print(outer(foo))</span><br><span class="line">print(<span class="string">"===outer(foo())===="</span>)</span><br><span class="line">print(outer(foo()))</span><br><span class="line">print(<span class="string">"===outer(foo())()===="</span>)</span><br><span class="line">print(outer(foo())())</span><br></pre></td></tr></table></figure>
+<p>先认真回忆下之前函数的相关章节内容 <strong>不难但可能有点绕</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">===foo====</span><br><span class="line">&lt;<span class="function"><span class="keyword">function</span> <span class="title">foo</span> <span class="title">at</span> 0<span class="title">x7fcae64dbea0</span>&gt;</span></span><br><span class="line"><span class="function">===<span class="title">foo</span>(<span class="params"></span>)====</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">4</span></span><br><span class="line"><span class="function">===<span class="title">outer</span>(<span class="params">foo</span>)====</span></span><br><span class="line"><span class="function">&lt;<span class="title">function</span> <span class="title">outer</span>.&lt;<span class="title">locals</span>&gt;.<span class="title">inner</span> <span class="title">at</span> 0<span class="title">x7fcae64dbe18</span>&gt;</span></span><br><span class="line"><span class="function">===<span class="title">outer</span>(<span class="params">foo(</span>))====</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">&lt;<span class="title">function</span> <span class="title">outer</span>.&lt;<span class="title">locals</span>&gt;.<span class="title">inner</span> <span class="title">at</span> 0<span class="title">x7fcae645d598</span>&gt;</span></span><br><span class="line"><span class="function">===<span class="title">outer</span>(<span class="params">foo(</span>))(<span class="params"></span>)====</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">1</span></span><br><span class="line"><span class="function"><span class="title">foo</span>---4</span></span><br><span class="line"><span class="function">2</span></span><br></pre></td></tr></table></figure>
+<p>没答出来，或对装饰器有疑惑，那就即可开始吧</p>
+<h3 id="第一部分-前奏">第一部分 前奏</h3>
+<p>针对于开头的那块代码逐步分析下，究竟再内存中是<code>如何运行的❓</code> <code>执行顺序是什么❓</code></p>
+<p><strong>强烈推荐网址：<a href="http://pythontutor.com/live.html#mode=edit" target="_blank" rel="noopener">代码可视化执行过程</a></strong></p>
+<p>这几行代码主要为了加深理解代码的<code>执行过程</code>、<code>函数名</code>、<code>函数调用</code>等等</p>
+<p><code>结合代码与下侧图示</code>，重温那些我们习以为常的东西。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"1"</span>)</span><br><span class="line">        print(<span class="string">"foo---%s"</span> % func)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"2"</span></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"3"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"4"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将函数 outer、foo 加载到内存中</span></span><br><span class="line"><span class="comment"># 以上代码到此行，未执行</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"===foo===="</span>)</span><br><span class="line"><span class="comment"># foo【函数名】；</span></span><br><span class="line"><span class="comment"># 执行：对应的【函数信息】；返回：🈚️</span></span><br><span class="line">print(foo)</span><br><span class="line">print(<span class="string">"===foo()===="</span>)</span><br><span class="line"><span class="comment"># 真正执行 foo函数</span></span><br><span class="line"><span class="comment"># 执行：打印 3； 返回 4</span></span><br><span class="line">print(foo())</span><br><span class="line">print(<span class="string">"===outer(foo)===="</span>)</span><br><span class="line"><span class="comment"># 将【foo函数名】传给【outer函数】，参数为 【函数名】</span></span><br><span class="line"><span class="comment"># 执行：将inner加载到内存，返回：🈚️</span></span><br><span class="line">print(outer(foo))</span><br><span class="line">print(<span class="string">"===outer(foo())===="</span>)</span><br><span class="line"><span class="comment"># 调用【foo函数】，将4作为参数传给传给【outer函数】</span></span><br><span class="line"><span class="comment"># 执行：打印3 返回4， 打印outer函数的返回值 inner内存信息</span></span><br><span class="line">print(outer(foo()))</span><br><span class="line">print(<span class="string">"===outer(foo())()===="</span>)</span><br><span class="line"><span class="comment"># 调用【foo函数】，将4作为参数传给传给【outer函数】，调用inner函数</span></span><br><span class="line"><span class="comment"># 执行：打印3 返回4，进而打印 1 、 4【func()]、2以及inner的返回值2</span></span><br><span class="line"><span class="comment"># over！！！</span></span><br><span class="line">print(outer(foo())())</span><br></pre></td></tr></table></figure>
+<p>我觉得，先把这些看似简单的东西理清楚，对接下来，装饰器的理解更容易些</p>
+<h3 id="第二部分-装饰器基础">第二部分 装饰器【基础】</h3>
+<h4 id="装饰器是什么">1 装饰器是什么</h4>
+<p>装饰器（Decorator）：可以在不修改原有代码的情况下，为被装饰的对象增加新的功能或者附加限制条件或者帮助输出。<strong>原则：开放封闭</strong></p>
+<p><strong>分类</strong></p>
+<ol type="1">
+<li>函数装饰器；</li>
+<li>类的装饰器。</li>
+</ol>
+<p>最近公司也在用装饰器，不过是再 Nodejs 中用的； 举个别的例子。因为某种原因，需要对每个接口进行<strong>认证</strong>、<strong>记录日志</strong>，如何快速高效的实现这样的需求 ❓</p>
+<p><code>可能有几种思路</code></p>
+<ul>
+<li>在基类中写相应的方法，如果有的话；</li>
+<li>写两个函数【认证的、日志的】，在每个接口中添加；</li>
+<li>等等思路</li>
+</ul>
+<h4 id="简单的装饰器">2 简单的装饰器</h4>
+<p>但今天只能选<strong>装饰器</strong>，因为不能偏离主题啦，描述了需求就开始干吧！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">"装饰器启动,自动执行"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"统一认证"</span>)</span><br><span class="line">        result = func()</span><br><span class="line">        print(<span class="string">"记录日志信息"</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@outer</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"接口1"</span>)</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
+<p>返回值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">装饰器启动,自动执行</span><br><span class="line">统一认证</span><br><span class="line">接口<span class="number">1</span></span><br><span class="line">记录日志信息</span><br></pre></td></tr></table></figure>
+<p>大致和第一部分的例子有点类似，不同的是</p>
+<ol type="1">
+<li>inner 函数返回了个函数</li>
+<li>多个<code>@outer</code></li>
+</ol>
+<p><span class="citation" data-cites="outer">@outer</span> 中的<code>@</code>是注解语法糖；<strong>把 f1 作为参数传给 outer</strong>,今儿满足我们的<code>开放封闭的原则</code>;</p>
+<p>其解释器会解释成下面这样的语句： <strong>*<span class="citation" data-cites="outer">@outer</span> &lt;=&gt; outer(f1)</strong></p>
+<p>翻译成函数调用, 我们用新的例子来对比一下，其实就是下侧这样的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"接口2"</span>)</span><br><span class="line">outer(f2)()</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">装饰器启动,自动执行</span></span><br><span class="line"><span class="string">统一认证</span></span><br><span class="line"><span class="string">接口1</span></span><br><span class="line"><span class="string">记录日志信息</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>了解了上述的调用含义， <strong><span class="citation" data-cites="outer">@outer</span> &lt;=&gt; outer(f1)</strong></p>
+<blockquote>
+<p>注： 传的只是函数名</p>
+</blockquote>
+<figure>
+<img src="/2019/05/19/index/doc1.jpg" alt><figcaption>自动执行</figcaption>
+</figure>
+<p>整体的流程</p>
+<ol type="1">
+<li>自上而下执行，将函数<code>outer</code>在内存注册；</li>
+<li>执行到@outer 时，将<code>函数名f1</code>作为参数传给<code>@outer</code>;</li>
+<li>调用 outer 函数，执行打印【装饰器启动,自动执行】；</li>
+<li>函数 inner 在内存注册，内存地址：<strong>[xxxx]</strong>，返回【inner 函数名】，</li>
+<li>将函数<code>f1</code>在内存注册；其实是直接指向 <strong>[xxxx]</strong></li>
+<li>调用 f1(), 直接调用第五步的 <strong>[xxxx]</strong>， 也就是第四步的；</li>
+<li>打印【统一认证】；</li>
+<li>result = func()<strong>执行回调</strong>【f1】函数, 打印：接口 1，没有返回值，result = None</li>
+<li>回到<code>inner()</code>,打印<code>记录日志信息</code>;</li>
+<li>返回 None，OVER!</li>
+</ol>
+<p><code>注</code>：完整的有 17 步，动图还不会制作，可以前往--&gt;<a href="http://pythontutor.com/live.html#mode=edit" target="_blank" rel="noopener">代码可视化网址</a>**，查看完整的步骤。</p>
+<blockquote>
+<p>实在是想不出来，如何用图来表示装饰器，有相应的图示，请介绍。</p>
+</blockquote>
+<p>比较喜欢这段代码, 挺有意思的。O(∩_∩)O 哈哈~ <a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">来源</a></p>
+<p>会自动打印结果，因为采用了装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fuck</span><span class="params">(fn)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"fuck %s!"</span> % fn.__name__[::<span class="number">-1</span>].upper()</span><br><span class="line"></span><br><span class="line"><span class="meta">@fuck</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wfg</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h3 id="第三部分-装饰器进阶">第三部分 装饰器【进阶】</h3>
+<p>如果没有看明白第二部分，还是这回去，沉下心，专注的、认真的读下去，真的不难，好好分析下流程，一步一个脚印，踩实了！</p>
+<blockquote>
+<p>只介绍最基础的代码，就是耍流氓</p>
+</blockquote>
+<h4 id="多个装饰器">1 多个装饰器</h4>
+<p><a href="https://blog.csdn.net/u013411246/article/details/80571462" target="_blank" rel="noopener">下侧代码来源</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#当有多个装饰器装饰一个函数时，他们的执行顺序</span></span><br><span class="line"><span class="comment">#观察下方的代码就会发现</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_a</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'Get in decorator_a'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_a</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'Get in inner_a'</span>)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> inner_a</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_b</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'Get in decorator_b'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_b</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'Get in inner_b'</span>)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> inner_b</span><br><span class="line">  </span><br><span class="line"><span class="meta">@decorator_b</span></span><br><span class="line"><span class="meta">@decorator_a</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></span><br><span class="line">    print(<span class="string">'Get in f'</span>)</span><br><span class="line">    <span class="keyword">return</span> x * <span class="number">2</span></span><br><span class="line"></span><br><span class="line">f(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Get in decorator_a</span></span><br><span class="line"><span class="string">Get in decorator_b</span></span><br><span class="line"><span class="string">Get in inner_b</span></span><br><span class="line"><span class="string">Get in inner_a</span></span><br><span class="line"><span class="string">Get in f</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>调用时，函数的顺序 1. 顺序等同于==&gt; <strong>decorator_b(decorator_a(f))</strong>,返回的是inner_b,所以执行的时候是先执行inner_b 2. 然后在执行【decorator_a(f)】返回的inner_a .最终在调用f(1)的时候，函数inner_b输出'Get in inner_b' 3. 执行inner_a输出Get in decorator_a，最后执行func(),即f</p>
+<h4 id="多参多装饰器">2 多参多装饰器</h4>
+<p>为了更加深入的了解，装饰器，摘录<a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">酷 壳 博客</a>上的一段代码，好像<a href="https://wiki.python.org/moin/PythonDecoratorLibrary" target="_blank" rel="noopener">官网实例代码</a>也不少;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeHtmlTag</span><span class="params">(tag, *args, **kwds)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">real_decorator</span><span class="params">(fn)</span>:</span></span><br><span class="line">        css_class = <span class="string">" class='&#123;0&#125;'"</span>.format(kwds[<span class="string">"css_class"</span>]) \</span><br><span class="line">                                     <span class="keyword">if</span> <span class="string">"css_class"</span> <span class="keyword">in</span> kwds <span class="keyword">else</span> <span class="string">""</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span><span class="params">(*args, **kwds)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">"&lt;"</span>+tag+css_class+<span class="string">"&gt;"</span> + fn(*args, **kwds) + <span class="string">"&lt;/"</span>+tag+<span class="string">"&gt;"</span></span><br><span class="line">        <span class="keyword">return</span> wrapped</span><br><span class="line">    <span class="keyword">return</span> real_decorator</span><br><span class="line"> </span><br><span class="line"><span class="meta">@makeHtmlTag(tag="b", css_class="bold_css")</span></span><br><span class="line"><span class="meta">@makeHtmlTag(tag="i", css_class="italic_css")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello world"</span></span><br><span class="line"> </span><br><span class="line">print(hello())</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&lt;b class='bold_css'&gt;&lt;i class='italic_css'&gt;hello world&lt;/i&gt;&lt;/b&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h4 id="再深入一些">3 再深入一些</h4>
+<p>表示还没有研究这段代码，先分享出来 摘录<a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">酷 壳 博客</a>上的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">memo</span><span class="params">(fn)</span>:</span></span><br><span class="line">    cache = &#123;&#125;</span><br><span class="line">    miss = object()</span><br><span class="line"> </span><br><span class="line"><span class="meta">    @wraps(fn)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        result = cache.get(args, miss)</span><br><span class="line">        <span class="keyword">if</span> result <span class="keyword">is</span> miss:</span><br><span class="line">            result = fn(*args)</span><br><span class="line">            cache[args] = result</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"> </span><br><span class="line"><span class="meta">@memo</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>Python函数告一段落了</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    你瞧～
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatSub.png" alt="Howard 关注不关注都无所谓">
+        <p>关注不关注都无所谓</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://simuty.com/2019/05/19/index/" title="Python基础系列之装饰器【12】">https://simuty.com/2019/05/19/index/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tags"></i> Python</a>
+          
+            <a href="/tags/装饰器/" rel="tag"><i class="fa fa-tags"></i> 装饰器</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/18/index/" rel="next" title="Python基础系列之--匿名函数闭包【11】">
+                <i class="fa fa-chevron-left"></i> Python基础系列之--匿名函数闭包【11】
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/24/index/" rel="prev" title="Python基础系列之面向对象编程【14】">
+                Python基础系列之面向对象编程【14】 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Howard</p>
+              <div class="site-description motion-element" itemprop="description">记录点滴、分享所得</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/simuty" title="GitHub &rarr; https://github.com/simuty" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2020/05/17/civil_servant_define/" title="推理判断-定义判断" target="_blank">推理判断-定义判断</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/16/civil_servant_analogy/" title="推理判断--类比" target="_blank">推理判断--类比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/civil_servant_inference/" title="推理判断--逻辑" target="_blank">推理判断--逻辑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/worldview/" title="爱因斯坦--我的世界观" target="_blank">爱因斯坦--我的世界观</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/civil_servant_graph/" title="推理判断-图形" target="_blank">推理判断-图形</a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分-前奏"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分 前奏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二部分-装饰器基础"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分 装饰器【基础】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#装饰器是什么"><span class="nav-number">1.2.1.</span> <span class="nav-text">1 装饰器是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单的装饰器"><span class="nav-number">1.2.2.</span> <span class="nav-text">2 简单的装饰器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三部分-装饰器进阶"><span class="nav-number">1.3.</span> <span class="nav-text">第三部分 装饰器【进阶】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多个装饰器"><span class="nav-number">1.3.1.</span> <span class="nav-text">1 多个装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多参多装饰器"><span class="nav-number">1.3.2.</span> <span class="nav-text">2 多参多装饰器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#再深入一些"><span class="nav-number">1.3.3.</span> <span class="nav-text">3 再深入一些</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">174k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:38</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+     我的第 <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 位朋友，
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="site-pv">
+     历经 <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次回眸才与你相遇
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'f88581d92eb32794b280',
+    clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+    repo: 'simutyComment',
+    owner: 'simuty',
+    admin: ['simuty'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+ 
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.min.js"></script>
+<script>
+  function timer() {
+    var ages = moment.preciseDiff(moment(),moment(,"YYYYMMDD"));
+    ages = ages.replace(/years?/, "年");
+    ages = ages.replace(/months?/, "月");
+    ages = ages.replace(/days?/, "天");
+    ages = ages.replace(/hours?/, "小时");
+    ages = ages.replace(/minutes?/, "分");
+    ages = ages.replace(/seconds?/, "秒");
+    ages = ages.replace(/\d+/g, '<span style="color:">$&</span>');
+    div.innerHTML = `我已在此等候你 ${ages}`;
+  }
+  var div = document.createElement("div");
+  //插入到copyright之后
+  var copyright = document.querySelector(".copyright");
+  document.querySelector(".footer-inner").insertBefore(div, copyright.nextSibling);
+  timer();
+  setInterval("timer()",1000)
+</script>
+
+</body>
+</html>

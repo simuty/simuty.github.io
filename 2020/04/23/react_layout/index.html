@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="民之从事，常于几成而败之。慎终如始，则无败事。--- 《道德经》第64章">
+<meta name="keywords" content="React,Redux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React实战系列-布局与组件【1】">
+<meta property="og:url" content="https://simuty.com/2020/04/23/react_layout/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="民之从事，常于几成而败之。慎终如始，则无败事。--- 《道德经》第64章">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://simuty.com/2020/images/photos/2020/007.jpg">
+<meta property="og:image" content="https://simuty.com/2020/04/23/react_layout/03.png">
+<meta property="og:image" content="https://simuty.com/2020/04/23/react_layout/04.png">
+<meta property="og:updated_time" content="2020-05-17T09:33:41.874Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React实战系列-布局与组件【1】">
+<meta name="twitter:description" content="民之从事，常于几成而败之。慎终如始，则无败事。--- 《道德经》第64章">
+<meta name="twitter:image" content="https://simuty.com/2020/images/photos/2020/007.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="简单即是美" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://simuty.com/2020/04/23/react_layout/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>React实战系列-布局与组件【1】 | 简单即是美</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简单即是美</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/04/23/react_layout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React实战系列-布局与组件【1】
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-23 18:13:32" itemprop="dateCreated datePublished" datetime="2020-04-23T18:13:32+08:00">2020-04-23</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/2020/04/23/react_layout/../../../images/photos/2020/007.jpg" width="60%"></p>
+<p>民之从事，常于几成而败之。慎终如始，则无败事。--- 《道德经》第64章</p>
+<a id="more"></a>
+<blockquote>
+<p>原本打算做的网易音乐后台要搁浅了 首先我觉得这个并不适合我</p>
+</blockquote>
+<p>原因有以下几个方面：</p>
+<ol type="1">
+<li>跳跃过大</li>
+<li>自定义模块过多</li>
+</ol>
+<p>虽说跟着一遍做一遍摸索，可以完成，但我觉得太浪费时间，终究没有个流程。</p>
+<blockquote>
+<p>我的目标是：</p>
+</blockquote>
+<ol type="1">
+<li>掌握数据流管理方案--redux及其配套设施；</li>
+<li>熟悉react、react-router-dom、react-router的应用场景以及注意事项；</li>
+<li>熟练使用antd的组件；</li>
+<li>----完成前端应用-----</li>
+<li>Eggjs + Mysql 提供数据服务</li>
+<li>进一步完善前后端</li>
+</ol>
+<h2 id="开篇">开篇</h2>
+<p>以上的目标打算抽时间逐步完成，这个系列博客，尽量写明白写清楚，也算是职业生涯中的值得回忆的一个成就。 因为是一边学习一边记录，所以采取由浅入深的开发流程。</p>
+<blockquote>
+<p>说明</p>
+</blockquote>
+<p>为了完成目标，确定的目标项目是开源的----<a href="https://github.com/karakal-FET/react-admin" target="_blank" rel="noopener">react-admin</a>；打算在此基础上<strong>进行改写</strong>并完成一个相对完善的后端项目。</p>
+<p>这篇文章说明的文字较多。</p>
+<blockquote>
+<p>原生化</p>
+</blockquote>
+<ol type="1">
+<li>尽可能的<strong>只用</strong>原生组件，目光始终在完成需求上；</li>
+<li>尽可能用不同的方式完成同样的需求；</li>
+<li>尽可能好的组织代码方式</li>
+</ol>
+<h3 id="技术栈">技术栈</h3>
+<p>大致分为以下几类，还会涉及其余的相关模块等，后续会在相关位置添加链接或单独写文章整理。</p>
+<ol type="1">
+<li>语言：
+<ol type="1">
+<li><a href="https://www.tslang.cn/docs/handbook/basic-types.html" target="_blank" rel="noopener">TS</a>、</li>
+<li><a href="http://lesscss.cn/" target="_blank" rel="noopener">Less</a></li>
+</ol></li>
+<li>React：
+<ol type="1">
+<li><a href="https://react.docschina.org/docs/getting-started.html" target="_blank" rel="noopener">React</a></li>
+<li><a href="https://react-guide.github.io/react-router-cn/" target="_blank" rel="noopener">react-router</a></li>
+<li><a href="https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom" target="_blank" rel="noopener">react-router-dom</a></li>
+</ol></li>
+<li>状态管理：
+<ol type="1">
+<li><a href="https://www.redux.org.cn/" target="_blank" rel="noopener">Redux</a></li>
+<li><a href="https://cn.redux.js.org/docs/react-redux/" target="_blank" rel="noopener">React-Redux</a></li>
+<li><a href="https://redux-saga-in-chinese.js.org/" target="_blank" rel="noopener">Redux-Saga</a></li>
+<li><a href="https://github.com/immerjs/immer" target="_blank" rel="noopener">Immer</a></li>
+</ol></li>
+<li>UI：
+<ol type="1">
+<li><a href="https://ant.design/docs/resources-cn" target="_blank" rel="noopener">Antd</a></li>
+<li><a href="https://www.echartsjs.com/zh/option.html#title" target="_blank" rel="noopener">echartsjs</a></li>
+<li><a href="https://github.com/hustcc/echarts-for-react" target="_blank" rel="noopener">echarts-for-react</a></li>
+</ol></li>
+</ol>
+<h3 id="疑问解答">疑问解答</h3>
+<p>采用官方脚手架--<a href="https://www.html.cn/create-react-app/docs/getting-started/" target="_blank" rel="noopener">create-react-app</a>；</p>
+<blockquote>
+<p>为何不用<a href="https://dvajs.com/guide/" target="_blank" rel="noopener">dvajs</a>?</p>
+</blockquote>
+<p>综合性很强，但我认为应该<strong>先难后易</strong></p>
+<blockquote>
+<p>为何不用<a href="https://umijs.org/zh-CN/docs/getting-started" target="_blank" rel="noopener">umi</a>?</p>
+</blockquote>
+<p>综合性更强，仍旧认为应该<strong>先难后易</strong></p>
+<p>学习node，我觉得先了解express，再写koa，最后采用egg 是个不错的选择。</p>
+<blockquote>
+<p>建议不要eject!</p>
+</blockquote>
+<p>初心是学习react全家桶，不是webpack【后期有空再学】, 至于less相关配置，可以<a href="https://ant.design/docs/react/use-in-typescript-cn#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98" target="_blank" rel="noopener">换个做法</a></p>
+<h2 id="开动">开动</h2>
+<p>由于打算写这个系列的文章的时候，基本的UI框架已经搭建好，现在就把文件目录罗列出来，并加以说明，针对这个过程中遇到的问题，会在之后一一罗列，代码中几乎都会有注释。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README\ 2.md    <span class="comment"># 说明文件</span></span><br><span class="line">├── README.md       <span class="comment"># 说明文件</span></span><br><span class="line">├── config-overrides.js     <span class="comment"># less 相关配置</span></span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public      <span class="comment"># 资源文件</span></span><br><span class="line">│   ├── favicon.ico</span><br><span class="line">│   ├── index.html</span><br><span class="line">│   ├── logo192.png</span><br><span class="line">│   ├── logo512.png</span><br><span class="line">│   ├── manifest.json</span><br><span class="line">│   └── robots.txt</span><br><span class="line">├── src         <span class="comment"># 代码区</span></span><br><span class="line">│   ├── App.less        <span class="comment"># 布局文件</span></span><br><span class="line">│   ├── App.test.tsx    <span class="comment"># 测试文件</span></span><br><span class="line">│   ├── App.tsx         <span class="comment"># 入口布局</span></span><br><span class="line">│   ├── Page.tsx        <span class="comment"># 入口文件</span></span><br><span class="line">│   ├── components          <span class="comment">#组件</span></span><br><span class="line">│   │   ├── HeaderCustom.tsx    <span class="comment"># 头部组件</span></span><br><span class="line">│   │   ├── SiderCustom.tsx     <span class="comment"># 侧边栏</span></span><br><span class="line">│   │   ├── SiderMenu.tsx       <span class="comment"># 侧边栏菜单</span></span><br><span class="line">│   │   ├── forms                   <span class="comment"># 文件夹--表单</span></span><br><span class="line">│   │   ├── index.tsx           <span class="comment"># 组件统一导出文件</span></span><br><span class="line">│   │   ├── pages               <span class="comment"># 单页面，如404</span></span><br><span class="line">│   │   └── widget              <span class="comment"># 小组件，如copyright</span></span><br><span class="line">│   ├── containers  <span class="comment"># 容器组件</span></span><br><span class="line">│   │   └── XXX     <span class="comment"># 后期会增加</span></span><br><span class="line">│   ├── images  <span class="comment"># 图片</span></span><br><span class="line">│   ├── index.css</span><br><span class="line">│   ├── index.tsx <span class="comment"># 入口配置文件</span></span><br><span class="line">│   ├── react-app-env.d.ts <span class="comment"># .d.ts文件</span></span><br><span class="line">│   ├── redux   <span class="comment"># redux 相关</span></span><br><span class="line">│   │   ├── configureStore.ts <span class="comment"># 统一配置redux</span></span><br><span class="line">│   │   └── modules <span class="comment"># redux modules 文件夹</span></span><br><span class="line">│   ├── routes  <span class="comment"># 路由配置文件夹</span></span><br><span class="line">│   │   ├── config.ts   <span class="comment"># 路由的配置文件</span></span><br><span class="line">│   │   └── index.tsx   <span class="comment"># 遍历配置文件，并初始化路由</span></span><br><span class="line">│   ├── serviceWorker.ts</span><br><span class="line">│   ├── setupTests.ts</span><br><span class="line">│   ├── style   <span class="comment"># 样式文件夹</span></span><br><span class="line">│   │   ├── antd</span><br><span class="line">│   │   ├── imgs</span><br><span class="line">│   │   └── index.less</span><br><span class="line">│   ├── test.js</span><br><span class="line">│   └── utils   <span class="comment"># 小功能</span></span><br><span class="line">│       ├── antdValidate.ts</span><br><span class="line">│       └── index.ts</span><br><span class="line">└── tsconfig.json</span><br></pre></td></tr></table></figure>
+<p>采用 <a href="https://www.html.cn/create-react-app/docs/adding-typescript/" target="_blank" rel="noopener">Create React App TS</a>.</p>
+<h3 id="步骤一-初始化">步骤一 初始化</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --- 初始化</span></span><br><span class="line">$ npx create-react-app react-project --typescript</span><br><span class="line">$ <span class="comment"># 或者</span></span><br><span class="line">$ yarn create react-app react-project --typescript</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- TS相关依赖</span></span><br><span class="line">$ npm install --save typescript @types/node @types/react @types/react-dom @types/jest</span><br><span class="line">$ <span class="comment"># 或者</span></span><br><span class="line">$ yarn add typescript @types/node @types/react @types/react-dom @types/jest</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 启动</span></span><br><span class="line">$ <span class="built_in">cd</span> react-project</span><br><span class="line">$ npm start</span><br></pre></td></tr></table></figure>
+<p>以上构建好&amp;启动了项目。</p>
+<h3 id="步骤二-下载相关依赖">步骤二 下载相关依赖</h3>
+<p>其实应该用到啥配置啥，这样更能明白，但是现在只能罗列下，建文件夹、下载、、、都太简单了. &gt; 换个思路，把目前需要的包罗列出来，然后逐步完善代码。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认生成的文件</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"react-project"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"0.1.0"</span>,</span><br><span class="line">  <span class="attr">"private"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"@ant-design/icons"</span>: <span class="string">"^4.0.6"</span>,</span><br><span class="line">    <span class="attr">"@testing-library/jest-dom"</span>: <span class="string">"^4.2.4"</span>,</span><br><span class="line">    <span class="attr">"@testing-library/react"</span>: <span class="string">"^9.5.0"</span>,</span><br><span class="line">    <span class="attr">"@testing-library/user-event"</span>: <span class="string">"^7.2.1"</span>,</span><br><span class="line">    <span class="attr">"@types/jest"</span>: <span class="string">"^24.9.1"</span>,</span><br><span class="line">    <span class="attr">"@types/node"</span>: <span class="string">"^12.12.36"</span>,</span><br><span class="line">    <span class="attr">"@types/react"</span>: <span class="string">"^16.9.34"</span>,</span><br><span class="line">    <span class="attr">"@types/react-dom"</span>: <span class="string">"^16.9.6"</span>,</span><br><span class="line">    <span class="attr">"antd"</span>: <span class="string">"^4.1.4"</span>,</span><br><span class="line">    <span class="attr">"react"</span>: <span class="string">"^16.13.1"</span>,</span><br><span class="line">    <span class="attr">"react-dom"</span>: <span class="string">"^16.13.1"</span>,</span><br><span class="line">    <span class="attr">"react-redux"</span>: <span class="string">"^7.2.0"</span>,</span><br><span class="line">    <span class="attr">"react-router-config"</span>: <span class="string">"^5.1.1"</span>,</span><br><span class="line">    <span class="attr">"react-router-dom"</span>: <span class="string">"^5.1.2"</span>,</span><br><span class="line">    <span class="attr">"react-scripts"</span>: <span class="string">"3.4.1"</span>,</span><br><span class="line">    <span class="attr">"redux"</span>: <span class="string">"^4.0.5"</span>,</span><br><span class="line">    <span class="attr">"redux-thunk"</span>: <span class="string">"^2.3.0"</span>,</span><br><span class="line">    <span class="attr">"typescript"</span>: <span class="string">"^3.7.5"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;  <span class="comment">// 下边会更改这个部分</span></span><br><span class="line">    <span class="attr">"start"</span>: <span class="string">"react-scripts start"</span>,</span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"react-scripts build"</span>,</span><br><span class="line">    <span class="attr">"test"</span>: <span class="string">"react-scripts test"</span>,</span><br><span class="line">    <span class="attr">"eject"</span>: <span class="string">"react-scripts eject"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"eslintConfig"</span>: &#123;</span><br><span class="line">    <span class="attr">"extends"</span>: <span class="string">"react-app"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"browserslist"</span>: &#123;</span><br><span class="line">    <span class="attr">"production"</span>: [</span><br><span class="line">      <span class="string">"&gt;0.2%"</span>,</span><br><span class="line">      <span class="string">"not dead"</span>,</span><br><span class="line">      <span class="string">"not op_mini all"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"development"</span>: [</span><br><span class="line">      <span class="string">"last 1 chrome version"</span>,</span><br><span class="line">      <span class="string">"last 1 firefox version"</span>,</span><br><span class="line">      <span class="string">"last 1 safari version"</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>目前为止，配置文件内容</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"react-project-ts"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"0.1.0"</span>,</span><br><span class="line">  <span class="attr">"private"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"@ant-design/icons"</span>: <span class="string">"^4.0.6"</span>,</span><br><span class="line">    <span class="attr">"@testing-library/jest-dom"</span>: <span class="string">"^4.2.4"</span>,</span><br><span class="line">    <span class="attr">"@testing-library/react"</span>: <span class="string">"^9.5.0"</span>,</span><br><span class="line">    <span class="attr">"@testing-library/user-event"</span>: <span class="string">"^7.2.1"</span>,</span><br><span class="line">    <span class="attr">"@types/echarts"</span>: <span class="string">"^4.4.6"</span>,</span><br><span class="line">    <span class="attr">"@types/jest"</span>: <span class="string">"^24.9.1"</span>,</span><br><span class="line">    <span class="attr">"@types/node"</span>: <span class="string">"^12.12.36"</span>,</span><br><span class="line">    <span class="attr">"@types/react"</span>: <span class="string">"^16.9.34"</span>,</span><br><span class="line">    <span class="attr">"@types/react-dom"</span>: <span class="string">"^16.9.6"</span>,</span><br><span class="line">    <span class="attr">"@types/react-redux"</span>: <span class="string">"^7.1.7"</span>,</span><br><span class="line">    <span class="attr">"@types/react-router-config"</span>: <span class="string">"^5.0.1"</span>,</span><br><span class="line">    <span class="attr">"@types/react-router-dom"</span>: <span class="string">"^5.1.4"</span>,</span><br><span class="line">    <span class="attr">"@types/redux-thunk"</span>: <span class="string">"^2.1.0"</span>,        <span class="comment">// 以上都是针对ts的</span></span><br><span class="line">    <span class="attr">"antd"</span>: <span class="string">"^4.1.4"</span>,       <span class="comment">// antd</span></span><br><span class="line">    <span class="attr">"babel-plugin-import"</span>: <span class="string">"^1.13.0"</span>,   <span class="comment">// 按需加载组件代码和样式的 babel 插件， 对应的是 config-overrides.js</span></span><br><span class="line">    <span class="attr">"customize-cra"</span>: <span class="string">"^0.9.1"</span>,   <span class="comment">// 加载 less 样式； 配置config-overrides.js</span></span><br><span class="line">    <span class="attr">"echarts"</span>: <span class="string">"^4.7.0"</span>,  <span class="comment">// 百度图表</span></span><br><span class="line">    <span class="attr">"echarts-for-react"</span>: <span class="string">"^2.0.15-beta.1"</span>, <span class="comment">// 百度图表 react版本</span></span><br><span class="line">    <span class="attr">"less"</span>: <span class="string">"^3.11.1"</span>,      <span class="comment">// less</span></span><br><span class="line">    <span class="attr">"less-loader"</span>: <span class="string">"^5.0.0"</span>,    <span class="comment">// less 加载</span></span><br><span class="line">    <span class="attr">"react"</span>: <span class="string">"^16.13.1"</span>,</span><br><span class="line">    <span class="attr">"react-app-rewired"</span>: <span class="string">"^2.1.5"</span>, <span class="comment">// 对 create-react-app 的默认配置进行自定义，更改的是 package.json 中的scripts：start、build、test</span></span><br><span class="line">    <span class="attr">"react-dom"</span>: <span class="string">"^16.13.1"</span>,</span><br><span class="line">    <span class="attr">"react-redux"</span>: <span class="string">"^7.2.0"</span>,    <span class="comment">// react &lt;-&gt; redux</span></span><br><span class="line">    <span class="attr">"react-router-config"</span>: <span class="string">"^5.1.1"</span>,    <span class="comment">// 路由配置</span></span><br><span class="line">    <span class="attr">"react-router-dom"</span>: <span class="string">"^5.1.2"</span>,</span><br><span class="line">    <span class="attr">"react-scripts"</span>: <span class="string">"3.4.1"</span>,</span><br><span class="line">    <span class="attr">"redux"</span>: <span class="string">"^4.0.5"</span>,</span><br><span class="line">    <span class="attr">"redux-logger"</span>: <span class="string">"^3.0.6"</span>, <span class="comment">// 日志</span></span><br><span class="line">    <span class="attr">"redux-thunk"</span>: <span class="string">"^2.3.0"</span>,    <span class="comment">// 异步</span></span><br><span class="line">    <span class="attr">"typescript"</span>: <span class="string">"^3.7.5"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"start"</span>: <span class="string">"react-app-rewired start"</span>,</span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"react-app-rewired build"</span>,</span><br><span class="line">    <span class="attr">"test"</span>: <span class="string">"react-app-rewired test"</span>,</span><br><span class="line">    <span class="attr">"eject"</span>: <span class="string">"react-scripts eject"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"eslintConfig"</span>: &#123;</span><br><span class="line">    <span class="attr">"extends"</span>: <span class="string">"react-app"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"browserslist"</span>: &#123;</span><br><span class="line">    <span class="attr">"production"</span>: [</span><br><span class="line">      <span class="string">"&gt;0.2%"</span>,</span><br><span class="line">      <span class="string">"not dead"</span>,</span><br><span class="line">      <span class="string">"not op_mini all"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"development"</span>: [</span><br><span class="line">      <span class="string">"last 1 chrome version"</span>,</span><br><span class="line">      <span class="string">"last 1 firefox version"</span>,</span><br><span class="line">      <span class="string">"last 1 safari version"</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结，这部分主要添加一些所需模块，没啥东西。</p>
+<h4 id="注意事项">⚠️注意事项</h4>
+<blockquote>
+<p>疑问1🤔️： 如何按需加载antd组件？</p>
+</blockquote>
+<ol type="1">
+<li>babel-plugin-import：
+<ol type="1">
+<li>目标：按需引用antd</li>
+<li>如何做：<a href="https://ant.design/docs/react/use-in-typescript-cn#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98" target="_blank" rel="noopener">antd说明--搜：babel-plugin-import</a></li>
+</ol></li>
+</ol>
+<blockquote>
+<p>疑问2🤔️：如何加载less文件？？</p>
+</blockquote>
+<ol type="1">
+<li>react-app-rewired
+<ol type="1">
+<li>目标：自定义启动服务</li>
+<li>如何做：<a href="https://ant.design/docs/react/use-in-typescript-cn#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98" target="_blank" rel="noopener">antd说明--搜react-app-rewired</a></li>
+</ol></li>
+</ol>
+<p>针对这两个问题，由于只是配置，仔细看下<a href="https://ant.design/docs/react/use-in-typescript-cn#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98" target="_blank" rel="noopener">antd说明</a><strong>完全可以搞定。</strong></p>
+<p>本来写了个demo，感觉太简单了，没必要。。。</p>
+<h3 id="步骤三-自定义布局">步骤三 自定义布局</h3>
+<blockquote>
+<p>这个部分主要采用antd的布局方式</p>
+</blockquote>
+<p>常规布局，<strong>sider、header、 content、footer</strong></p>
+<p>侧边栏布局效果如下</p>
+<figure>
+<img src="/2020/04/23/react_layout/03.png" alt><figcaption>整体布局与首页</figcaption>
+</figure>
+<h3 id="步骤四-表单页面">步骤四 表单页面</h3>
+<figure>
+<img src="/2020/04/23/react_layout/04.png" alt><figcaption>表单页面</figcaption>
+</figure>
+<p>之后单文件的注意事项会在代码首部写明，便于之后复习。 因为表单页面场景比较多，结合注册登录页面将常规使用、触发，模拟触发交互数据的动作，过程中主要遇到的问题</p>
+<h4 id="注意事项-1">⚠️注意事项</h4>
+<ol type="1">
+<li>函数组件路由如何跳转?
+<ol type="1">
+<li>路由跳转的几种方式：
+<ol type="1">
+<li>路由组件
+<ol type="1">
+<li>this.props.history.push()</li>
+</ol></li>
+<li>非路由组件 ✍️
+<ol type="1">
+<li>useHistory: react-router-dom中的hook--useHistory(): 可以获取到history</li>
+<li>withRouter: 添加withRouter，参数中包含props</li>
+</ol></li>
+</ol></li>
+</ol></li>
+<li>函数组件中form如何在antion中获取到/验证 form value?
+<ol type="1">
+<li>✍️ 利用Form.useForm()，可以获取到form, 进一步获取到form.validateFields()、form.getFieldValue('phone')</li>
+<li>验证方法
+<ol type="1">
+<li>点击实例代码看控制台</li>
+<li>看代码中的注释</li>
+</ol></li>
+</ol></li>
+</ol>
+<h2 id="代码链接">代码链接</h2>
+<p>这篇文章跨度有点大，但是并不涉及数据流相关操作，故不懂的就看代码吧，里边有注释，其中还有些布局问题，先解决大问题，具体细节之后再修仔补。</p>
+<blockquote>
+<p>之后的章节都会以不同的分支作为与文章对应的代码。</p>
+</blockquote>
+<h3 id="代码">代码</h3>
+<p>仓库： git@github.com:simuty/react-project.git 分支： origin/chapter1/step2</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    你瞧～
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatSub.png" alt="Howard 关注不关注都无所谓">
+        <p>关注不关注都无所谓</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://simuty.com/2020/04/23/react_layout/" title="React实战系列-布局与组件【1】">https://simuty.com/2020/04/23/react_layout/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"><i class="fa fa-tags"></i> React</a>
+          
+            <a href="/tags/Redux/" rel="tag"><i class="fa fa-tags"></i> Redux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/23/react_db/" rel="next" title="22React实战系列-介入数据管理【2】">
+                <i class="fa fa-chevron-left"></i> 22React实战系列-介入数据管理【2】
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/07/civil_servant_analysis1/" rel="prev" title="资料分析-技巧">
+                资料分析-技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Howard</p>
+              <div class="site-description motion-element" itemprop="description">记录点滴、分享所得</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/simuty" title="GitHub &rarr; https://github.com/simuty" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2020/05/17/civil_servant_define/" title="推理判断-定义判断" target="_blank">推理判断-定义判断</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/16/civil_servant_analogy/" title="推理判断--类比" target="_blank">推理判断--类比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/civil_servant_inference/" title="推理判断--逻辑" target="_blank">推理判断--逻辑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/worldview/" title="爱因斯坦--我的世界观" target="_blank">爱因斯坦--我的世界观</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/civil_servant_graph/" title="推理判断-图形" target="_blank">推理判断-图形</a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开篇"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#技术栈"><span class="nav-number">1.1.</span> <span class="nav-text">技术栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#疑问解答"><span class="nav-number">1.2.</span> <span class="nav-text">疑问解答</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开动"><span class="nav-number">2.</span> <span class="nav-text">开动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤一-初始化"><span class="nav-number">2.1.</span> <span class="nav-text">步骤一 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤二-下载相关依赖"><span class="nav-number">2.2.</span> <span class="nav-text">步骤二 下载相关依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">2.2.1.</span> <span class="nav-text">⚠️注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤三-自定义布局"><span class="nav-number">2.3.</span> <span class="nav-text">步骤三 自定义布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤四-表单页面"><span class="nav-number">2.4.</span> <span class="nav-text">步骤四 表单页面</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">⚠️注意事项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码链接"><span class="nav-number">3.</span> <span class="nav-text">代码链接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">3.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">174k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:38</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+     我的第 <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 位朋友，
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="site-pv">
+     历经 <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次回眸才与你相遇
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'f88581d92eb32794b280',
+    clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+    repo: 'simutyComment',
+    owner: 'simuty',
+    admin: ['simuty'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+ 
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.min.js"></script>
+<script>
+  function timer() {
+    var ages = moment.preciseDiff(moment(),moment(,"YYYYMMDD"));
+    ages = ages.replace(/years?/, "年");
+    ages = ages.replace(/months?/, "月");
+    ages = ages.replace(/days?/, "天");
+    ages = ages.replace(/hours?/, "小时");
+    ages = ages.replace(/minutes?/, "分");
+    ages = ages.replace(/seconds?/, "秒");
+    ages = ages.replace(/\d+/g, '<span style="color:">$&</span>');
+    div.innerHTML = `我已在此等候你 ${ages}`;
+  }
+  var div = document.createElement("div");
+  //插入到copyright之后
+  var copyright = document.querySelector(".copyright");
+  document.querySelector(".footer-inner").insertBefore(div, copyright.nextSibling);
+  timer();
+  setInterval("timer()",1000)
+</script>
+
+</body>
+</html>

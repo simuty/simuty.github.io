@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="目标  回顾Python面向对象 ✅掌握pipenv虚拟环境的基本使用   0  在学习过程中也遇到一些疑惑，摸索了不同的形式、方法，有了一些结论，诸如：  文章的面向群体--有一定编程基础的；属于个人学习📝，不可能面面俱到； 文章的形式--如果没有递进深入与实例，仅停留在基本；那是刷流氓； 学习的目标依旧是--向机器学习靠拢，出于好奇，挑战下自我。   也许好奇才是真正让我学习Python的原">
+<meta name="keywords" content="Python,阶段总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python基础系列之--阶段总结与补充【16】">
+<meta property="og:url" content="https://simuty.com/2019/06/02/index/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="目标  回顾Python面向对象 ✅掌握pipenv虚拟环境的基本使用   0  在学习过程中也遇到一些疑惑，摸索了不同的形式、方法，有了一些结论，诸如：  文章的面向群体--有一定编程基础的；属于个人学习📝，不可能面面俱到； 文章的形式--如果没有递进深入与实例，仅停留在基本；那是刷流氓； 学习的目标依旧是--向机器学习靠拢，出于好奇，挑战下自我。   也许好奇才是真正让我学习Python的原">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/0.jpg">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/1.jpg">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/2.jpg">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/3.jpg">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/4.jpg">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/5.jpg">
+<meta property="og:image" content="https://simuty.com/2019/06/02/index/6.jpg">
+<meta property="og:updated_time" content="2020-05-15T18:54:00.944Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python基础系列之--阶段总结与补充【16】">
+<meta name="twitter:description" content="目标  回顾Python面向对象 ✅掌握pipenv虚拟环境的基本使用   0  在学习过程中也遇到一些疑惑，摸索了不同的形式、方法，有了一些结论，诸如：  文章的面向群体--有一定编程基础的；属于个人学习📝，不可能面面俱到； 文章的形式--如果没有递进深入与实例，仅停留在基本；那是刷流氓； 学习的目标依旧是--向机器学习靠拢，出于好奇，挑战下自我。   也许好奇才是真正让我学习Python的原">
+<meta name="twitter:image" content="https://simuty.com/2019/06/02/index/0.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="简单即是美" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://simuty.com/2019/06/02/index/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python基础系列之--阶段总结与补充【16】 | 简单即是美</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">简单即是美</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/06/02/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python基础系列之--阶段总结与补充【16】
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-02 10:38:59" itemprop="dateCreated datePublished" datetime="2019-06-02T10:38:59+08:00">2019-06-02</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="目标">目标</h2>
+<ul>
+<li>回顾Python面向对象</li>
+<li>✅掌握<strong>pipenv虚拟环境</strong>的基本使用</li>
+</ul>
+<figure>
+<img src="/2019/06/02/index/0.jpg" alt><figcaption>0</figcaption>
+</figure>
+<p>在学习过程中也遇到一些疑惑，摸索了不同的形式、方法，有了一些结论，诸如：</p>
+<ol type="1">
+<li>文章的面向群体--有一定编程基础的；属于个人学习📝，不可能面面俱到；</li>
+<li>文章的形式--如果没有递进深入与实例，仅停留在基本；那是刷流氓；</li>
+<li>学习的目标依旧是--向机器学习靠拢，出于好奇，挑战下自我。</li>
+</ol>
+<blockquote>
+<p>也许好奇才是真正让我学习Python的原有； &gt; 不论对错，过程中渐渐培养了专注、思考、探索、总结，想必是值得。 勇敢走出舒适区，去做有意思的事，好好学数学 😆</p>
+</blockquote>
+<p>Python基础系列到此就要告一段落了，该部分主要包含了以下几件事</p>
+<ol type="1">
+<li>迈出了开始学习Python的第一步；</li>
+<li>归纳总结常用的数据类型、方法、函数等，可能会穿插些稍微深入些的知识点；</li>
+<li>查漏补缺，在学习过程中更加深入了理解一些概念、原理。</li>
+</ol>
+<blockquote>
+<p>接下来的安排 &gt; 因为Node.js属于日常工作范畴，工作之余换种心情😆</p>
+</blockquote>
+<ol type="1">
+<li>继续学习Python相关知识，模块、框架；</li>
+<li>开始试着写项目，至于类型，在过程中再确定吧；</li>
+<li>开始<strong>还</strong>曾经落下的<strong>数学📚</strong>，可能会分享相关内容，只是写文章太费时间了。。。；</li>
+<li>希望在不久的将来，开始试着学习机器学习。</li>
+</ol>
+<h3 id="第一部分-python-面向对象">第一部分 Python 面向对象</h3>
+<h3 id="第二部分-pipenv虚拟环境">第二部分 pipenv虚拟环境</h3>
+<h4 id="pipenv-是什么">1. pipenv 是什么</h4>
+<p><a href="https://github.com/pypa/pipenv" target="_blank" rel="noopener">官网地址</a> Pipenv is a production-ready tool that aims to bring the best of all <code>packaging</code> worlds to the Python world. It harnesses <strong>Pipfile, pip, and virtualenv</strong> into one single command.</p>
+<p>大概意思就是：<code>Pipenv 可以为你的项目自动地创建和管理一个虚拟环境。</code></p>
+<p>如果对Node熟悉的话，应该了解:</p>
+<ol type="1">
+<li>nvm 管理nodejs的版本，可自由切换；</li>
+<li>npm: 管理工具，可方便下载第三方模块；</li>
+<li>package.json: 项目文件，记录一些模块依赖信息、配置信息等</li>
+</ol>
+<p>大概可以理解为：对比pipenv: &gt; pipenv = nvm + npm;</p>
+<p>当然这只是个简单的。便于学习的对比；</p>
+<p><strong>如有不对❌，敬请指出</strong></p>
+<h4 id="pipenv-能解决什么">2. pipenv 能解决什么❓</h4>
+<ol type="1">
+<li>你不再需要手动创建虚拟环境，Pipenv 为你自动创建。简单地说就是 pipenv 和 virtualenv 一起工作。</li>
+<li>管理 requirements.txt 文件会导致一些问题，所以 Pipenv 用 Pipfile 和 Pipfile.lock 替代 requirements.txt，更适合于一般的使用场景。</li>
+<li>安全。广泛地使用 Hash 校验，能够自动曝露安全漏洞。</li>
+<li>随时查看图形化的依赖关系。</li>
+<li>通过加载 .env 文件简化开发流程。</li>
+</ol>
+<h4 id="安装使用">3. 安装使用</h4>
+<p><a href="https://github.com/pypa/pipenv" target="_blank" rel="noopener">官网地址</a>有对应的安装方法，下边以Mac为例;</p>
+<p>前体是已经安装过Python、pip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install pipenv</span><br></pre></td></tr></table></figure>
+<h4 id="实例一">4. 实例一</h4>
+<p>目标</p>
+<ul>
+<li>初识环境</li>
+<li>掌握基本的操作</li>
+</ul>
+<p>多余代码太多，实例一共包含以下几步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 初始化一个虚拟环境；</span><br><span class="line">2. 了解下虚拟环境内容；</span><br><span class="line">3. 新建文件，并运行；</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 初始化一个虚拟环境；</span></span><br><span class="line">hhw<span class="number">-4</span>:pythonEnv hhw$ pipenv install</span><br><span class="line">Creating a virtualenv <span class="keyword">for</span> this project…</span><br><span class="line">Pipfile: /Users/hhw/Desktop/pythonEnv/Pipfile</span><br><span class="line">Using /usr/local/Cellar/pipenv/<span class="number">2018.11</span><span class="number">.26</span>_2/libexec/bin/python3<span class="number">.7</span> (<span class="number">3.7</span><span class="number">.3</span>) to create virtualenv…</span><br><span class="line">⠋ Creating virtual environment...Already using interpreter /usr/local/Cellar/pipenv/<span class="number">2018.11</span><span class="number">.26</span>_2/libexec/bin/python3<span class="number">.7</span></span><br><span class="line">Using real prefix <span class="string">'/usr/local/Cellar/python/3.7.3/Frameworks/Python.framework/Versions/3.7'</span></span><br><span class="line">New python executable <span class="keyword">in</span> /Users/hhw/.local/share/virtualenvs/pythonEnv-Vx1xxtfj/bin/python3<span class="number">.7</span></span><br><span class="line">Also creating executable <span class="keyword">in</span> /Users/hhw/.local/share/virtualenvs/pythonEnv-Vx1xxtfj/bin/python</span><br><span class="line">Installing setuptools, pip, wheel...</span><br><span class="line">done.</span><br><span class="line"></span><br><span class="line">✔ Successfully created virtual environment!</span><br><span class="line">Virtualenv location: /Users/hhw/.local/share/virtualenvs/pythonEnv-Vx1xxtfj</span><br><span class="line">Creating a Pipfile <span class="keyword">for</span> this project…</span><br><span class="line">Pipfile.lock <span class="keyword">not</span> found, creating…</span><br><span class="line">Locking [dev-packages] dependencies…</span><br><span class="line">Locking [packages] dependencies…</span><br><span class="line">Updated Pipfile.lock (a65489)!</span><br><span class="line">Installing dependencies <span class="keyword">from</span> Pipfile.lock (a65489)…</span><br><span class="line">  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ <span class="number">0</span>/<span class="number">0</span> — <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">To activate this project<span class="string">'s virtualenv, run pipenv shell.</span></span><br><span class="line"><span class="string">Alternatively, run a command inside the virtualenv with pipenv run.</span></span><br><span class="line"><span class="string">hhw-4:pythonEnv hhw$</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3. 新建文件，并运行；</span></span><br><span class="line"><span class="comment"># 下载requests模块</span></span><br><span class="line">hhw<span class="number">-4</span>:pythonEnv hhw$  pipenv install requests</span><br><span class="line">Installing requests…</span><br><span class="line">Adding requests to Pipfile<span class="string">'s [packages]…</span></span><br><span class="line"><span class="string">✔ Installation Succeeded</span></span><br><span class="line"><span class="string">Pipfile.lock (444a6d) out of date, updating to (a65489)…</span></span><br><span class="line"><span class="string">Locking [dev-packages] dependencies…</span></span><br><span class="line"><span class="string">Locking [packages] dependencies…</span></span><br><span class="line"><span class="string">✔ Success!</span></span><br><span class="line"><span class="string">Updated Pipfile.lock (444a6d)!</span></span><br><span class="line"><span class="string">Installing dependencies from Pipfile.lock (444a6d)…</span></span><br><span class="line"><span class="string">  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 5/5 — 00:00:02</span></span><br><span class="line"><span class="string">To activate this project'</span>s virtualenv, run pipenv shell.</span><br><span class="line">Alternatively, run a command inside the virtualenv <span class="keyword">with</span> pipenv run.</span><br><span class="line">hhw<span class="number">-4</span>:pythonEnv hhw$ vim test.py</span><br></pre></td></tr></table></figure>
+<p>用 ls 命令查看当前项目目录，你会发现有两个文件：<code>Pipfile 和 Pipfile.lock 。</code></p>
+<p>Pipfile 里有最新安装的包文件的信息，如名称、版本等。用来 在重新安装项目依赖或与他人共享项目时，你可以用 Pipfile 来跟踪项目依赖。 Pipfile.lock 则包含你的系统信息，所有已安装包的依赖包及其版本信息，以及所有安装包及其依赖包的 Hash 校验信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test.py 内容</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">response = requests.get(<span class="string">'https://httpbin.org/ip'</span>)</span><br><span class="line">print(<span class="string">'你的 IP 地址是 &#123;0&#125;'</span>.format(response.json()[<span class="string">'origin'</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pipenv run python main.py</span><br><span class="line">你的 IP 地址是 <span class="number">8.8</span><span class="number">.8</span><span class="number">.8</span></span><br></pre></td></tr></table></figure>
+<p><strong>实例一 总结</strong></p>
+<p>以上展示了如何创建一个虚拟环境、如何下载一个模块，在虚拟环境中运行；</p>
+<p>也许不太直观，画了两个图，虚拟环境自己玩儿自己的。</p>
+<p><img src="/2019/06/02/index/1.jpg"></p>
+<figure>
+<img src="/2019/06/02/index/2.jpg" alt><figcaption>虚拟环境</figcaption>
+</figure>
+<p>按实际需求来</p>
+<ol type="1">
+<li>你的代码给别人，别人怎么正常运行？</li>
+<li>pipenv 常用命令有哪些？</li>
+</ol>
+<p>问题一：冻结Pipfile；类比<code>package-lock.json</code></p>
+<p>冻结就相当于将项目所使用的第三方库列表进行打包输出,类比<code>package-lock.json</code> 通过更新Pipfile.lock来冻结库名称及其版本，以及其依赖关系的列表。需要使用lock参数：<code>pipenv lock</code></p>
+<p>被人怎么用？类比 <code>npm install</code> <code>pipenv install</code> Pipenv会在项目文件夹下自动寻找Pipfile和Pipfile.lock文件，创建一个新的虚拟环境并安装必要的软件包。</p>
+<p>问题二： 可选参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ pipenv</span><br><span class="line">Usage: pipenv [OPTIONS] COMMAND [ARGS]...</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --update         更新Pipenv &amp; pip</span><br><span class="line">  --where          显示项目文件所在路径</span><br><span class="line">  --venv           显示虚拟环境实际文件所在路径</span><br><span class="line">  --py             显示虚拟环境Python解释器所在路径</span><br><span class="line">  --envs           显示虚拟环境的选项变量</span><br><span class="line">  --rm             删除虚拟环境</span><br><span class="line">  --bare           最小化输出</span><br><span class="line">  --completion     完整输出</span><br><span class="line">  --man            显示帮助页面</span><br><span class="line">  --three / --two  使用Python 3/2创建虚拟环境（注意本机已安装的Python版本）</span><br><span class="line">  --python TEXT    指定某个Python版本作为虚拟环境的安装源</span><br><span class="line">  --site-packages  附带安装原Python解释器中的第三方库</span><br><span class="line">  --jumbotron      不知道啥玩意....</span><br><span class="line">  --version        版本信息</span><br><span class="line">  -h, --help       帮助信息</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 命令参数</span><br><span class="line">Commands:</span><br><span class="line">  check      检查安全漏洞</span><br><span class="line">  graph      显示当前依赖关系图信息</span><br><span class="line">  install    安装虚拟环境或者第三方库</span><br><span class="line">  lock       锁定并生成Pipfile.lock文件</span><br><span class="line">  open       在编辑器中查看一个库</span><br><span class="line">  run        在虚拟环境中运行命令</span><br><span class="line">  shell      进入虚拟环境</span><br><span class="line">  uninstall  卸载一个库</span><br><span class="line">  update     卸载当前所有的包，并安装它们的最新版本</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定位项目路径</span></span><br><span class="line">$ pipenv --where</span><br><span class="line"><span class="comment"># 定位虚拟环境</span></span><br><span class="line">$ pipenv --venv</span><br><span class="line"><span class="comment"># 定位Python解释器</span></span><br><span class="line">$ pipenv --py</span><br><span class="line"><span class="comment"># 安装包</span></span><br><span class="line">$ pipenv install</span><br><span class="line"><span class="comment"># 卸载所有的包：</span></span><br><span class="line">$ pipenv uninstall --all</span><br><span class="line"><span class="comment"># 依赖关系</span></span><br><span class="line">$ pipenv graph</span><br><span class="line"><span class="comment"># 生成lock文件</span></span><br><span class="line">$ pipenv lock</span><br><span class="line"><span class="comment"># 安装开发环境依赖：</span></span><br><span class="line">$ pipenv install pytest --dev</span><br></pre></td></tr></table></figure>
+<h4 id="实例二">5 实例二</h4>
+<p>目标 - vscode 配置</p>
+<p>实例一中直接运行，已经完全ok，但是写代码，我还是不会选择文本编辑器，，，</p>
+<p>打开vscode，ヾ(｡｀Д´｡)我擦，找不到requests,思考片刻，因为setting.json中已经配置了python解释器【系统级别的】； 但是<strong>之后我们都不在这么玩儿了，毕竟会乱的</strong> 同样建议再项目目录中配置各自的配置项目</p>
+<p><img src="/2019/06/02/index/3.jpg"> <img src="/2019/06/02/index/4.jpg"> <img src="/2019/06/02/index/5.jpg"> <img src="/2019/06/02/index/6.jpg"></p>
+<p><strong>配置完毕</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hhw-4:pythonEnv hhw$ python3 test.py </span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;test.py&quot;, line 1, in &lt;module&gt;</span><br><span class="line">    import requests</span><br><span class="line">ModuleNotFoundError: No module named &apos;requests&apos;</span><br><span class="line">hhw-4:pythonEnv hhw$ pipenv run python test.py </span><br><span class="line">你的 IP 地址是 112.64.61.61, 112.64.61.61</span><br></pre></td></tr></table></figure>
+<p>一直没找到一个合适的图来描述pipenv...</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    你瞧～
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatSub.png" alt="Howard 关注不关注都无所谓">
+        <p>关注不关注都无所谓</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://simuty.com/2019/06/02/index/" title="Python基础系列之--阶段总结与补充【16】">https://simuty.com/2019/06/02/index/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tags"></i> Python</a>
+          
+            <a href="/tags/阶段总结/" rel="tag"><i class="fa fa-tags"></i> 阶段总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/01/index/" rel="next" title="Python基础系列之封装继承多态【15】">
+                <i class="fa fa-chevron-left"></i> Python基础系列之封装继承多态【15】
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/04/index/" rel="prev" title="03_Python模块系列之模块与包(17)">
+                03_Python模块系列之模块与包(17) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Howard</p>
+              <div class="site-description motion-element" itemprop="description">记录点滴、分享所得</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/simuty" title="GitHub &rarr; https://github.com/simuty" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2020/05/17/civil_servant_define/" title="推理判断-定义判断" target="_blank">推理判断-定义判断</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/16/civil_servant_analogy/" title="推理判断--类比" target="_blank">推理判断--类比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/civil_servant_inference/" title="推理判断--逻辑" target="_blank">推理判断--逻辑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/worldview/" title="爱因斯坦--我的世界观" target="_blank">爱因斯坦--我的世界观</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/15/civil_servant_graph/" title="推理判断-图形" target="_blank">推理判断-图形</a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分-python-面向对象"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分 Python 面向对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二部分-pipenv虚拟环境"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分 pipenv虚拟环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pipenv-是什么"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. pipenv 是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pipenv-能解决什么"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. pipenv 能解决什么❓</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装使用"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 安装使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例一"><span class="nav-number">1.2.4.</span> <span class="nav-text">4. 实例一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例二"><span class="nav-number">1.2.5.</span> <span class="nav-text">5 实例二</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">174k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:38</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+     我的第 <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 位朋友，
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="site-pv">
+     历经 <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次回眸才与你相遇
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'f88581d92eb32794b280',
+    clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+    repo: 'simutyComment',
+    owner: 'simuty',
+    admin: ['simuty'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+ 
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.min.js"></script>
+<script>
+  function timer() {
+    var ages = moment.preciseDiff(moment(),moment(,"YYYYMMDD"));
+    ages = ages.replace(/years?/, "年");
+    ages = ages.replace(/months?/, "月");
+    ages = ages.replace(/days?/, "天");
+    ages = ages.replace(/hours?/, "小时");
+    ages = ages.replace(/minutes?/, "分");
+    ages = ages.replace(/seconds?/, "秒");
+    ages = ages.replace(/\d+/g, '<span style="color:">$&</span>');
+    div.innerHTML = `我已在此等候你 ${ages}`;
+  }
+  var div = document.createElement("div");
+  //插入到copyright之后
+  var copyright = document.querySelector(".copyright");
+  document.querySelector(".footer-inner").insertBefore(div, copyright.nextSibling);
+  timer();
+  setInterval("timer()",1000)
+</script>
+
+</body>
+</html>
