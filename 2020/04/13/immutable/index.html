@@ -1,150 +1,58 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="zh-Hans">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+  </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.1.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-16.svg?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-16.svg?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.svg?v=7.1.0">
-
-
-  <link rel="mask-icon" href="/images/favicon-16.svg?v=7.1.0" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
-    fancybox: true,
-    fastclick: false,
-    lazyload: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="真正的无知不是知识的贫乏, 而是拒绝获取知识! ——波普尔 (哲学家 思想家)">
+  <meta name="description" content="真正的无知不是知识的贫乏, 而是拒绝获取知识!——波普尔 (哲学家 思想家)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React系列-immutable上下文&lt;4&gt;">
 <meta property="og:url" content="https://simuty.com/2020/04/13/immutable/index.html">
 <meta property="og:site_name" content="简单即是美">
-<meta property="og:description" content="真正的无知不是知识的贫乏, 而是拒绝获取知识! ——波普尔 (哲学家 思想家)">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="真正的无知不是知识的贫乏, 而是拒绝获取知识!——波普尔 (哲学家 思想家)">
 <meta property="og:image" content="https://simuty.com/2020/04/13/immutable/01.jpg">
 <meta property="og:image" content="https://simuty.com/2020/04/13/immutable/03.jpg">
 <meta property="og:image" content="https://simuty.com/2020/04/13/immutable/02.jpg">
 <meta property="og:image" content="https://simuty.com/2020/04/13/immutable/04.png">
 <meta property="og:image" content="https://simuty.com/2020/04/13/immutable/06.png">
 <meta property="og:image" content="https://simuty.com/2020/04/13/immutable/07.png">
-<meta property="og:updated_time" content="2020-05-15T18:54:01.522Z">
+<meta property="article:published_time" content="2020-04-13T02:31:37.000Z">
+<meta property="article:modified_time" content="2020-05-28T11:53:09.022Z">
+<meta property="article:author" content="Howard">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="React系列-immutable上下文&lt;4&gt;">
-<meta name="twitter:description" content="真正的无知不是知识的贫乏, 而是拒绝获取知识! ——波普尔 (哲学家 思想家)">
 <meta name="twitter:image" content="https://simuty.com/2020/04/13/immutable/01.jpg">
 
+<link rel="canonical" href="https://simuty.com/2020/04/13/immutable/">
 
 
-  <link rel="alternate" href="/atom.xml" title="简单即是美" type="application/atom+xml">
-
-
-
-  
-  
-  <link rel="canonical" href="https://simuty.com/2020/04/13/immutable/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>React系列-immutable上下文<4> | 简单即是美</4></title>
+  <title>React系列-immutable上下文<4> | 简单即是美</title>
   
-
-
-
-
-
-
 
 
 
@@ -153,7 +61,6 @@
 
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -162,9 +69,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -178,291 +84,163 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">简单即是美</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">简单即是美</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
 
 
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-tags">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
+        <li class="menu-item menu-item-categories">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
-  
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
 
-
+    </div>
+  </div>
 
 </div>
     </header>
 
     
+  <div class="reading-progress-bar"></div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
+
+          <div class="content post posts-expand">
             
 
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/04/13/immutable/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Howard">
       <meta itemprop="description" content="记录点滴、分享所得">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="简单即是美">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">React系列-immutable上下文<4>
-
-              
-            
-          </4></h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          React系列-immutable上下文<4>
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
+              <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
-              <time title="创建时间：2020-04-13 10:31:37" itemprop="dateCreated datePublished" datetime="2020-04-13T10:31:37+08:00">2020-04-13</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
+              <time title="Created: 2020-04-13 10:31:37" itemprop="dateCreated datePublished" datetime="2020-04-13T10:31:37+08:00">2020-04-13</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">7k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">6 分钟</span>
-              
-            </div>
-          
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-28 19:53:09" itemprop="dateModified" datetime="2020-05-28T19:53:09+08:00">2020-05-28</time>
+              </span>
 
           
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>6.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
 
         </div>
       </header>
-    
 
     
     
@@ -470,132 +248,125 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
+        <img src="01.jpg" width=80% />
 
-      
-        <p><img src="/2020/04/13/immutable/01.jpg" width="80%"></p>
-<p>真正的无知不是知识的贫乏, 而是拒绝获取知识! ——波普尔 (哲学家 思想家)</p>
+<p>真正的无知不是知识的贫乏, 而是拒绝获取知识!<br>——波普尔 (哲学家 思想家)</p>
 <a id="more"></a>
+
 <blockquote>
 <p>优化之减少渲染</p>
 </blockquote>
-<h1 id="目标">目标</h1>
-<ul>
+<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><ul>
 <li>diff算法</li>
 <li>优化方式</li>
 <li>Immutable以及替代品【重点】</li>
 </ul>
-<p>文章流程 &gt; React -&gt; 遇到问题 -&gt; 优化 -&gt; 优化方式 -&gt; 原理以及选择</p>
-<h2 id="第一部分-diff算法以及问题">第一部分 diff算法以及问题</h2>
-<p>React 采用的是虚拟 DOM (即 VDOM )，每次属性 (props) 和状态 (state) 发生<strong>变化</strong>的时候，render 函数返回不同的元素树，React 会检测当前返回的元素树和上次渲染的元素树之前的差异，然后针对差异的地方进行更新操作，最后渲染为真实 DOM，这就是整个 Reconciliation 过程，其<strong>核心就是进行新旧 DOM 树对比的 diff 算法。</strong></p>
-<figure>
-<img src="/2020/04/13/immutable/03.jpg" alt><figcaption>03</figcaption>
-</figure>
+<p>文章流程</p>
+<blockquote>
+<p>React -&gt; 遇到问题 -&gt; 优化 -&gt; 优化方式 -&gt; 原理以及选择</p>
+</blockquote>
+<h2 id="第一部分-diff算法以及问题"><a href="#第一部分-diff算法以及问题" class="headerlink" title="第一部分 diff算法以及问题"></a>第一部分 diff算法以及问题</h2><p>React 采用的是虚拟 DOM (即 VDOM )，每次属性 (props) 和状态 (state) 发生<strong>变化</strong>的时候，render 函数返回不同的元素树，React 会检测当前返回的元素树和上次渲染的元素树之前的差异，然后针对差异的地方进行更新操作，最后渲染为真实 DOM，这就是整个 Reconciliation 过程，其<strong>核心就是进行新旧 DOM 树对比的 diff 算法。</strong></p>
+<p><img src="03.jpg" alt="03"></p>
 <blockquote>
 <p>为了获得更优秀的性能，首当其冲的工作便是 <strong>减少 diff</strong> 的过程，那么在保证应该更新的节点能够得到更新的前提下，这个 diff 的过程如何来避免呢？</p>
 </blockquote>
 <p>答案是利用 shouldComponentUpdate 这个生命周期函数。这个函数做了什么事情呢？</p>
-<figure>
-<img src="/2020/04/13/immutable/02.jpg" alt><figcaption>Diff 原理全解析</figcaption>
-</figure>
-<h2 id="第二部分-解决方案">第二部分 解决方案</h2>
-<p>由第一部分中的流程图以及生命周期函数shouldComponentUpdate可知，如果想要<strong>该渲染的时候才渲染</strong>，就只能在此做操作。</p>
+<p><img src="02.jpg" alt="Diff 原理全解析"></p>
+<h2 id="第二部分-解决方案"><a href="#第二部分-解决方案" class="headerlink" title="第二部分 解决方案"></a>第二部分 解决方案</h2><p>由第一部分中的流程图以及生命周期函数shouldComponentUpdate可知，如果想要<strong>该渲染的时候才渲染</strong>，就只能在此做操作。</p>
 <blockquote>
 <p>重点就在于：属性 (props) 和状态 (state) 什么时候发生变化。</p>
 </blockquote>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> PureComponent (memo) 进行浅层比较</span><br><span class="line"><span class="number">2.</span> shouldComponentUpdate 中进行深层比对</span><br><span class="line"><span class="number">3.</span> immutable 数据结构 + SCU (memo) 浅层比对</span><br></pre></td></tr></table></figure>
-<h3 id="深浅比较">深浅比较</h3>
-<p>PureComponent (memo) 进行<strong>浅层比较</strong>。源码中有段代码中，一旦<strong>属性的值为引用类型</strong>的时候浅比较就失灵了。这种方式仅仅适用于无状态组件或者状态数据非常简单的组件，对于大量的应用型组件，它是无能为力的。</p>
+
+<h3 id="深浅比较"><a href="#深浅比较" class="headerlink" title="深浅比较"></a>深浅比较</h3><p>PureComponent (memo) 进行<strong>浅层比较</strong>。源码中有段代码中，一旦<strong>属性的值为引用类型</strong>的时候浅比较就失灵了。这种方式仅仅适用于无状态组件或者状态数据非常简单的组件，对于大量的应用型组件，它是无能为力的。</p>
 <p>那么，如果在shouldComponentUpdate进行<strong>深层比较</strong>，即全比较，如果数据量大，则性能损耗严重。</p>
 <blockquote>
 <p>怎么解决这个问题?</p>
 </blockquote>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shallowEqual</span> (<span class="params">objA: mixed, objB: mixed</span>): <span class="title">boolean</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 下面的 is 相当于 === 的功能，只是对 + 0 和 - 0，以及 NaN 和 NaN 的情况进行了特殊处理</span></span><br><span class="line">  <span class="comment">// 第一关：基础数据类型直接比较出结果</span></span><br><span class="line">  <span class="keyword">if</span> (is (objA, objB)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 第二关：只要有一个不是对象数据类型就返回 false</span></span><br><span class="line">  <span class="keyword">if</span> (</span><br><span class="line">    <span class="keyword">typeof</span> objA !== <span class="string">'object'</span> ||</span><br><span class="line">    objA === <span class="literal">null</span> ||</span><br><span class="line">    <span class="keyword">typeof</span> objB !== <span class="string">'object'</span> ||</span><br><span class="line">    objB === <span class="literal">null</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第三关：在这里已经可以保证两个都是对象数据类型，比较两者的属性数量</span></span><br><span class="line">  <span class="keyword">const</span> keysA = <span class="built_in">Object</span>.keys (objA);</span><br><span class="line">  <span class="keyword">const</span> keysB = <span class="built_in">Object</span>.keys (objB);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (keysA.length !== keysB.length) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第四关：比较两者的属性是否相等，值是否相等</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; keysA.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      !hasOwnProperty.call (objB, keysA [i]) ||</span><br><span class="line">      !is (objA [keysA [i]], objB [keysA [i]])</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="状态对比">状态对比</h3>
-<p>关于如何做对比以及采用何种方式，在第三部分由始说起</p>
-<h2 id="第三部分-immutable-data-相关">第三部分 Immutable Data 相关</h2>
-<p>鉴于上述问题，针对数据罗列主要的几种类型的数据结构，如下：</p>
+
+<h3 id="状态对比"><a href="#状态对比" class="headerlink" title="状态对比"></a>状态对比</h3><p>关于如何做对比以及采用何种方式，在第三部分由始说起</p>
+<h2 id="第三部分-Immutable-Data-相关"><a href="#第三部分-Immutable-Data-相关" class="headerlink" title="第三部分 Immutable Data 相关"></a>第三部分 Immutable Data 相关</h2><p>鉴于上述问题，针对数据罗列主要的几种类型的数据结构，如下：</p>
 <ul>
-<li>不可变（Immutable）数据
-<ul>
-<li>新数据结构
-<ul>
+<li>不可变（Immutable）数据<ul>
+<li>新数据结构<ul>
 <li><a href="https://github.com/immutable-js/immutable-js" target="_blank" rel="noopener">facebook/immutable-js</a></li>
-</ul></li>
-</ul></li>
-<li>不可变更新（Immutable Update）实用程序
-<ul>
-<li><a href="https://github.com/mweststrate/immer" target="_blank" rel="noopener">mweststrate/immer</a></li>
-</ul></li>
-<li>Immutable/Redux 互操作
-<ul>
-<li><a href="https://github.com/gajus/redux-immutable" target="_blank" rel="noopener">gajus/redux-immutable</a></li>
-</ul></li>
 </ul>
-<h3 id="immutable-js">immutable-js</h3>
-<p><strong>参考来源</strong> <a href="https://github.com/camsong/blog/issues/3" target="_blank" rel="noopener">Immutable 详解及 React 中实践</a></p>
+</li>
+</ul>
+</li>
+<li>不可变更新（Immutable Update）实用程序<ul>
+<li><a href="https://github.com/mweststrate/immer" target="_blank" rel="noopener">mweststrate/immer</a></li>
+</ul>
+</li>
+<li>Immutable/Redux 互操作<ul>
+<li><a href="https://github.com/gajus/redux-immutable" target="_blank" rel="noopener">gajus/redux-immutable</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="immutable-js"><a href="#immutable-js" class="headerlink" title="immutable-js"></a>immutable-js</h3><p><strong>参考来源</strong> <a href="https://github.com/camsong/blog/issues/3" target="_blank" rel="noopener">Immutable 详解及 React 中实践</a></p>
 <blockquote>
-<p>Shared mutable state is the root of all evil（共享的可变状态是万恶之源） -- Pete Hunt</p>
+<p>Shared mutable state is the root of all evil（共享的可变状态是万恶之源）<br>– Pete Hunt</p>
 </blockquote>
-<figure>
-<img src="/2020/04/13/immutable/04.png" alt><figcaption>04</figcaption>
-</figure>
+<p><img src="04.png" alt="04"></p>
 <p>JavaScript 中的对象一般是<strong>可变的（Mutable）</strong>，因为使用了引用赋值，新的对象简单的引用了原始对象，改变新的对象将影响到原始对象。如 foo={a: 1}; bar=foo; bar.a=2 你会发现此时 foo.a 也被改成了 2。</p>
 <p>虽然这样做可以<strong>节约内存</strong>，但当应用复杂后，这就造成了非常大的隐患，Mutable 带来的优点变得得不偿失。</p>
 <p>为了解决这个问题，一般的做法是使用 shallowCopy（浅拷贝）或 deepCopy（深拷贝）来避免被修改，但这样做造成了 CPU 和内存的浪费。</p>
 <blockquote>
 <p>Immutable 可以很好地解决这些问题。</p>
 </blockquote>
-<h4 id="immutable-data">Immutable Data</h4>
-<p>Immutable Data 就是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个<strong>新的 Immutable 对象</strong>。</p>
+<h4 id="Immutable-Data"><a href="#Immutable-Data" class="headerlink" title="Immutable Data"></a>Immutable Data</h4><p>Immutable Data 就是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个<strong>新的 Immutable 对象</strong>。</p>
 <p>Immutable 实现的原理是 Persistent Data Structure（持久化数据结构），也就是使用旧数据创建新数据时，要<strong>保证旧数据同时可用且不变。</strong></p>
 <p>同时为了<strong>避免 deepCopy</strong> 把所有节点都复制一遍带来的性能损耗，Immutable 使用了 Structural Sharing（结构共享），即如果对象树中一个节点发生变化，只修改这个节点和受它影响的父节点，其它节点则进行共享。请看下面动画：</p>
-<p><a href="/05.gif">05</a></p>
+<p><a href="05.gif">05</a></p>
 <p>Facebook 工程师 Lee Byron 花费 3 年时间打造，与 React 同期出现，但没有被默认放到 React 工具集里（React 提供了简化的 Helper）。它内部实现了一套完整的 <strong>Persistent Data Structure</strong>，还有很多易用的数据类型。像 Collection、List、Map、Set、Record、Seq。有非常全面的<code>map、filter、groupBy、reduce、find</code>函数式操作方法。同时 API 也尽量与 Object 或 Array 类似。</p>
 <p>其中有 3 种最重要的数据结构说明一下：（Java 程序员应该最熟悉了）</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Map</span>：键值对集合，对应于 <span class="built_in">Object</span>，ES6 也有专门的 <span class="built_in">Map</span> 对象</span><br><span class="line">List：有序可重复的列表，对应于 <span class="built_in">Array</span></span><br><span class="line"><span class="built_in">Set</span>：无序且不可重复的列表</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原来的写法</span></span><br><span class="line"><span class="keyword">let</span> foo = &#123;<span class="attr">a</span>: &#123;<span class="attr">b</span>: <span class="number">1</span>&#125;&#125;;</span><br><span class="line"><span class="keyword">let</span> bar = foo;</span><br><span class="line">bar.a.b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(foo.a.b);  <span class="comment">// 打印 2</span></span><br><span class="line"><span class="built_in">console</span>.log(foo === bar);  <span class="comment">//  打印 true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 immutable.js 后</span></span><br><span class="line"><span class="keyword">import</span> Immutable <span class="keyword">from</span> <span class="string">'immutable'</span>;</span><br><span class="line">foo = Immutable.fromJS(&#123;<span class="attr">a</span>: &#123;<span class="attr">b</span>: <span class="number">1</span>&#125;&#125;);</span><br><span class="line">bar = foo.setIn([<span class="string">'a'</span>, <span class="string">'b'</span>], <span class="number">2</span>);   <span class="comment">// 使用 setIn 赋值</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.getIn([<span class="string">'a'</span>, <span class="string">'b'</span>]));  <span class="comment">// 使用 getIn 取值，打印 1</span></span><br><span class="line"><span class="built_in">console</span>.log(foo === bar);  <span class="comment">//  打印 false</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>Immutable.is</strong></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> map1 = Immutable.Map(&#123;<span class="attr">a</span>:<span class="number">1</span>, <span class="attr">b</span>:<span class="number">1</span>, <span class="attr">c</span>:<span class="number">1</span>&#125;);</span><br><span class="line"><span class="keyword">let</span> map2 = Immutable.Map(&#123;<span class="attr">a</span>:<span class="number">1</span>, <span class="attr">b</span>:<span class="number">1</span>, <span class="attr">c</span>:<span class="number">1</span>&#125;);</span><br><span class="line"><span class="comment">// 比较内存地址</span></span><br><span class="line">map1 === map2;             <span class="comment">// false</span></span><br><span class="line"><span class="comment">// Immutable.is 比较的是两个对象的 hashCode 或 valueOf（对于 JavaScript 对象）</span></span><br><span class="line">Immutable.is(map1, map2);  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<h4 id="优缺点">优缺点</h4>
-<ol type="1">
+
+
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><ol>
 <li>Immutable 降低了 Mutable 带来的复杂度</li>
 <li>节省内存</li>
 <li>Undo/Redo，Copy/Paste，甚至时间旅行这些功能做起来小菜一碟</li>
 <li>并发安全</li>
 </ol>
 <hr>
-<ol type="1">
+<ol>
 <li>需要学习新的 API</li>
 <li>增加了资源文件大小</li>
 <li>容易与原生对象混淆</li>
 </ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; is &#125; <span class="keyword">from</span> <span class="string">'immutable'</span>;</span><br><span class="line"></span><br><span class="line">shouldComponentUpdate: <span class="function">(<span class="params">nextProps = &#123;&#125;, nextState = &#123;&#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> thisProps = <span class="keyword">this</span>.props || &#123;&#125;, thisState = <span class="keyword">this</span>.state || &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.keys(thisProps).length !== <span class="built_in">Object</span>.keys(nextProps).length ||</span><br><span class="line">      <span class="built_in">Object</span>.keys(thisState).length !== <span class="built_in">Object</span>.keys(nextState).length) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> nextProps) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!is(thisProps[key], nextProps[key])) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> nextState) &#123;</span><br><span class="line">    <span class="keyword">if</span> (thisState[key] !== nextState[key] &amp;&amp; !is(thisState[key], nextState[key])) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>如下图</p>
-<p><img src="/2020/04/13/immutable/06.png"></p>
-<h3 id="immerjs">immerjs</h3>
-<p><a href="https://immerjs.github.io/immer/docs/introduction" target="_blank" rel="noopener">immer官网</a></p>
-<p><a href="https://juejin.im/post/5aaf6d596fb9a028d207be00" target="_blank" rel="noopener">以下摘录--精读《Immer.js》源码</a></p>
-<p>Immer 想解决的问题，是利用元编程简化 Immutable 使用的复杂度。 immer 是使用原生数据结构的 API 而不是内置的 API.</p>
+<p><img src="06.png" alt=""></p>
+<h3 id="immerjs"><a href="#immerjs" class="headerlink" title="immerjs"></a>immerjs</h3><p><a href="https://immerjs.github.io/immer/docs/introduction" target="_blank" rel="noopener">immer官网</a></p>
+<p><a href="https://juejin.im/post/5aaf6d596fb9a028d207be00" target="_blank" rel="noopener">以下摘录–精读《Immer.js》源码</a></p>
+<p>Immer 想解决的问题，是利用元编程简化 Immutable 使用的复杂度。<br>immer 是使用原生数据结构的 API 而不是内置的 API.</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> produce = <span class="built_in">require</span>(<span class="string">'immer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  done: <span class="literal">false</span>,</span><br><span class="line">  val: <span class="string">'string'</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> newState = produce(state, (draft) =&gt; &#123;</span><br><span class="line">  draft.done = <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(state.done)    <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(newState.done) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+
+
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">produce(obj, draft =&gt; &#123;</span><br><span class="line">  draft.count++</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
 <p>整体思路：draft 是 obj 的<strong>代理</strong>，对 draft mutable 的修改都会流入到<strong>自定义 setter 函数</strong>，它并不修改原始对象的值，而是递归父级不断<strong>浅拷贝</strong>，最终返回新的<strong>顶层对象</strong>，作为 produce 函数的<strong>返回</strong>值。</p>
-<h4 id="构建代理">构建代理</h4>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  modified, <span class="comment">// 是否被修改过</span></span><br><span class="line">  finalized, <span class="comment">// 是否已经完成（所有 setter 执行完，并且已经生成了 copy）</span></span><br><span class="line">  parent, <span class="comment">// 父级对象</span></span><br><span class="line">  base, <span class="comment">// 原始对象（也就是 obj）</span></span><br><span class="line">  copy, <span class="comment">// base（也就是 obj）的浅拷贝，使用 Object.assign(Object.create(null), obj) 实现</span></span><br><span class="line">  proxies, <span class="comment">// 存储每个 propertyKey 的代理对象，采用懒初始化策略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="构建代理"><a href="#构建代理" class="headerlink" title="构建代理"></a>构建代理</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  modified, <span class="comment">// 是否被修改过</span></span><br><span class="line">  finalized, <span class="comment">// 是否已经完成（所有 setter 执行完，并且已经生成了 copy）</span></span><br><span class="line">  parent, <span class="comment">// 父级对象</span></span><br><span class="line">  base, <span class="comment">// 原始对象（也就是 obj）</span></span><br><span class="line">  copy, <span class="comment">// base（也就是 obj）的浅拷贝，使用 Object.assign(Object.create(null), obj) 实现</span></span><br><span class="line">  proxies, <span class="comment">// 存储每个 propertyKey 的代理对象，采用懒初始化策略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这个代理对象上，绑定了自定义的 getter setter，然后直接将其扔给 <strong>produce 执行</strong>。</p>
-<h4 id="getter">getter</h4>
-<p>produce 回调函数中包含了<code>用户的 mutable 代码</code>。所以现在入口变成了 getter 与 setter。</p>
+<h4 id="getter"><a href="#getter" class="headerlink" title="getter"></a>getter</h4><p>produce 回调函数中包含了<code>用户的 mutable 代码</code>。所以现在入口变成了 getter 与 setter。</p>
 <p>getter 主要用来懒初始化代理对象，也就是<strong>当代理对象子属性被访问</strong>的时候，才会生成其代理对象。</p>
-<ol type="1">
+<ol>
 <li>不浪费资源；</li>
 <li>子对象可以被访问到。</li>
 </ol>
-<h4 id="setter">setter</h4>
-<p>当对 draft 修改时，会对 base 也就是原始值进行<strong>浅拷贝</strong>，保存到 copy 属性，同时将 modified 属性设置为 true。这样就完成了最重要的 Immutable 过程，而且浅拷贝并不是很消耗性能，加上是按需浅拷贝，因此 Immer 的性能还可以。</p>
+<h4 id="setter"><a href="#setter" class="headerlink" title="setter"></a>setter</h4><p>当对 draft 修改时，会对 base 也就是原始值进行<strong>浅拷贝</strong>，保存到 copy 属性，同时将 modified 属性设置为 true。这样就完成了最重要的 Immutable 过程，而且浅拷贝并不是很消耗性能，加上是按需浅拷贝，因此 Immer 的性能还可以。</p>
 <p>同时为了保证整条链路的对象都是新对象，会根据 parent 属性递归父级，不断浅拷贝，直到这个叶子结点到根结点整条链路对象都换新为止。</p>
 <p>完成了 modified 对象再有属性被修改时，会将这个新值保存在 copy 对象上。</p>
-<h4 id="生成-immutable-对象">生成 Immutable 对象</h4>
-<p>当<strong>执行完 produce</strong> 后，用户的所有修改已经完成（所以 Immer 没有支持异步），如果 <strong>modified</strong> 属性为 false，说明用户根本没有改这个对象，那直接返回原始 base 属性即可。</p>
+<h4 id="生成-Immutable-对象"><a href="#生成-Immutable-对象" class="headerlink" title="生成 Immutable 对象"></a>生成 Immutable 对象</h4><p>当<strong>执行完 produce</strong> 后，用户的所有修改已经完成（所以 Immer 没有支持异步），如果 <strong>modified</strong> 属性为 false，说明用户根本没有改这个对象，那直接返回原始 base 属性即可。</p>
 <p>如果 modified 属性为 <strong>true</strong>，说明对象发生了修改，返回 <strong>copy 属性</strong>即可。但是 setter 过程是递归的，draft 的子对象也是 draft（包含了 base copy modified 等额外属性的代理），我们必须一层层递归，拿到真正的值。</p>
 <p>所以在这个阶段，所有 draft 的 <strong>finalized</strong> 都是 <strong>false，copy</strong> 内部可能还存在大量 draft 属性，因此递归 base 与 copy 的子属性，如果相同，就直接返回；如果不同，递归一次整个过程（从这小节第一行开始）。</p>
 <p>最后返回的对象是由 base 的一些属性（没有修改的部分）和 copy 的一些属性（修改的部分）最终拼接而成的。最后使用 freeze 冻结 copy 属性，将 <strong>finalized</strong> 属性设置为 <strong>true。</strong></p>
@@ -604,580 +375,217 @@
 <blockquote>
 <p>源码读到这里，发现 Immer 其实可以支持异步，只要支持 produce 函数返回 Promise 即可。最大的问题是，最后对代理的 revoke 清洗，需要借助全局变量，这一点阻碍了 Immer 对异步的支持。</p>
 </blockquote>
-<p><img src="/2020/04/13/immutable/07.png"></p>
+<p><img src="07.png" alt=""></p>
 <p><a href="https://immerjs.github.io/immer/docs/introduction" target="_blank" rel="noopener">immer官网</a></p>
-<h3 id="优点">优点</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Immutability with normal JavaScript objects, arrays, Sets and Maps. No new APIs to learn!</span><br><span class="line">Strongly typed, no string based paths selectors etc.</span><br><span class="line">Structural sharing out of the box</span><br><span class="line">Object freezing out of the box</span><br><span class="line">Deep updates are a breeze</span><br><span class="line">Boilerplate reduction. Less noise, more concise code.</span><br><span class="line">First class support for patches</span><br><span class="line">Small: 3KB gzipped</span><br></pre></td></tr></table></figure>
-<p>参考阅读： <a href="https://github.com/camsong/blog/issues/3" target="_blank" rel="noopener">Immutable详解及 React 中实践</a> <a href="https://juejin.im/entry/59b5e4916fb9a00a3b3bd52d" target="_blank" rel="noopener">精读 Immutable 结构共享</a> <a href="https://juejin.im/post/5b9b30a35188255c6418e67c" target="_blank" rel="noopener">深入探究Immutable.js的实现机制（一）</a> <a href="https://juejin.im/post/5ba4a6b75188255ca1537b19" target="_blank" rel="noopener">深入探究immutable.js的实现机制（二）</a> <a href="https://zhangzhao.name/posts/immer-immutable/" target="_blank" rel="noopener">immer.js 简介及源码简析</a></p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Immutability with normal JavaScript objects, arrays, Sets and Maps. No new APIs to learn!</span><br><span class="line">Strongly typed, no string based paths selectors etc.</span><br><span class="line">Structural sharing out of the box</span><br><span class="line">Object freezing out of the box</span><br><span class="line">Deep updates are a breeze</span><br><span class="line">Boilerplate reduction. Less noise, more concise code.</span><br><span class="line">First class support for patches</span><br><span class="line">Small: 3KB gzipped</span><br></pre></td></tr></table></figure>
 
-      
+
+<p>参考阅读：<br><a href="https://github.com/camsong/blog/issues/3" target="_blank" rel="noopener">Immutable详解及 React 中实践</a><br><a href="https://juejin.im/entry/59b5e4916fb9a00a3b3bd52d" target="_blank" rel="noopener">精读 Immutable 结构共享</a><br><a href="https://juejin.im/post/5b9b30a35188255c6418e67c" target="_blank" rel="noopener">深入探究Immutable.js的实现机制（一）</a><br><a href="https://juejin.im/post/5ba4a6b75188255ca1537b19" target="_blank" rel="noopener">深入探究immutable.js的实现机制（二）</a><br><a href="https://zhangzhao.name/posts/immer-immutable/" target="_blank" rel="noopener">immer.js 简介及源码简析</a></p>
+
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-      <div>
-        <div id="reward-container">
-  <div></div>
-  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    你瞧～
-  </button>
-  <div id="qr" style="display: none;">
-
-    
-      
-      
-        
-      
-      <div style="display: inline-block">
-        <img src="/images/wechatSub.png" alt="Howard 关注不关注都无所谓">
-        <p>关注不关注都无所谓</p>
-      </div>
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-      <div>
         
 
-
-
-
-  
-
-
-
+<div>
 <ul class="post-copyright">
   <li class="post-copyright-author">
-    <strong>本文作者： </strong>Howard</li>
+    <strong>Post author:  </strong>Howard
+  </li>
   <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    
+    <strong>Post link: </strong>
     <a href="https://simuty.com/2020/04/13/immutable/" title="React系列-immutable上下文<4>">https://simuty.com/2020/04/13/immutable/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
 </ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/04/12/dataType/" rel="next" title="ES系列-数据类型<1>">
-                <i class="fa fa-chevron-left"></i> ES系列-数据类型<1>
-              </1></a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/15/music_one/" rel="prev" title="React实战系列-网易音乐<1>">
-                React实战系列-网易音乐<1> <i class="fa fa-chevron-right"></i>
-              </1></a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
+</div>
 
 
-  </div>
+      <footer class="post-footer">
 
-
-          </div>
-          
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
         
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/12/dataType/" rel="prev" title="ES系列-数据类型<1>">
+      <i class="fa fa-chevron-left"></i> ES系列-数据类型<1>
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/15/music_one/" rel="next" title="React实战系列-网易音乐<1>">
+      React实战系列-网易音乐<1> <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-diff算法以及问题"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分 diff算法以及问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部分-解决方案"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分 解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#深浅比较"><span class="nav-number">1.2.1.</span> <span class="nav-text">深浅比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态对比"><span class="nav-number">1.2.2.</span> <span class="nav-text">状态对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三部分-Immutable-Data-相关"><span class="nav-number">1.3.</span> <span class="nav-text">第三部分 Immutable Data 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#immutable-js"><span class="nav-number">1.3.1.</span> <span class="nav-text">immutable-js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Immutable-Data"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Immutable Data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#immerjs"><span class="nav-number">1.3.2.</span> <span class="nav-text">immerjs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构建代理"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">构建代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getter"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">getter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setter"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">setter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-Immutable-对象"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">生成 Immutable 对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">1.3.3.</span> <span class="nav-text">优点</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Howard</p>
-              <div class="site-description motion-element" itemprop="description">记录点滴、分享所得</div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">54</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                      <a href="/categories/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">32</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">55</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/simuty" title="GitHub &rarr; https://github.com/simuty" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-            </div>
-          
-
-
-
-    <div class="links-of-blogroll motion-element links-of-blogroll-block">
-      <div class="links-of-blogroll-title">
-        <!-- modify icon to fire by szw -->
-        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
         
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
       </div>
-      <ul class="links-of-blogroll-list">
-        
-        
-          <li>
-            <a href="/2020/05/24/civil_servant_hard_math/" title="数资进阶" target="_blank">数资进阶</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/24/civil_servant_exam_23/" title="二十三季模考复盘" target="_blank">二十三季模考复盘</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/21/civil_servant_math_knowledge/" title="数量关系-考点" target="_blank">数量关系-考点</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/19/intellect_moral/" title="罗素--关于智慧与道德" target="_blank">罗素--关于智慧与道德</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/18/civil_servant_math_skill/" title="数量关系-技巧" target="_blank">数量关系-技巧</a>
-          </li>
-        
-      </ul>
-    </div>
-
-
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
           
-             <div class="cc-license motion-element" itemprop="license">
-              
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-             </div>
-          
-
-          
-          
-
-
-          
-            
-          
-          
-
-        </div>
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https://github.com/simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
 
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
 
-            
-            
-            
-            
 
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-diff算法以及问题"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分 diff算法以及问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部分-解决方案"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分 解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#深浅比较"><span class="nav-number">1.2.1.</span> <span class="nav-text">深浅比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态对比"><span class="nav-number">1.2.2.</span> <span class="nav-text">状态对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三部分-immutable-data-相关"><span class="nav-number">1.3.</span> <span class="nav-text">第三部分 Immutable Data 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#immutable-js"><span class="nav-number">1.3.1.</span> <span class="nav-text">immutable-js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#immutable-data"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Immutable Data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#immerjs"><span class="nav-number">1.3.2.</span> <span class="nav-text">immerjs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构建代理"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">构建代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getter"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">getter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setter"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">setter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-immutable-对象"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">生成 Immutable 对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">1.3.3.</span> <span class="nav-text">优点</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
         </div>
-      <!--/noindex-->
-      
-
-      
 
     </div>
   </aside>
-  
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Howard</span>
-
-  
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
+      <i class="fa fa-chart-area"></i>
     </span>
-    
-      <span class="post-meta-item-text">站点总字数：</span>
-    
-    <span title="站点总字数">180k</span>
-  
-
-  
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">156k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    
-      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    
-    <span title="站点阅读时长">2:44</span>
-  
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:22</span>
 </div>
-
-
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
-
-
-
-
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
 
         
 <div class="busuanzi-count">
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv">
-     我的第 <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 位朋友，
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
     </span>
-  
-
-  
     <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="site-pv">
-     历经 <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次回眸才与你相遇
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
     </span>
-  
 </div>
 
 
@@ -1187,34 +595,41 @@
 
 
 
-
-        
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-          <span id="scrollpercent"><span>0</span>%</span>
-        
-      </div>
-    
-
-    
-
-    
-
-    
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
 
 
 
@@ -1224,542 +639,28 @@
 
   
 
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
-
-
-  
-
-
-  <script src="/js/utils.js?v=7.1.0"></script>
-
-  <script src="/js/motion.js?v=7.1.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/affix.js?v=7.1.0"></script>
-
-  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
-
-
-
-  
-  <script src="/js/scrollspy.js?v=7.1.0"></script>
-<script src="/js/post-details.js?v=7.1.0"></script>
-
-
-
-  
-
-
-  <script src="/js/next-boot.js?v=7.1.0"></script>
-
-
   
 
   
-
-  
-
-  
-
-
-  
-    
-
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
-
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
-
 <script>
-  var gitalk = new Gitalk({
-    clientID: 'f88581d92eb32794b280',
-    clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
-    repo: 'simutyComment',
-    owner: 'simuty',
-    admin: ['simuty'],
-    id: md5(location.pathname),
-    
-      language: window.navigator.language || window.navigator.userLanguage,
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-  <script>
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "./public/search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('3');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : '42afef7aed303e06de843f075ec66ad5',
+        language: '',
+      distractionFreeMode: true
     });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-<script>
-  $('.highlight').each(function(i, e) {
-    var $wrap = $('<div>').addClass('highlight-wrap');
-    $(e).after($wrap);
-    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-        return $(e).text();
-      }).toArray().join('\n');
-      var ta = document.createElement('textarea');
-      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-      ta.style.top = yPosition + 'px'; // Prevent page scroll
-      ta.style.position = 'absolute';
-      ta.style.opacity = '0';
-      ta.readOnly = true;
-      ta.value = code;
-      document.body.appendChild(ta);
-      ta.select();
-      ta.setSelectionRange(0, code.length);
-      ta.readOnly = false;
-      var result = document.execCommand('copy');
-      
-        if (result) $(this).text('复制成功');
-        else $(this).text('复制失败');
-      
-      ta.blur(); // For iOS
-      $(this).blur();
-    })).on('mouseleave', function(e) {
-      var $b = $(this).find('.copy-btn');
-      setTimeout(function() {
-        $b.text('复制');
-      }, 300);
-    }).append(e);
-  })
-</script>
-
-
-  
-
-  
-
-  
- 
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.min.js"></script>
-<script>
-  function timer() {
-    var ages = moment.preciseDiff(moment(),moment(,"YYYYMMDD"));
-    ages = ages.replace(/years?/, "年");
-    ages = ages.replace(/months?/, "月");
-    ages = ages.replace(/days?/, "天");
-    ages = ages.replace(/hours?/, "小时");
-    ages = ages.replace(/minutes?/, "分");
-    ages = ages.replace(/seconds?/, "秒");
-    ages = ages.replace(/\d+/g, '<span style="color:">$&</span>');
-    div.innerHTML = `我已在此等候你 ${ages}`;
-  }
-  var div = document.createElement("div");
-  //插入到copyright之后
-  var copyright = document.querySelector(".copyright");
-  document.querySelector(".footer-inner").insertBefore(div, copyright.nextSibling);
-  timer();
-  setInterval("timer()",1000)
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
 </script>
 
 </body>
