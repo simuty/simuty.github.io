@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="记录点滴、分享所得">
@@ -249,7 +250,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <img src="../../../../images/photos/2020/005.jpg" width=80% />
+          <img data-src="../../../../images/photos/2020/005.jpg" width=80% />
 
 <p>真正的无知不是知识的贫乏, 而是拒绝获取知识!<br>——波普尔 (哲学家 思想家)</p>
           <!--noindex-->
@@ -363,30 +364,30 @@
 <li>掌握 ip地址、子网掩码、子网的计算</li>
 </ul>
 <hr>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><img src="1.jpg" alt="目录"></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><img data-src="1.jpg" alt="目录"></p>
 <blockquote>
 <p>接下来会围绕第一章进行学习</p>
 </blockquote>
-<p><img src="15598029663358.jpg" alt="-w545"></p>
+<p><img data-src="15598029663358.jpg" alt="-w545"></p>
 <h3 id="第一部分-整体概述"><a href="#第一部分-整体概述" class="headerlink" title="第一部分 整体概述"></a>第一部分 整体概述</h3><h4 id="HTTP-请求消息"><a href="#HTTP-请求消息" class="headerlink" title="HTTP 请求消息"></a>HTTP 请求消息</h4><p>URL： Uniform Resource Locator，统一资源定位符。<br>FTP： File Transfer Protocol， 文件传送协议。 这是一种在上传、下载文件时使用的协议。使用 FTP 协议来传送文件的程序也被叫作 FTP。</p>
-<h4 id="常见的URL分类"><a href="#常见的URL分类" class="headerlink" title="常见的URL分类"></a>常见的URL分类</h4><p>日常用的最多的是HTTP： Hypertext Transfer Protocol，超文本传送协议, 但也有其他一些，如下图：<br><img src="15598034956658.jpg" alt="-w543"></p>
+<h4 id="常见的URL分类"><a href="#常见的URL分类" class="headerlink" title="常见的URL分类"></a>常见的URL分类</h4><p>日常用的最多的是HTTP： Hypertext Transfer Protocol，超文本传送协议, 但也有其他一些，如下图：<br><img data-src="15598034956658.jpg" alt="-w543"></p>
 <h4 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h4><p>HTTP 协议定义了<code>客户端和服务器之间交互的消息内容和步骤</code>。</p>
 <p>大致过程如下，客户端请求，服务器返回相应的数据。</p>
-<p><img src="15598039794266.jpg" alt="-w544"></p>
+<p><img data-src="15598039794266.jpg" alt="-w544"></p>
 <p>如何访问服务器中，特定的资源？看下边的URL图解</p>
-<p><img src="15598039030172.jpg" alt="-w548"></p>
+<p><img data-src="15598039030172.jpg" alt="-w548"></p>
 <h4 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h4><p>有了整体的大致流程，也有了拆分URL的图解，就看下有哪些方法吧，浏览器访问属于GET.</p>
-<p><img src="15598043575873.jpg" alt="-w560"></p>
+<p><img data-src="15598043575873.jpg" alt="-w560"></p>
 <blockquote>
 <p>URI： Uniform Resource Identifier，统一资源标识符。</p>
 </blockquote>
-<p><img src="15598053253527.jpg" alt="-w535"><br><img src="15598053387188.jpg" alt="-w535"><br><img src="15598053724873.jpg" alt="-w551"></p>
-<p><img src="15598051510339.jpg" alt="-w2002"></p>
+<p><img data-src="15598053253527.jpg" alt="-w535"><br><img data-src="15598053387188.jpg" alt="-w535"><br><img data-src="15598053724873.jpg" alt="-w551"></p>
+<p><img data-src="15598051510339.jpg" alt="-w2002"></p>
 <h3 id="第二部分-IP地址"><a href="#第二部分-IP地址" class="headerlink" title="第二部分 IP地址"></a>第二部分 IP地址</h3><blockquote>
 <p>该部分摘录自<a href="https://blog.51cto.com/6930123/2112403" target="_blank" rel="noopener">《IP地址详解》</a>，详情请参看原文。</p>
 </blockquote>
 <h4 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a>IP地址分类</h4><p><strong>IP地址（Internet Protocol Address），缩写为IP Adress</strong>，是一种在Internet上的给主机统一编址的地址格式，也称为网络协议（IP协议）地址。它为互联网上的每一个网络和每一台主机分配一个逻辑地址，常见的IP地址，分为<code>IPv4</code>与<code>IPv6</code>两大类，当前广泛应用的是IPv4，目前IPv4几乎耗尽，下一阶段必然会进行版本升级到IPv6；如无特别注明，一般我们讲的的IP地址所指的是IPv4。</p>
-<p><img src="01b93a1d0acac52cc0bd4878696d4098.png" alt="01b93a1d0acac52cc0bd4878696d4098-w473"></p>
+<p><img data-src="01b93a1d0acac52cc0bd4878696d4098.png" alt="01b93a1d0acac52cc0bd4878696d4098-w473"></p>
 <p>IP地址分<strong>A、B、C、D、E五类</strong>，其中A、B、C这三类是比较常用的IP地址，D、E类为特殊地址。</p>
 <blockquote>
 <p>IP 地址是一串 32 比特的数字，按照 8 比特（1 字节）为一组分成 4 组，分别用十进制表示 然后再用圆点隔开。</p>
@@ -394,9 +395,9 @@
 <blockquote>
 <p>在计算机二进制中，1个字节 = 8位 = 8bit（比特）</p>
 </blockquote>
-<p><img src="15598063874073.jpg" alt="-w375"></p>
+<p><img data-src="15598063874073.jpg" alt="-w375"></p>
 <p><strong>Ip地址汇总</strong></p>
-<p><img src="15598087831047.jpg" alt=""></p>
+<p><img data-src="15598087831047.jpg" alt=""></p>
 <blockquote>
 <p><strong>注：</strong> 为何减去2？</p>
 </blockquote>
@@ -405,8 +406,8 @@
 <p><code>私网IP地址</code><br>创建IP寻址方案的人也创建了私网IP地址。这些地址可以被用于私有网络，在Internet没有这些IP地址，Internet上的路由器也没有到私有网络的路由表。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A类：10.0.0.0 255.0.0.0，保留了1个A类网络。</span><br><span class="line">B类：172.16.0.0 255.255.0.0～172.31.0.0 255.255.0.0，保留了16个B类网络。</span><br><span class="line">C类：192.168.0.0 255.255.255.0～192.168.255.0 255.255.255.0，保留了256个C类网络。</span><br><span class="line">PS：私网地址访问Internet需要做NAT或PAT网络地址转换</span><br></pre></td></tr></table></figure>
 
-<p><img src="15598095553143.jpg" alt=""></p>
-<p><img src="15598095596202.jpg" alt=""></p>
+<p><img data-src="15598095553143.jpg" alt=""></p>
+<p><img data-src="15598095596202.jpg" alt=""></p>
 <h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><h5 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h5><p>IP地址在设计时就考虑到<code>地址分配的层次特点</code>，将每个IP地址都分割成<code>网络号</code>和<code>主机号</code>两部分，以便于IP地址的<strong>寻址操作</strong>。</p>
 <blockquote>
 <p>如何确定：IP地址的网络号和主机号各是多少位呢？</p>
@@ -428,7 +429,7 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">And按位与运算：</span><br><span class="line">与运算是计算机中一种基本的逻辑运算方式，符号表示为&amp;，也可以表示为 and。</span><br><span class="line">参加运算的两个数据，按二进制位进行“与”运算。</span><br><span class="line">运算规则：0&amp;0&#x3D;0；0&amp;1&#x3D;0；1&amp;0&#x3D;0；1&amp;1&#x3D;1；</span><br><span class="line">即：两位同时为“1”，结果才为“1”，否则为0</span><br></pre></td></tr></table></figure>
 
-<p><img src="15598304763666.jpg" alt=""></p>
+<p><img data-src="15598304763666.jpg" alt=""></p>
 <blockquote>
 <p>网络地址计算小技巧：IP地址和子网掩码做与运算，把IP地址的主机位直接归0，就快速得到网络地址。所以只要一看到IP地址和子网掩码，就能马上确认网络地址。</p>
 </blockquote>
@@ -440,7 +441,7 @@
 </blockquote>
 <p>做子网划分后的IP地址：网络号＋子网号＋子网主机号<br>举个栗子：<br>如：192.168.1.100/25，其子网掩码表示：255.255.255.128</p>
 <h4 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h4><p>子网划分是通过<strong>借用IP地址中若干位【主机地址】来充当子网的【网络地址】，从而将原网络划分为若干子网。</strong></p>
-<p><img src="15598306058611.jpg" alt=""></p>
+<p><img data-src="15598306058611.jpg" alt=""></p>
 <p>划分子网时，随着子网地址借用主机位数的增多，子网的数目随之增加，但每个子网中的可用主机数逐渐减少。</p>
 <p>如C类地址，原有8位主机位，2^8-2即254个主机地址，默认子网掩码255.255.255.0。(全0或全1不可用）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">借用1位主机位，产生2^1-2&#x3D;0个子网，每个子网有2^7-2个主机地址；</span><br><span class="line">借用2位主机位，产生2^2-2&#x3D;2个子网，每个子网有2^6-2个主机地址;</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
@@ -481,7 +482,7 @@
 <p>11111111 11111111 <code>11</code>000000 00000000 [255.255.192.0]<br>11111111 11111111 00000000 00000000 [255.255.255.0]</p>
 <p>①利用子网掩码计算，最多可以划分4个子网络,【差两位，2的2次方=4】<br>②利用子网掩码计算，每个子网络可容纳16384台主机（包括网络地址和广播地址）【2的14次方-2】<br>③用16384除以256（网段内包括网络地址和广播地址的全部主机数），结果是<code>64</code><br>④具体划分网络起止方法如下：</p>
 <p>172.16.0.0～172.16.<code>63</code>.255<br>172.16.<code>64</code>.0～172.16.127.255<br>172.16.<code>128</code>.0～172.16.191.255<br>172.16.<code>192</code>.0～172.16.255.255</p>
-<p><img src="15598058385491.jpg" alt="-w556"></p>
+<p><img data-src="15598058385491.jpg" alt="-w556"></p>
 <h3 id="推荐阅读【参考链接】："><a href="#推荐阅读【参考链接】：" class="headerlink" title="推荐阅读【参考链接】："></a>推荐阅读【参考链接】：</h3><p><a href="https://blog.51cto.com/6930123/2112403" target="_blank" rel="noopener">IP地址和子网划分学习笔记之《IP地址详解》系列</a><br><a href="http://www.360doc.com/content/18/0921/19/37113458_788584404.shtml" target="_blank" rel="noopener">什么是子网？什么是子网掩码？</a><br><a href="https://baike.baidu.com/item/%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86/5446046" target="_blank" rel="noopener">百度百科—子网划分</a><br><a href="https://blog.csdn.net/xwq911/article/details/45368853" target="_blank" rel="noopener">子网数、主机数与子网掩码的关系</a></p>
 
       
@@ -579,7 +580,7 @@
 <p>原本以为今晚可以早早的睡觉，谁知道东西还是蛮多的。。。</p>
 </blockquote>
 <h3 id="第一部分-模块与包"><a href="#第一部分-模块与包" class="headerlink" title="第一部分 模块与包"></a>第一部分 模块与包</h3><p>在编程语言中，<code>代码块、函数、类、模块，一直到包</code>，逐级封装，层层调用。</p>
-<p><img src="1.jpg" alt="模块与包"></p>
+<p><img data-src="1.jpg" alt="模块与包"></p>
 <h4 id="模块-module"><a href="#模块-module" class="headerlink" title="模块(module)"></a>模块(module)</h4><p><strong>含义</strong><br>python中每个python文件就是一个模块，每个python文件中，封装类似功能的变量、函数、类型等等，可以被其他的python模块通过import关键字引入重复使用！</p>
 <p><strong>分类</strong></p>
 <ol>
@@ -624,7 +625,7 @@
 <li>Python的安装目录</li>
 <li>Python安装目录里的site-packages目录</li>
 </ol>
-<h4 id="示例一-同级目录"><a href="#示例一-同级目录" class="headerlink" title="示例一 同级目录"></a>示例一 同级目录</h4><p><img src="3.jpg" alt="引用示例"></p>
+<h4 id="示例一-同级目录"><a href="#示例一-同级目录" class="headerlink" title="示例一 同级目录"></a>示例一 同级目录</h4><p><img data-src="3.jpg" alt="引用示例"></p>
 <p>这个示例很简单，但已经把引用的使用罗列清楚了，因为Python不需要export。不像typescript那样有导入就有导出，所以，我们已经引用模块了。</p>
 <blockquote>
 <p>至于如何自定义个包，发布到GitHub，让后让别人用，我想那是不是现在关心的。</p>
@@ -675,12 +676,12 @@
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">this is moduleA</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> sys, os</span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># 当前文件的绝对路径</span></span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># 获取目录</span></span><br><span class="line">print(BASE_DIR)</span><br><span class="line"><span class="comment"># 系统路径下加载</span></span><br><span class="line">sys.path.append(BASE_DIR)</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line">print(sys.path)</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line">print(sys.modules.keys())</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> module.moduleC <span class="keyword">import</span> add</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">···</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">this is moduleC</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br></pre></td></tr></table></figure>
 
-<p><img src="5.jpg" alt="第五"></p>
-<p><img src="4.png" alt="第四"></p>
+<p><img data-src="5.jpg" alt="第五"></p>
+<p><img data-src="4.png" alt="第四"></p>
 <h4 id="嵌套import"><a href="#嵌套import" class="headerlink" title="嵌套import"></a>嵌套import</h4><p>有了上侧以及命名空间的知识，相对下侧图解，就容易理解了。</p>
-<h5 id="顺序导入-import"><a href="#顺序导入-import" class="headerlink" title="顺序导入-import"></a>顺序导入-import</h5><p><img src="10.png" alt="10"></p>
+<h5 id="顺序导入-import"><a href="#顺序导入-import" class="headerlink" title="顺序导入-import"></a>顺序导入-import</h5><p><img data-src="10.png" alt="10"></p>
 <p>PS：各个模块的Local命名空间的独立的。即：<br>test模块 import moduleA后，只能访问moduleA模块，不能访问moduleB模块。虽然moduleB已加载到内存中，如需访问，还得明确地在test模块 import moduleB。实际上打印locals()，字典中只有moduleA，没有moduleB。</p>
-<h5 id="循环导入-嵌套导入-import"><a href="#循环导入-嵌套导入-import" class="headerlink" title="循环导入/嵌套导入-import"></a>循环导入/嵌套导入-import</h5><p><img src="20.png" alt="20"></p>
+<h5 id="循环导入-嵌套导入-import"><a href="#循环导入-嵌套导入-import" class="headerlink" title="循环导入/嵌套导入-import"></a>循环导入/嵌套导入-import</h5><p><img data-src="20.png" alt="20"></p>
 <p>形如from moduleB import ClassB语句，根据Python内部import机制，执行细分步骤： </p>
 <ol>
 <li>在sys.modules中查找 符号“moduleB”； </li>
@@ -688,7 +689,7 @@
 <li>如果符号“moduleB”不存在，则创建一个新的 module对象。不过此时该新module对象的   dict   为空。然后执行moduleB.py文件中的语句，填充的   dict   。</li>
 </ol>
 <p><strong>总结：from moduleB import ClassB有两个过程，先from module，后import ClassB。</strong></p>
-<p><img src="30.png" alt="30"></p>
+<p><img data-src="30.png" alt="30"></p>
 <p>当然将moduleA.py语句 from moduleB import ClassB改为：import moduleB，将在第二次执行moduleB.py语句from moduleA import ClassA时报错：<code>ImportError: cannot import name ‘classA’</code></p>
 <p><strong>解决这种circular import循环导入的方法：</strong><br>例比：安装无线网卡时，需上网下载网卡驱动；<br>安装压缩软件时，从网上下载的压缩软件安装程序是被压缩的文件。 </p>
 <p>方法1—–&gt;延迟导入（lazy import）：把import语句写在方法/函数里，将它的作用域限制在局部。（此法可能导致性能问题）<br>方法2—–&gt;将from x import y改成import x.y形式<br>方法3—–&gt;组织代码（重构代码）：更改代码布局，可合并或分离竞争资源。<br>合并—–&gt;都写到一个.py文件里；<br>分离–&gt;把需要import的资源提取到一个第三方.py文件中。<br>总之，将循环变成单向。</p>
@@ -786,7 +787,7 @@
 <li>回顾Python面向对象</li>
 <li>✅掌握<strong>pipenv虚拟环境</strong>的基本使用</li>
 </ul>
-<p><img src="0.jpg" alt="0"></p>
+<p><img data-src="0.jpg" alt="0"></p>
 <p>在学习过程中也遇到一些疑惑，摸索了不同的形式、方法，有了一些结论，诸如：</p>
 <ol>
 <li>文章的面向群体–有一定编程基础的；属于个人学习📝，不可能面面俱到；</li>
@@ -866,8 +867,8 @@
 <p><strong>实例一 总结</strong></p>
 <p>以上展示了如何创建一个虚拟环境、如何下载一个模块，在虚拟环境中运行；</p>
 <p>也许不太直观，画了两个图，虚拟环境自己玩儿自己的。</p>
-<p><img src="1.jpg" alt=""></p>
-<p><img src="2.jpg" alt="虚拟环境"></p>
+<p><img data-src="1.jpg" alt=""></p>
+<p><img data-src="2.jpg" alt="虚拟环境"></p>
 <p>按实际需求来</p>
 <ol>
 <li>你的代码给别人，别人怎么正常运行？</li>
@@ -891,7 +892,7 @@
 </ul>
 <p>实例一中直接运行，已经完全ok，但是写代码，我还是不会选择文本编辑器，，，</p>
 <p>打开vscode，ヾ(｡｀Д´｡)我擦，找不到requests,思考片刻，因为setting.json中已经配置了python解释器【系统级别的】；<br>但是<strong>之后我们都不在这么玩儿了，毕竟会乱的</strong><br>同样建议再项目目录中配置各自的配置项目</p>
-<p><img src="3.jpg" alt=""><br><img src="4.jpg" alt=""><br><img src="5.jpg" alt=""><br><img src="6.jpg" alt=""></p>
+<p><img data-src="3.jpg" alt=""><br><img data-src="4.jpg" alt=""><br><img data-src="5.jpg" alt=""><br><img data-src="6.jpg" alt=""></p>
 <p><strong>配置完毕</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hhw-4:pythonEnv hhw$ python3 test.py </span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;test.py&quot;, line 1, in &lt;module&gt;</span><br><span class="line">    import requests</span><br><span class="line">ModuleNotFoundError: No module named &#39;requests&#39;</span><br><span class="line">hhw-4:pythonEnv hhw$ pipenv run python test.py </span><br><span class="line">你的 IP 地址是 112.64.61.61, 112.64.61.61</span><br></pre></td></tr></table></figure>
 
@@ -1041,7 +1042,7 @@
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模块inspect：检查运行模块的一些基本信息</span></span><br><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"A.show()"</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"C.show()"</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(B, C)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># __mro__ 等价于 inspect.getmro</span></span><br><span class="line"><span class="comment"># print(D.__mro__)</span></span><br><span class="line">print(inspect.getmro(D))</span><br><span class="line">x = D()</span><br><span class="line">x.show()</span><br></pre></td></tr></table></figure>
 
-<p><img src="3.svg" alt="菱形"></p>
+<p><img data-src="3.svg" alt="菱形"></p>
 <p>按照深度遍历，其顺序为 <strong>[D, B, A, object, C, A, object]</strong>，重复类只保留最后一个，因此变为 <strong>[D, B, C, A, object]</strong>。</p>
 <p><strong>结果是</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(&lt;class '__main__.D'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.A'&gt;, &lt;class 'object'&gt;)</span><br><span class="line">C.show()</span><br></pre></td></tr></table></figure>
@@ -1064,7 +1065,7 @@
 </ol>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例子</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">E</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">F</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(D, E)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(D, F)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(B, C)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>A.__mro__</span><br><span class="line">(&lt;class '__main__.A'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.D'&gt;, &lt;class '__main__.E'&gt;, &lt;class '__main__.F'&gt;, &lt;type 'object'&gt;)</span><br></pre></td></tr></table></figure>
 
-<p><img src="4.svg" alt=""></p>
+<p><img data-src="4.svg" alt=""></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">L[object] = [object]</span><br><span class="line">L[D] = [D, object]</span><br><span class="line">L[E] = [E, object]</span><br><span class="line">L[F] = [F, object]</span><br><span class="line">L[B] = [B, D, E, object]</span><br><span class="line">L[C] = [C, D, F, object]</span><br><span class="line">L[A] = [A] + merge(L[B], L[C], [B], [C])</span><br><span class="line">     = [A] + merge([B, D, E, object], [C, D, F, object], [B], [C])</span><br><span class="line">     = [A, B] + merge([D, E, object], [C, D, F, object], [C])</span><br><span class="line">     = [A, B, C] + merge([D, E, object], [D, F, object])</span><br><span class="line">     = [A, B, C, D] + merge([E, object], [F, object])</span><br><span class="line">     = [A, B, C, D, E] + merge([object], [F, object])</span><br><span class="line">     = [A, B, C, D, E, F] + merge([object], [object])</span><br><span class="line">     = [A, B, C, D, E, F, object]</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -1176,7 +1177,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <img src="1.png" width="50%" height="50%" align=center />
+          <img data-src="1.png" width="50%" height="50%" align=center />
 摘要内容......
           <!--noindex-->
             <div class="post-button">
@@ -1272,7 +1273,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="cheap.png" alt=""></p>
+          <p><img data-src="cheap.png" alt=""></p>
 <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
 <li>温故函数很多概念</li>
 <li>掌握 Python 装饰器</li>
@@ -1327,7 +1328,7 @@
 <blockquote>
 <p>注： 传的只是函数名</p>
 </blockquote>
-<p><img src="doc1.jpg" alt="自动执行"></p>
+<p><img data-src="doc1.jpg" alt="自动执行"></p>
 <p>整体的流程</p>
 <ol>
 <li>自上而下执行，将函数<code>outer</code>在内存注册；</li>
@@ -1502,7 +1503,7 @@
 <li>掌握高阶函数与匿名函数的用法</li>
 <li>尽量搞明白闭包</li>
 </ul>
-<p><img src="/2019/05/18/index/closuer.png" alt="目录结构"></p>
+<p><img data-src="/2019/05/18/index/closuer.png" alt="目录结构"></p>
 <h3 id="第一部分-匿名函数"><a href="#第一部分-匿名函数" class="headerlink" title="第一部分 匿名函数"></a>第一部分 匿名函数</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1 定义"></a>1 定义</h4><p><code>lambda 函数</code>也叫<code>匿名函数</code>，及即没有具体名称的函数，它允许快速定义单行函数，类似于 C 语言的宏，可以用在任何需要函数的地方。</p>
 <p>lambda与def对比</p>
 <table>
@@ -1549,7 +1550,7 @@
 <li><strong>filter过滤</strong>: 对iterable中的item依次执行function(item)，将执行结果为True（！=0）的item组成一个List/String/Tuple（取决于iterable的类型）返回，False则退出（0），进行过滤。</li>
 <li><strong>reduce</strong>: iterable中的item顺序迭代调用function，函数必须要有2个参数。要是有第3个参数，则<strong>表示初始值</strong>，可以继续调用初始值，返回一个值</li>
 </ul>
-<h4 id="图解："><a href="#图解：" class="headerlink" title="图解："></a>图解：</h4><p><img src="/2019/05/18/index/map.png" alt="map"><br><img src="/2019/05/18/index/filter.png" alt="filter"><br><img src="/2019/05/18/index/s5_reduce_function.svg" alt="reduce"></p>
+<h4 id="图解："><a href="#图解：" class="headerlink" title="图解："></a>图解：</h4><p><img data-src="/2019/05/18/index/map.png" alt="map"><br><img data-src="/2019/05/18/index/filter.png" alt="filter"><br><img data-src="/2019/05/18/index/s5_reduce_function.svg" alt="reduce"></p>
 <h4 id="实例列表"><a href="#实例列表" class="headerlink" title="实例列表"></a>实例列表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ------- map ------- #</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(str, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(int, [<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>])</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>map(<span class="keyword">lambda</span> x: x * x, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])   <span class="comment"># 使用 lambda</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------- reduce ------- #</span></span><br><span class="line"><span class="comment"># reduce 操作实例</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(<span class="keyword">lambda</span> x, y: x * y, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])  <span class="comment"># 相当于 ((1 * 2) * 3) * 4</span></span><br><span class="line"><span class="number">24</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(<span class="keyword">lambda</span> x, y: x * y, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="number">5</span>) <span class="comment"># ((((5 * 1) * 2) * 3)) * 4</span></span><br><span class="line"><span class="number">120</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = <span class="keyword">lambda</span> a, b: a <span class="keyword">if</span> (a &gt; b) <span class="keyword">else</span> b   <span class="comment"># 两两比较，取最大值 【三目运算也在阶段汇总与补充中说明】</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(f, [<span class="number">5</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">10</span>])</span><br><span class="line"><span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -------- filter ------- #</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list = filter(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(*list)</span><br><span class="line"><span class="number">2</span> <span class="number">4</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="两个综合实例"><a href="#两个综合实例" class="headerlink" title="两个综合实例"></a>两个综合实例</h4><p><strong>这个就是开头的那个实例： 找出指定返回内的质子</strong>，涉及的内容有点多，包含之前章节中的<code>推导式</code>、<code>range函数</code>、<code>函数</code>、<code>not</code>等相关内容，试着先看下，是否能看明白。</p>
@@ -1576,11 +1577,11 @@
 <p>下边这个求阶乘的，没啥难度，只要还记得</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 思考下这个，在思考下上边关于reduce的图例</span></span><br><span class="line">reduce(<span class="keyword">lambda</span> x, y: x * y, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="number">5</span>) <span class="comment"># ((((5 * 1) * 2) * 3)) * 4</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/05/18/index/reduce2.png" alt="类比一下"></p>
+<p><img data-src="/2019/05/18/index/reduce2.png" alt="类比一下"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算 5!+4!+3!+2!+1!</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">addFactorial</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    result = []</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> i <span class="keyword">in</span> map(<span class="keyword">lambda</span> x:x + <span class="number">1</span>, range(n)):</span><br><span class="line"><span class="meta">... </span>        a = reduce(<span class="keyword">lambda</span> x, y:x * y, map(<span class="keyword">lambda</span> x:x + <span class="number">1</span>, range(i)))</span><br><span class="line"><span class="meta">... </span>        result.append(a)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> reduce(<span class="keyword">lambda</span> x, y:x + y, result)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addFactorial(<span class="number">2</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addFactorial(<span class="number">3</span>)</span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="第二部分-闭包"><a href="#第二部分-闭包" class="headerlink" title="第二部分 闭包"></a>第二部分 闭包</h3><p>接下来的内容涉及函数相关内容，之前的两篇文章<br><a href="https://mp.weixin.qq.com/s/g8P8IT3_eK5KYlyWIXKgbQ" target="_blank" rel="noopener">Python 基础系列–函数【9】</a><br><a href="https://mp.weixin.qq.com/s/93jGABTI5DEDxCT4iUT3pw" target="_blank" rel="noopener">Python 基础系列之作用域【10】</a></p>
-<p><img src="/2019/05/18/index/func.png" alt="函数概述图"></p>
+<p><img data-src="/2019/05/18/index/func.png" alt="函数概述图"></p>
 <blockquote>
 <p>函数是对象，函数可以作为返回值，</p>
 </blockquote>
@@ -1589,7 +1590,7 @@
 <p>函数是对象，函数可以作为返回值。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第二题</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new_counter</span><span class="params">()</span>:</span></span><br><span class="line">  i = <span class="number">10</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(x=<span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="keyword">nonlocal</span> i</span><br><span class="line">    i += x</span><br><span class="line">    <span class="keyword">return</span> i</span><br><span class="line">  <span class="keyword">return</span> count</span><br><span class="line">a_count = new_counter()</span><br><span class="line">print(a_count())</span><br><span class="line">print(a_count())</span><br><span class="line">print(a_count(<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/05/18/index/bibao.jpg" alt="闭包"></p>
+<p><img data-src="/2019/05/18/index/bibao.jpg" alt="闭包"></p>
 <p>上侧的例子主要实现的是一个<strong>计数器的功能</strong>：<code>每点击一次，在原基础上加1</code>;</p>
 <p>结合上图，大致了解下流程：</p>
 <ul>
@@ -1651,7 +1652,7 @@
 <p>接下来看第二个例子</p>
 <h4 id="3-闭包的作用域"><a href="#3-闭包的作用域" class="headerlink" title="3. 闭包的作用域"></a>3. 闭包的作用域</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第三题</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeActions</span><span class="params">()</span>:</span></span><br><span class="line">    acts = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">        acts.append(<span class="keyword">lambda</span> x: i ** x)</span><br><span class="line">    <span class="keyword">return</span> acts</span><br><span class="line">acts = makeActions()</span><br><span class="line">print(acts[<span class="number">0</span>](<span class="number">2</span>))</span><br><span class="line">print(acts[<span class="number">1</span>](<span class="number">2</span>))</span><br><span class="line">print(acts[<span class="number">2</span>](<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/05/18/index/bibao2.jpg" alt="闭包2"></p>
+<p><img data-src="/2019/05/18/index/bibao2.jpg" alt="闭包2"></p>
 <p>当执行结束<code>acts = makeActions()</code>这一行代码。</p>
 <ol>
 <li>makeActions()函数内部【i】持有了 2,并且不释放；</li>
@@ -1681,7 +1682,7 @@
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeActions</span><span class="params">()</span>:</span></span><br><span class="line">    acts = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">(param)</span>:</span></span><br><span class="line">            newParam = <span class="keyword">lambda</span> x: param ** x</span><br><span class="line">            <span class="keyword">return</span> newParam</span><br><span class="line">        acts.append(g(i))</span><br><span class="line">    <span class="keyword">return</span> acts</span><br><span class="line">acts = makeActions()</span><br><span class="line">print(acts[<span class="number">0</span>](<span class="number">2</span>))</span><br><span class="line">print(acts[<span class="number">1</span>](<span class="number">2</span>))</span><br><span class="line">print(acts[<span class="number">2</span>](<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/05/18/index/bibao3.jpg" alt="第一次保留的状态"><br><img src="/2019/05/18/index/bibao4.jpg" alt="三种状态"></p>
+<p><img data-src="/2019/05/18/index/bibao3.jpg" alt="第一次保留的状态"><br><img data-src="/2019/05/18/index/bibao4.jpg" alt="三种状态"></p>
 <h4 id="5-再深入一些"><a href="#5-再深入一些" class="headerlink" title="5 再深入一些"></a>5 再深入一些</h4><p>这段代码能让你想到什么❓<br>最直观的就是：这个是个闭包</p>
 <p>但是：这段代码万万不能让我联想到：<strong>直线方程</strong>、<strong>斜率</strong>、<strong>截距</strong>、<strong>坐标系</strong>等等的概念。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一种写法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">line_conf</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">line</span><span class="params">(x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> a*x + b</span><br><span class="line">    <span class="keyword">return</span> line</span><br><span class="line"></span><br><span class="line">line1 = line_conf(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">line2 = line_conf(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line">print(line1(<span class="number">5</span>), line2(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二种写法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">line_conf</span><span class="params">(a, b, x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a*x + b</span><br><span class="line">line_conf(<span class="number">1</span>, <span class="number">1</span>, <span class="number">5</span>)</span><br><span class="line">line_conf(<span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
@@ -1826,7 +1827,7 @@
 <blockquote>
 <p>一图胜前言</p>
 </blockquote>
-<p><img src="1.jpg" alt="命名空间"></p>
+<p><img data-src="1.jpg" alt="命名空间"></p>
 <h4 id="3-生命周期"><a href="#3-生命周期" class="headerlink" title="3. 生命周期"></a>3. 生命周期</h4><ol>
 <li>内置命名空间在 Python<code>解释器启动时创建</code>，解释器<code>退出时销毁</code>；</li>
 <li>全局命名空间在模块被解释器<code>读入时创建</code>，<code>解释器退出时销毁</code>；</li>
@@ -1856,7 +1857,7 @@
 <li>Built-in（内建作用域）：最后被搜索，包含内建名字的最外层作用域。</li>
 </ol>
 <p><strong>查找规则</strong></p>
-<p><img src="2.jpg" alt="如图所示"></p>
+<p><img data-src="2.jpg" alt="如图所示"></p>
 <blockquote>
 <p>内层可以访问外层，但外层不能访问内层</p>
 </blockquote>
@@ -1878,9 +1879,9 @@
 
 <p>针对outer中x的：</p>
 <ol>
-<li><p>采用global的结果<br><img src="20.png" alt="global"></p>
+<li><p>采用global的结果<br><img data-src="20.png" alt="global"></p>
 </li>
-<li><p>采用nonlocal的结果<br><img src="30.png" alt="nonlocal"></p>
+<li><p>采用nonlocal的结果<br><img data-src="30.png" alt="nonlocal"></p>
 </li>
 </ol>
 <h4 id="3-作用域的位置"><a href="#3-作用域的位置" class="headerlink" title="3. 作用域的位置"></a>3. 作用域的位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">name &#x3D;&#39;简单即是美&#39;</span><br><span class="line"></span><br><span class="line">def f1():</span><br><span class="line">    print(name)</span><br><span class="line"></span><br><span class="line">def f2():</span><br><span class="line">    name &#x3D; &#39;Python&#39;</span><br><span class="line">    f1()</span><br><span class="line">f2()</span><br></pre></td></tr></table></figure>
@@ -1889,7 +1890,7 @@
 <p><strong>结果</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">简单即是美</span><br></pre></td></tr></table></figure>
 
-<p>倒数第二步<br><img src="31.png" alt="倒数第二步"></p>
+<p>倒数第二步<br><img data-src="31.png" alt="倒数第二步"></p>
 <p>参考链接</p>
 <p><a href="https://www.linuxidc.com/Linux/2018-12/155918.htm" target="_blank" rel="noopener">Python 中命名空间与作用域使用总结</a></p>
 
@@ -1987,7 +1988,7 @@
 <p>正确理解 Python 函数，能够更好地理解 <strong>Python 装饰器、匿名函数（lambda）、函数式编程</strong>等高阶技术。</p>
 </blockquote>
 <p>文章较长，整体内容包含如下思维导图</p>
-<p><img src="func.png" alt="概述"></p>
+<p><img data-src="func.png" alt="概述"></p>
 <h3 id="第一部分-重新认识函数"><a href="#第一部分-重新认识函数" class="headerlink" title="第一部分 重新认识函数"></a>第一部分 重新认识函数</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>Python 中函数的定义如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名<span class="params">(参数)</span>:</span></span><br><span class="line">    <span class="comment"># 内部代码</span></span><br><span class="line">    <span class="keyword">return</span> 表达式</span><br></pre></td></tr></table></figure>
 
@@ -2016,7 +2017,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd = add</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add <span class="keyword">is</span> newAdd</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
 
 <p>其实上侧的，只是不同的名字指向同一个内存地址，同时这块地址被多次引用。</p>
-<p><img src="1.jpg" alt="变量"></p>
+<p><img data-src="1.jpg" alt="变量"></p>
 <blockquote>
 <p>了解了函数是对象，以及上侧的几个性质，更得牢记一切都是对象。<br>既然是对象，性质都类似，其余的集合、参数、返回值，思考下就明白了</p>
 </blockquote>
@@ -2291,6 +2292,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

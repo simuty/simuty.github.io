@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="摘要内容......">
@@ -258,7 +259,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <img src="1.png" width="50%" height="50%" align=center />
+        <img data-src="1.png" width="50%" height="50%" align=center />
 摘要内容......
 <a id="more"></a>
 
@@ -277,11 +278,11 @@
 <p>相信大家学习编程的时候，刚接触的就是C语言吧，还记得那个main函数么</p>
 </blockquote>
 <p><code>“面向过程”(Procedure Oriented)</code>是一种以<strong>过程为中心的编程思想</strong>。就是分析出解决问题所需要的步骤，然后用函数把这些步骤一步一步实现，使用的时候一个一个依次调用就可以了。</p>
-<p><img src="1.png" alt="面向过程"></p>
+<p><img data-src="1.png" alt="面向过程"></p>
 <h4 id="2-面向对象-OOP"><a href="#2-面向对象-OOP" class="headerlink" title="2 面向对象 OOP"></a>2 面向对象 OOP</h4><p><strong>面向对象程序设计（英语：Object-oriented programming，缩写：OOP）</strong>是种具有对象概念的程序编程典范，同时也是一种程序开发的抽象方针。它可能<code>包含</code>数据、属性、代码与方法。</p>
 <p><code>对象</code>则指的是<code>类</code>的<code>实例</code>。</p>
 <p>它将对象作为程序的<code>基本单元</code>，将程序和数据封装其中，以提高软件的重用性、灵活性和扩展性，对象里的程序可以访问及经常修改对象相关连的数据。在面向对象程序编程里，计算机程序会被设计成彼此相关的对象.<a href="https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1" target="_blank" rel="noopener">摘录自维基百科</a></p>
-<p><img src="" alt="面向过程"></p>
+<p><img data-src="" alt="面向过程"></p>
 <p>三大特性是：</p>
 <ul>
 <li>封装</li>
@@ -305,7 +306,7 @@
 <p><strong>返回值</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">初始化: year 2019 mounth 5 day 26, nextDay 20190527</span><br><span class="line">&lt;__main__.Date object at 0x101bab630&gt;</span><br><span class="line">类方法: year 2019 mounth 5 day 26</span><br><span class="line">实例方法: True</span><br><span class="line">类属性： 20190526, id: 4323995760</span><br><span class="line">fake🆕类属性： 20200101, id: 4323996336</span><br></pre></td></tr></table></figure>
 
-<p><img src="2.jpg" alt="内存图"></p>
+<p><img data-src="2.jpg" alt="内存图"></p>
 <p><strong>概念定义</strong>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">类(Class): 用来描述具有相同属性和方法的对象的集合。它定义了该集合中每个对象所共有的属性和方法。其中的对象被称作类的实例。</span><br><span class="line">实例：也称对象。通过类定义的初始化方法，赋予具体的值，成为一个&quot;有血有肉的实体&quot;。</span><br><span class="line">实例化：创建类的实例的过程或操作。</span><br><span class="line">实例变量：定义在实例中的变量，只作用于当前实例。</span><br><span class="line">类变量：类变量是所有实例公有的变量。类变量定义在类中，但在方法体之外。</span><br><span class="line">数据成员：类变量、实例变量、方法、类方法、静态方法和属性等的统称。</span><br><span class="line">方法：类中定义的函数。</span><br><span class="line">静态方法：不需要实例化就可以由类执行的方法</span><br><span class="line">类方法：类方法是将类本身作为对象进行操作的方法。</span><br></pre></td></tr></table></figure>
 
@@ -565,6 +566,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

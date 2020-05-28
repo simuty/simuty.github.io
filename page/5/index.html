@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="记录点滴、分享所得">
@@ -252,7 +253,7 @@
           <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
 <li>掌握Node.js核心模块之网络模块</li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-c6a6ee0a6a22f108.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章目录"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-c6a6ee0a6a22f108.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章目录"></p>
 <blockquote>
 <p>Node.js标准库提供了 http 模块，是Node.js中非常重要的一个核心模块。</p>
 </blockquote>
@@ -260,16 +261,16 @@
 <h3 id="第一部分-http服务端"><a href="#第一部分-http服务端" class="headerlink" title="第一部分: http服务端"></a>第一部分: http服务端</h3><h4 id="1-1-HTTP是什么"><a href="#1-1-HTTP是什么" class="headerlink" title="1.1 HTTP是什么?"></a>1.1 HTTP是什么?</h4><p>HTTP是一个用来传送数据的应用层协议，在其底层使用TCP传输协议。HTTP是互联网数据通信的基础，要响应客户端请求（如：浏览器访问），首先要布署HTTP服务器。</p>
 <h4 id="1-2-HTTP之URL"><a href="#1-2-HTTP之URL" class="headerlink" title="1.2 HTTP之URL"></a>1.2 HTTP之URL</h4><p>URL: (Uniform / Universal Resource Locator，常缩写为URL)统一资源定位符,统一资源定位符的标准格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">协议类型:&#x2F;&#x2F;服务器地址（必要时需加上端口号）&#x2F;路径&#x2F;文件名</span><br></pre></td></tr></table></figure>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-0ada86699d61295d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="http1-url-structure.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-0ada86699d61295d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="http1-url-structure.png"></p>
 <h4 id="1-3-http之请求报文"><a href="#1-3-http之请求报文" class="headerlink" title="1.3 http之请求报文"></a>1.3 http之请求报文</h4><p>一个HTTP请求报文由请求行（request line）、请求头部（header）、空行和请求数据4个部分组成;</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-f50e4e26dd6acfa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2012072810301161.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-f50e4e26dd6acfa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2012072810301161.png"></p>
 <p><strong>举例子:</strong></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-cf0c5d48bf504245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201411187986714.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-cf0c5d48bf504245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201411187986714.png"></p>
 <p>请求报文中关键的字段:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">User-Agent：产生请求的浏览器类型;</span><br><span class="line">Accept：客户端可识别的响应内容类型列表;星号 “ * ” 用于按范围将类型分组，用 “ *&#x2F;* ” 指示可接受全部类型，用“ type&#x2F;* ”指示可接受 type 类型的所有子类型;</span><br><span class="line">Accept-Language：客户端可接受的自然语言;</span><br><span class="line">Accept-Encoding：客户端可接受的编码压缩格式;</span><br><span class="line">Accept-Charset：可接受的应答的字符集;</span><br><span class="line">Host：请求的主机名，允许多个域名同处一个IP 地址，即虚拟主机;</span><br><span class="line">connection：连接方式(close 或 keepalive);</span><br><span class="line">Cookie：存储于客户端扩展字段，向同一域名的服务端发送属于该域的cookie;</span><br></pre></td></tr></table></figure>
 
 <h4 id="1-4-HTTP响应报文"><a href="#1-4-HTTP响应报文" class="headerlink" title="1.4 HTTP响应报文"></a>1.4 HTTP响应报文</h4><p>HTTP 响应报文由<code>状态行、响应头部、空行 和 响应包体</code> 4 个部分组成</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-7c6e79fa4c5d355a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201446213766964.jpg"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-7c6e79fa4c5d355a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201446213766964.jpg"></p>
 <p>状态代码由三位数字组成，第一个数字定义了响应的类别，且有五种可能取值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1xx：指示信息--表示请求已接收，继续处理。</span><br><span class="line">2xx：成功--表示请求已被成功接收、理解、接受。</span><br><span class="line">3xx：重定向--要完成请求必须进行更进一步的操作。</span><br><span class="line">4xx：客户端错误--请求有语法错误或请求无法实现。</span><br><span class="line">5xx：服务器端错误--服务器未能实现合法的请求。</span><br></pre></td></tr></table></figure>
 
@@ -320,7 +321,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line"></span><br><span class="line">http.createServer(function(req, res) &#123;</span><br><span class="line">	&#x2F;&#x2F;fs模块创建流文件, 名称为post.txt</span><br><span class="line">	var file &#x3D; fs.createWriteStream(&#39;post.txt&#39;);</span><br><span class="line">	&#x2F;&#x2F;&#x2F;&#x2F;管子 pipe自动调用了data,end等事件 writeStream&#x2F;readStream</span><br><span class="line">	req.pipe(file);</span><br><span class="line">	&#x2F;&#x2F; 当有数据流时，写入数据</span><br><span class="line">	req.on(&#39;data&#39;, function(postData)&#123;</span><br><span class="line">		console.log(postData);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	req.on(&#39;end&#39;, function()&#123;</span><br><span class="line">		res.end(&#39;end&#39;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;).listen(3000);</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-3bdb0fd3627591a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="post请求"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-3bdb0fd3627591a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="post请求"></p>
 <p>参考链接<br><a href="http://www.ruanyifeng.com/blog/2016/08/http.html" target="_blank" rel="noopener">1.HTTP 协议入门</a><br><a href="http://www.ruanyifeng.com/blog/2016/08/migrate-from-http-to-https.html" target="_blank" rel="noopener">2.HTTPS 升级指南</a><br><a href="http://www.cnblogs.com/biyeymyhjob/archive/2012/07/28/2612910.html" target="_blank" rel="noopener">3.HTTP请求报文和HTTP响应报文</a><br><a href="http://yijiebuyi.com/blog/d37512fc6df0fc4d0adfc2ec5c3d46ff.html" target="_blank" rel="noopener">4.node.js querystring类介绍</a><br><a href="https://segmentfault.com/a/1190000000519006" target="_blank" rel="noopener">5.nodejs中流(stream)的理解</a><br><a href="http://www.cnblogs.com/dolphinX/p/3460545.html" target="_blank" rel="noopener">6.简单理解Socket</a></p>
 
       
@@ -413,7 +414,7 @@
 <li>理解JS 单线程、 Node.js EventLoop</li>
 <li>理解Node.js事件模块</li>
 </ol>
-<h3 id="第一部分-前提-Nodejs-EventLoop"><a href="#第一部分-前提-Nodejs-EventLoop" class="headerlink" title="第一部分 前提 Nodejs EventLoop"></a>第一部分 前提 Nodejs EventLoop</h3><h4 id="1-【堆】【栈】【队列】"><a href="#1-【堆】【栈】【队列】" class="headerlink" title="1 【堆】【栈】【队列】"></a>1 【堆】【栈】【队列】</h4><p><img src="http://upload-images.jianshu.io/upload_images/326255-bf1b1203a4c73069.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆栈队列"></p>
+<h3 id="第一部分-前提-Nodejs-EventLoop"><a href="#第一部分-前提-Nodejs-EventLoop" class="headerlink" title="第一部分 前提 Nodejs EventLoop"></a>第一部分 前提 Nodejs EventLoop</h3><h4 id="1-【堆】【栈】【队列】"><a href="#1-【堆】【栈】【队列】" class="headerlink" title="1 【堆】【栈】【队列】"></a>1 【堆】【栈】【队列】</h4><p><img data-src="http://upload-images.jianshu.io/upload_images/326255-bf1b1203a4c73069.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆栈队列"></p>
 <p>任何一种语言的运行环境都少不了*<em>堆（heap）栈（Stack）队列 (queue) *</em> JS也不例外。</p>
 <ol>
 <li>JS的<code>临时变量以及调用时的形参</code>等等数据都是存储在<code>栈</code>中；</li>
@@ -436,7 +437,7 @@
 
 <p>【JavaScript运行环境的运行机制，不是JavaScript的运行机制。】</p>
 <h4 id="3-事件循环"><a href="#3-事件循环" class="headerlink" title="3 事件循环"></a>3 事件循环</h4><p>首先我们看一下nodejs本质结构图</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-f87e70367e376a31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-f87e70367e376a31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>Node.js 通过 libuv 来处理与操作系统的交互，并且因此具备了【异步、非阻塞、事件驱动】的能力。Node.js 实际上是 Javascript 执行线程的<strong>单线程</strong>，真正的<strong>I/O 操作</strong>，底层 API 调用都是通过<code>多线程执行</code>的。</p>
 <blockquote>
 <p>本质也就是：任务接收是单线程，任务执行是多线程。</p>
@@ -448,19 +449,19 @@
 <p>带着一些列问题搞明白了理论，至于代码，那也调用哪些大神写的API吧！</p>
 <p><strong>膜拜大神三秒钟</strong></p>
 <p>技术(艺术)源自生活、高于生活。对吧。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-d471d0bb2ec57f84.gif?imageMogr2/auto-orient/strip" alt="歪瓜仁真会玩"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-d471d0bb2ec57f84.gif?imageMogr2/auto-orient/strip" alt="歪瓜仁真会玩"></p>
 <p>只要开始启动，那么这个姑娘就开始嗨起来了，其实我们事件循环也是这样的！从启动开始，就一直不停止的监听。</p>
 <p>【论英文的重要性】</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-0508d9f9917ca62d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-0508d9f9917ca62d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>一图胜千言，但我还是就下图做个简单的梳理吧。我可不想被同为学渣的老铁们骂哈。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-e991be1421256e2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-e991be1421256e2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>我们程序猿其实工作还是仅限于代码调用编写阶段，主要的核心在于理解内部原理，然后根据需求去编写(复制)代码。</p>
 <p>讲个故事吧</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JS单身狗(单线程)无异议，但它也是个贪心的黑心老板，在外边一直接活一直接活，根本无视</span><br><span class="line">员工的死活，程序猿们为了改变世界(为了生存)不得不听产品经理的安排（程序猿心中的恶魔），</span><br><span class="line">产品经理承上启下，一直分发任务(闲就不是代码狗了)，而为了理想而奋战(别给我嘚瑟四点的晨曦，</span><br><span class="line">老子刚下班)。</span><br><span class="line">世界越来越美好(为奋战的人祈祷安康)！</span><br></pre></td></tr></table></figure>
 
 
 <p>Nodejs中是怎么个情况，请看下图</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-7399386c22e242bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="event5.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-7399386c22e242bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="event5.png"></p>
 <p>好了，结束了，接下来就是代码啦。</p>
 <h3 id="第二部分-Events模块概述"><a href="#第二部分-Events模块概述" class="headerlink" title="第二部分 Events模块概述"></a>第二部分 Events模块概述</h3><h4 id="1-Events模块"><a href="#1-Events模块" class="headerlink" title="1 Events模块"></a>1 Events模块</h4><p><strong>Events模块</strong>是Node对“发布/订阅”模式（publish/subscribe）的实现。一个对象通过这个模块，向另一个对象传递消息。</p>
 <p><strong>Node</strong>中的<em>Event模块仅仅<em>提供了一个对象: *</em>EventEmitter<strong>, EventEmitter 的</strong>核心*<em>就是</em>事件触发与事件监听器功能的封装。</em></p>
@@ -599,16 +600,16 @@
 <p>打印结果如下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">a: <span class="number">4323184656</span></span><br><span class="line">b: <span class="number">4323184688</span></span><br><span class="line">c: <span class="number">4323184656</span></span><br><span class="line">-----</span><br><span class="line">x: <span class="number">4324441928</span></span><br><span class="line">------</span><br><span class="line">x[<span class="number">0</span>]: <span class="number">4323184656</span></span><br><span class="line">x[<span class="number">1</span>]: <span class="number">4323184688</span></span><br><span class="line">x[<span class="number">2</span>]: <span class="number">4323184656</span></span><br><span class="line">-----</span><br><span class="line">x: <span class="number">4324441928</span>, y: <span class="number">4324441928</span></span><br><span class="line">-----</span><br><span class="line">x: <span class="number">4326634696</span></span><br><span class="line">------</span><br><span class="line">x[<span class="number">0</span>]: <span class="number">4323184656</span></span><br><span class="line">x[<span class="number">1</span>]: <span class="number">4323184688</span></span><br><span class="line">x[<span class="number">2</span>]: <span class="number">4323184656</span></span><br><span class="line">a: <span class="number">4323184720</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="01.jpg" alt="四种情况"></p>
+<p><img data-src="01.jpg" alt="四种情况"></p>
 <ol>
 <li>尽量用<code>+=</code>,<code>-=</code>之类复合符号的，因为无需开辟新的，+=会自动调用 extend 方法进行合并运算, 共享引用；</li>
 <li><strong>【不可变对象】</strong>：如打印结果中的<code>开始和结束</code>的<code>a</code>,地址是不同的，重新申请地址；</li>
 <li><strong>【可变对象】</strong>：无需重新申请地址，但区域可长可短；</li>
 </ol>
 <h4 id="2-浅拷贝"><a href="#2-浅拷贝" class="headerlink" title="2. 浅拷贝"></a>2. 浅拷贝</h4><p>不管多么复杂的数据结构，浅拷贝都只会 copy 一层；如需<strong>完整拷贝，请参考深拷贝</strong>，还记得这个图么？</p>
-<p><img src="7.jpg" alt="浅复制"></p>
+<p><img data-src="7.jpg" alt="浅复制"></p>
 <h4 id="3-深拷贝"><a href="#3-深拷贝" class="headerlink" title="3. 深拷贝"></a>3. 深拷贝</h4><p>深拷贝——即 python 的 copy 模块提供的另一个 deepcopy 方法。深拷贝会完全复制原变量相关的所有数据，在内存中生成一套完全一样的内容，在这个过程中我们对这两个变量中的一个进行<strong>任意修改都不会影响其他变量</strong>。</p>
-<p><img src="9.jpg" alt="深复制"></p>
+<p><img data-src="9.jpg" alt="深复制"></p>
 <h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><h4 id="1-打印-Print"><a href="#1-打印-Print" class="headerlink" title="1. 打印 Print"></a>1. 打印 Print</h4><p>日常调试，还是离不开打印的，大概了解下如何打印，有两种：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. %</span><br><span class="line">2. format</span><br></pre></td></tr></table></figure>
 
@@ -618,7 +619,7 @@
 <p><strong>表格</strong>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">%s    字符串 (采用str()的显示)</span><br><span class="line">%r    字符串 (采用repr()的显示)</span><br><span class="line">%c    单个字符</span><br><span class="line">%b    二进制整数</span><br><span class="line">%d    十进制整数</span><br><span class="line">%i    十进制整数</span><br><span class="line">%o    八进制整数</span><br><span class="line">%x    十六进制整数</span><br><span class="line">%e    指数 (基底写为e)</span><br><span class="line">%E    指数 (基底写为E)</span><br><span class="line">%f    浮点数</span><br><span class="line">%F    浮点数，与上相同</span><br><span class="line">%g    指数(e)或浮点数 (根据显示长度)</span><br><span class="line">%G    指数(E)或浮点数 (根据显示长度)</span><br></pre></td></tr></table></figure>
 
-<h3 id="第三部分-前期知识汇总"><a href="#第三部分-前期知识汇总" class="headerlink" title="第三部分 前期知识汇总"></a>第三部分 前期知识汇总</h3><p><img src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="Python基础数据类型"></p>
+<h3 id="第三部分-前期知识汇总"><a href="#第三部分-前期知识汇总" class="headerlink" title="第三部分 前期知识汇总"></a>第三部分 前期知识汇总</h3><p><img data-src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="Python基础数据类型"></p>
 
       
     </div>
@@ -746,7 +747,7 @@
 </tr>
 </tbody></table>
 <p><strong>变量名完全可以看成一个内存地址的别名（只是方便我们记忆），真正的数据是存在这个内存地址的存储空间上的。变量名在运行的时候，没有任何用处。</strong></p>
-<p><img src="a.jpg" alt="赋值"></p>
+<p><img data-src="a.jpg" alt="赋值"></p>
 <h4 id="2-深入一些"><a href="#2-深入一些" class="headerlink" title="2. 深入一些"></a>2. 深入一些</h4><p>奔着：以问题来解决疑问题，先看这个代码，思考一下结果</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values</span><br></pre></td></tr></table></figure>
 
@@ -769,12 +770,12 @@
 </blockquote>
 <p>第一部分已经说过，<strong>变量名是内存的别称</strong>，</p>
 <p><code>a=10</code>的含义：内存中有个地址0x1234567的空间存了10，然后a指向这块内存。</p>
-<p><img src="1.jpg" alt="变量多次&#39;赋值‘"></p>
+<p><img data-src="1.jpg" alt="变量多次&#39;赋值‘"></p>
 <p><strong>上图中很好的证明了，变量‘赋不同值’，只是引用不同而已</strong></p>
 <p><code>values[1] = values</code>只是把自身指向自身。如图：</p>
-<p><img src="3.jpg" alt="自身引用自身"></p>
+<p><img data-src="3.jpg" alt="自身引用自身"></p>
 <p>如需达到预期效果，只需要类似于你的逻辑，<strong>指向一份值相同但内存不同的值</strong></p>
-<p><img src="5.jpg" alt="值相同但内存不同"></p>
+<p><img data-src="5.jpg" alt="值相同但内存不同"></p>
 <p>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拷贝生成一份新的数据，</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values[:]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 
@@ -782,12 +783,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = a[:]</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br><span class="line"><span class="comment"># 正确答案</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line">[<span class="number">8</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line">[<span class="number">0</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="comment"># a 与 b 的地址确实不同</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a))</span><br><span class="line"><span class="number">4355761096</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b))</span><br><span class="line"><span class="number">4355761416</span></span><br><span class="line"><span class="comment"># 但是内部list的地址确实相同的，也就是共同指向了同一块内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br></pre></td></tr></table></figure>
 
 <p>看完上图的打印结果，请看下图；</p>
-<p><img src="7.jpg" alt="浅复制"></p>
+<p><img data-src="7.jpg" alt="浅复制"></p>
 <p><strong>重点： values[:] 只是浅层复制</strong><br><strong>重点： values[:] 只是浅层复制</strong><br><strong>重点： values[:] 只是浅层复制</strong></p>
 <p>正确的复制嵌套元素的方法是进行「深复制」(deep copy)，方法是</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = copy.deepcopy(a)</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="9.jpg" alt="深复制"></p>
+<p><img data-src="9.jpg" alt="深复制"></p>
 <h4 id="3-引用-VS-拷贝："><a href="#3-引用-VS-拷贝：" class="headerlink" title="3 引用 VS 拷贝："></a>3 引用 VS 拷贝：</h4><ol>
 <li>没有限制条件的分片表达式（L[:]）能够复制序列，但此法<strong>只能浅层复制</strong>。</li>
 <li>字典 copy 方法，D.copy() 能够复制字典，但此法<strong>只能浅层复制</strong></li>
@@ -898,7 +899,7 @@
 <blockquote>
 <p>在了解Python的数据结构时，<strong>容器(container)</strong>、<strong>可迭代对象(iterable)</strong>、<strong>迭代器(iterator)</strong>、<strong>生成器(generator)</strong>、<strong>列表/集合/字典推导式(list,set,dict comprehension)</strong>众多概念参杂在一起，难免让初学者一头雾水，我将用一篇文章试图将这些概念以及它们之间的关系捋清楚。</p>
 </blockquote>
-<p><img src="relationships.png" alt="关系图"></p>
+<p><img data-src="relationships.png" alt="关系图"></p>
 <blockquote>
 <p>请仔细看上图<br>请仔细看上图<br>请仔细看上图</p>
 </blockquote>
@@ -911,7 +912,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = iter(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = iter(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(z)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(x)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">list</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(y)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">list_iterator</span>'&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>这里x是一个可迭代对象，<strong>可迭代对象和容器一样是一种通俗的叫法</strong>，并不是指某种具体的数据类型，<code>list是可迭代对象，dict是可迭代对象，set也是可迭代对象</code>。<br>y和z是两个独立的迭代器，迭代器内部持有一个状态，该状态用于记录当前迭代所在的位置，以方便下次迭代的时候获取正确的元素。<br>迭代器有一种具体的迭代器类型，比如list_iterator，set_iterator。<br><strong>可迭代对象实现了<strong>iter</strong>方法，该方法返回一个迭代器对象。</strong></p>
-<p><img src="iterable-vs-iterator.png" alt=""></p>
+<p><img data-src="iterable-vs-iterator.png" alt=""></p>
 <h4 id="3-迭代器-iterator"><a href="#3-迭代器-iterator" class="headerlink" title="3 迭代器(iterator)"></a>3 迭代器(iterator)</h4><p>那么什么迭代器呢？它是一个带状态的对象，他能在你调用next()方法的时候返回容器中的下一个值，<strong>任何实现了<strong>iter</strong>和<strong>next</strong>()（python2中实现next()）方法的对象都是迭代器</strong>，<br><strong>iter</strong>返回迭代器自身，<br><strong>next</strong>返回容器中的下一个值，<br>如果容器中没有更多元素了，则抛出StopIteration异常，至于它们到底是如何实现的这并不重要。</p>
 <p>所以，迭代器就是实现了工厂模式的对象，它在你每次你询问要下一个值的时候给你返回。有很多关于迭代器的例子，比如itertools函数返回的都是迭代器对象。</p>
 <blockquote>
@@ -931,7 +932,7 @@
 <li>生成器是一种特殊的迭代器，它的返回值不是通过return而是用yield。</li>
 </ol>
 <h3 id="第二部分-解析式"><a href="#第二部分-解析式" class="headerlink" title="第二部分 解析式"></a>第二部分 解析式</h3><h4 id="1-什么是列表解析式？"><a href="#1-什么是列表解析式？" class="headerlink" title="1 什么是列表解析式？"></a>1 什么是列表解析式？</h4><p><strong>列表解析式是将一个列表（实际上适用于任何可迭代对象（iterable））转换成另一个列表的工具。</strong>在转换过程中，可以指定元素必须符合一定的条件，才能添加至新的列表中，这样每个元素都可以按需要进行转换。<a href="http://codingpy.com/article/python-list-comprehensions-explained-visually/" target="_blank" rel="noopener">参考</a></p>
-<p><img src="ex.png" alt=""></p>
+<p><img data-src="ex.png" alt=""></p>
 <blockquote>
 <p>如果看过图就明白了，就结束啦</p>
 </blockquote>
@@ -1064,7 +1065,7 @@
 <li>掌握字典的常用操作</li>
 <li>掌握集合的常用操作</li>
 </ol>
-<p><img src="type.png" alt="整体"></p>
+<p><img data-src="type.png" alt="整体"></p>
 <h3 id="第一部分-字典"><a href="#第一部分-字典" class="headerlink" title="第一部分 字典"></a>第一部分 字典</h3><p>字典就是一个个的键值对 {key: value}，实现原理：根据key 计算 hash， 速度快。<br><strong>注意事项</strong></p>
 <ol>
 <li>key: 任意不可变对象，但不能是list；</li>
@@ -1082,15 +1083,15 @@
 
 <h4 id="3-合并"><a href="#3-合并" class="headerlink" title="3. 合并"></a>3. 合并</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 合并</span></span><br><span class="line">a_dic = &#123;<span class="string">"k"</span>: <span class="number">1</span>&#125;</span><br><span class="line">b_dic = &#123;<span class="string">'k'</span>: <span class="number">2</span>, <span class="string">"x"</span>: <span class="number">3</span>&#125;</span><br><span class="line">a_dic.update(b_dic)</span><br><span class="line">print(a_dic)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除最后一个并返回</span></span><br><span class="line">print(b_dic.popitem())</span><br><span class="line">print(b_dic)</span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="string">'k'</span>: <span class="number">2</span>, <span class="string">"x"</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="comment"># 接遍历字典获取键，根据键取值</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> dic:</span><br><span class="line">    print(key, dic[key])</span><br></pre></td></tr></table></figure>
 
-<p><img src="Dictionary.png" alt="字典"></p>
+<p><img data-src="Dictionary.png" alt="字典"></p>
 <h3 id="第二部分-集合"><a href="#第二部分-集合" class="headerlink" title="第二部分 集合"></a>第二部分 集合</h3><p><strong>set集合是一个无序不重复元素的集，基本功能包括关系测试和消除重复元素。</strong></p>
 <blockquote>
 <p>集合使用大括号({})框定元素，并以逗号进行分隔。<br>创建一个空集合，必须用 set() 而不是 {} ，因为后者创建的是一个空字典。</p>
 </blockquote>
 <h4 id="1-集合操作"><a href="#1-集合操作" class="headerlink" title="1. 集合操作"></a>1. 集合操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">set1 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line">print(set1 ^ set2)</span><br><span class="line">print(set1 - set2)</span><br><span class="line">print(set2 - set1)</span><br><span class="line">print(set1 &amp; set2)</span><br><span class="line">print(set1 | set2)</span><br><span class="line"></span><br><span class="line">a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">print(a)</span><br><span class="line">b = a.add(<span class="number">5</span>)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
 
-<p><img src="handleSet.png" alt="实例"></p>
-<p><img src="Set.png" alt="set"></p>
+<p><img data-src="handleSet.png" alt="实例"></p>
+<p><img data-src="Set.png" alt="set"></p>
 
       
     </div>
@@ -1221,17 +1222,17 @@
 <td>可哈希，可以作为字典的关键字</td>
 </tr>
 </tbody></table>
-<p><img src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="整体图"></p>
+<p><img data-src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="整体图"></p>
 <h3 id="第二部分-List"><a href="#第二部分-List" class="headerlink" title="第二部分 List"></a>第二部分 List</h3><blockquote>
 <p>Python的列表是一个<strong>有序可重复</strong>的元素集合，可嵌套、迭代、修改、分片、追加、删除，成员判断。<br>从数据结构角度看，Python的列表是一个可变长度的顺序存储结构，每一个位置存放的都是<strong>对象的指针</strong>。</p>
 </blockquote>
 <p>比如，对于这个列表 alist = [1, “a”, [11,22], {“k1”:”v1”}]，其在内存内的存储方式是这样的：</p>
-<p><img src="mem.png" alt="内存地址"></p>
+<p><img data-src="mem.png" alt="内存地址"></p>
 <h4 id="1-什么是list"><a href="#1-什么是list" class="headerlink" title="1. 什么是list?"></a>1. 什么是list?</h4><p>概念： 逗号分隔的不同的数据项使用方括号括起来即是list;<br>性质： list元素可变,改变的是原对象</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; tmpList &#x3D; []  # 创建一个空列表</span><br><span class="line">&gt;&gt;&gt; numList &#x3D; [1, 2, 3, 4]</span><br><span class="line">&gt;&gt;&gt; allList &#x3D; [1, &#39;a&#39;, [11,22], &#123;&#39;k1&#39;:&#39;v1&#39;&#125;]</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-增删改"><a href="#2-增删改" class="headerlink" title="2. 增删改"></a>2. 增删改</h3><p><strong>以xmind的方式呈现</strong></p>
-<p><img src="List.png" alt=""></p>
+<p><img data-src="List.png" alt=""></p>
 <h3 id="第三部分-Tuple"><a href="#第三部分-Tuple" class="headerlink" title="第三部分 Tuple"></a>第三部分 Tuple</h3><blockquote>
 <p>类似于list的对象，</p>
 <blockquote>
@@ -1249,14 +1250,14 @@
 
 <p>这个tuple定义的时候有3个元素，分别是’a’，’b’和一个list。不是说tuple一旦定义后就不可变了吗？怎么后来又变了？</p>
 <p>别急，我们先看看定义的时候tuple包含的3个元素：</p>
-<p><img src="0.png" alt="初始化"></p>
+<p><img data-src="0.png" alt="初始化"></p>
 <p>当我们把list的元素’A’和’B’修改为’X’和’Y’后，tuple变为：</p>
-<p><img src="1.png" alt="改变"></p>
+<p><img data-src="1.png" alt="改变"></p>
 <p>表面上看，tuple的元素确实变了，但其实变的不是tuple的元素，<strong>而是list的元素</strong>。tuple一开始指向的list并没有改成别的list，所以，tuple所谓的“不变”是说，tuple的每个元素，指向永远不变。即指向’a’，就不能改成指向’b’，指向一个list，就不能改成指向其他对象，但指向的这个list本身是可变的！</p>
 <blockquote>
 <p>绝对不变的元组：必须保证tuple的每一个元素本身也不能变。</p>
 </blockquote>
-<p><img src="tuple.png" alt=""></p>
+<p><img data-src="tuple.png" alt=""></p>
 <h3 id="第三部分-深浅拷贝"><a href="#第三部分-深浅拷贝" class="headerlink" title="第三部分 深浅拷贝"></a>第三部分 深浅拷贝</h3><p>对列表和元组进行拷贝时，默认进行的是 <strong>浅拷贝</strong>：<em>只拷贝成员对象的引用</em>，而不会拷贝引用指向的成员对象本身。借助于 <a href="http://docs.python.org/2/library/copy.html" target="_blank" rel="noopener">copy模块</a> 的deepcopy方法，可以实现深拷贝</p>
 <blockquote>
 <p>深拷贝：既拷贝成员对象的引用，又会拷贝引用指向的成员对象本身。<br>浅拷贝：只拷贝成员对象的引用，而不会拷贝引用指向的成员对象本身</p>
@@ -1265,7 +1266,7 @@
 <blockquote>
 <p>浅拷贝和深拷贝的示意图如下：</p>
 </blockquote>
-<p><img src="copy.png" alt=""></p>
+<p><img data-src="copy.png" alt=""></p>
 <p>关于浅拷贝和深拷贝的实际案例，可以参考 <a href="http://book.douban.com/subject/3112503/" target="_blank" rel="noopener">《Python核心编程（第二版）》</a> 中的 『6.20』 一节：『*拷贝Python对象、浅拷贝和深拷贝』。</p>
 <p>参考链接</p>
 <p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017092876846880" target="_blank" rel="noopener">使用list和tuple</a></p>
@@ -1361,7 +1362,7 @@
           <blockquote>
 <p>字符串是编程必然面临的类型，常用指数之高，不得不先了解下Python中字符串的概念与常用方法</p>
 </blockquote>
-<p><img src="string.png" alt=""></p>
+<p><img data-src="string.png" alt=""></p>
 <h3 id="第一部分-基础"><a href="#第一部分-基础" class="headerlink" title="第一部分 基础"></a>第一部分 基础</h3><h4 id="1-不可变类型"><a href="#1-不可变类型" class="headerlink" title="1. 不可变类型"></a>1. 不可变类型</h4><p>作为不可变类型，主要涉及两个概念<strong>赋值、引用</strong>，先看三种定义字符串的方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种</span><br><span class="line">var1 &#x3D; &#39;Hello world&#39;</span><br><span class="line">&#x2F;&#x2F; 第二种</span><br><span class="line">var1 &#x3D; &quot;Pyhoth&quot;</span><br><span class="line">&#x2F;&#x2F; 第三种</span><br><span class="line">var2 &#x3D; &quot;&quot;&quot;  </span><br><span class="line">&gt;&gt;&gt; a &#x3D; &quot;asd&quot;</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4431000496</span><br><span class="line">&gt;&gt;&gt; a &#x3D; &quot;122&quot;</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4431000552</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
 
@@ -1369,7 +1370,7 @@
 <blockquote>
 <p>1.1 为何说是不可变类型，怎么var1还可以<strong>等于</strong>Python？</p>
 </blockquote>
-<p><img src="1.jpg" alt=""></p>
+<p><img data-src="1.jpg" alt=""></p>
 <p>Python 没有赋值，只有引用。可以从代码中第三种可以看出，同样的字符串<code>a</code>, 内存地址是不一样的。原因在于，第二次的<code>所谓赋值</code>，其实<strong>是重新创建一块内存，然后将a指向新内存地址</strong></p>
 <h3 id="第二部分-内建函数"><a href="#第二部分-内建函数" class="headerlink" title="第二部分 内建函数"></a>第二部分 内建函数</h3><h4 id="1-填充"><a href="#1-填充" class="headerlink" title="1 填充"></a>1 填充</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var3 &#x3D; &quot;1234&quot;</span><br><span class="line"># 填充字符串</span><br><span class="line">print(var3.center(10, &quot;*&quot;))</span><br><span class="line">print(var3.ljust(10, &#39;^&#39;))</span><br><span class="line">print(var3.rjust(10, &quot;^&quot;))</span><br><span class="line">print(var3.zfill(10))</span><br><span class="line"></span><br><span class="line"># 返回值</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">***1234***</span><br><span class="line">1234^^^^^^</span><br><span class="line">^^^^^^1234</span><br><span class="line">0000001234</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
 
@@ -1501,7 +1502,7 @@
 </ol>
 </li>
 </ul>
-<p><img src="type.png" alt="Python数据类型"></p>
+<p><img data-src="type.png" alt="Python数据类型"></p>
 <h2 id="第一部分-数字类型"><a href="#第一部分-数字类型" class="headerlink" title="第一部分 数字类型"></a>第一部分 数字类型</h2><p><strong>数字类型用于存储数学意义上的数值。</strong></p>
 <p>Python 支持三种不同的数字类型，<strong>整数、浮点数和复数</strong>：</p>
 <h3 id="1-整数"><a href="#1-整数" class="headerlink" title="1. 整数"></a>1. 整数</h3><p>定义：正或负整数，不带小数点的数</p>
@@ -1523,7 +1524,7 @@
 <p>把 a 删了，然后创建一个 b,地址是一样的。</p>
 <h3 id="2-浮点数"><a href="#2-浮点数" class="headerlink" title="2. 浮点数"></a>2. 浮点数</h3><p>浮点数也就是小数<br>对于很大或很小的浮点数，一般用科学计数法表示，把10用e替代，1.23x10^9就是1.23e9，或者12.3e8，0.000012可以写成1.2e-5，等等。</p>
 <h3 id="3-复数"><a href="#3-复数" class="headerlink" title="3. 复数"></a>3. 复数</h3><p><strong>复数由实数部分和虚数部分构成</strong>，可以用a + bj,或者complex(a,b)表示，复数的实部a和虚部b都是浮点型。关于复数，不做科学计算或其它特殊需要，通常很难遇到。</p>
-<h2 id="第二部分-操作数字类型"><a href="#第二部分-操作数字类型" class="headerlink" title="第二部分 操作数字类型"></a>第二部分 操作数字类型</h2><p><img src="number.png" alt="数字类型操作"></p>
+<h2 id="第二部分-操作数字类型"><a href="#第二部分-操作数字类型" class="headerlink" title="第二部分 操作数字类型"></a>第二部分 操作数字类型</h2><p><img data-src="number.png" alt="数字类型操作"></p>
 <h3 id="1-简单常用的计算"><a href="#1-简单常用的计算" class="headerlink" title="1. 简单常用的计算"></a>1. 简单常用的计算</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line"># print(dir(math))</span><br><span class="line"># print(abs(-10))</span><br><span class="line"># print(cmp(1, 3))</span><br><span class="line"># print(math.exp(2))</span><br><span class="line"># print(math.ceil(1.2), math.ceil(-1.2))</span><br><span class="line"># print(math.floor(1.2))</span><br><span class="line"># print(max([12, 1]))</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-随机操作"><a href="#2-随机操作" class="headerlink" title="2. 随机操作"></a>2. 随机操作</h3><p>主要还没涉及更复杂的计算，只是罗列一些可能常用的方法；<br>真值分部相关的操作，如正态分部啥的，因为暂无需求，</p>
@@ -1653,7 +1654,7 @@
 <h5 id="实例一-眼见为实"><a href="#实例一-眼见为实" class="headerlink" title="实例一 眼见为实"></a>实例一 眼见为实</h5><p>下载一个常用的框架—ExpressJs，借此展示一下效果，并熟悉一个 ExpressJs</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
+<p><img data-src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
 <h5 id="实例二-初识-package-json-文件"><a href="#实例二-初识-package-json-文件" class="headerlink" title="实例二 初识 package.json 文件"></a>实例二 初识 package.json 文件</h5><p>简单说就是，记录文件，记录项目依赖的模块。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
 
@@ -1713,7 +1714,7 @@
 <td>不符合传统编程思维</td>
 </tr>
 </tbody></table>
-<p><img src="/2019/05/03/index/3.jpg" alt="对比"></p>
+<p><img data-src="/2019/05/03/index/3.jpg" alt="对比"></p>
 <h4 id="第二部分-异步式编程-函数式编程"><a href="#第二部分-异步式编程-函数式编程" class="headerlink" title="第二部分 异步式编程(函数式编程)"></a>第二部分 异步式编程(函数式编程)</h4><p>有异步I/O，就必然有异步编程。<br>首先以同步式编程的语法读取一个文件:</p>
 <p><em>创建readfilesync.js, 并执行</em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
@@ -1728,7 +1729,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
 
 <p>fs.readFile 调用时所做的工作只是<code>将异步式 I/O 请求发给了操作系统</code>， 然后<code>立即返回</code>并执行后面的语句，执行完以后进入事件循环监听事件。  fs 接到I/O 请求完成的事件时，<code>事件循环会主动调用</code>回调函数以完成后续工作。<code>因此我们会先看到 end.然后看到 file.txt 文件的内容。</code></p>
-<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img src="/2019/05/03/index/4.jpg" alt="循环"></p>
+<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img data-src="/2019/05/03/index/4.jpg" alt="循环"></p>
 <blockquote>
 <p>Node.js 在什么时候会进入事件循环呢? </p>
 </blockquote>
@@ -1932,6 +1933,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

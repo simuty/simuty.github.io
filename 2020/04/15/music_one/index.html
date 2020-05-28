@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta property="og:type" content="article">
@@ -262,7 +263,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <img src="../../../../images/photos/2020/006.jpg" width=80% />
+        <img data-src="../../../../images/photos/2020/006.jpg" width=80% />
 
 <a id="more"></a>
 
@@ -357,12 +358,12 @@
 <li>React.memo(…)减少函数组件的无用渲染</li>
 </ul>
 <h4 id="redux-devtools-extension-调试工具"><a href="#redux-devtools-extension-调试工具" class="headerlink" title="redux-devtools-extension 调试工具"></a>redux-devtools-extension 调试工具</h4><p><a href="http://extension.remotedev.io/" target="_blank" rel="noopener">redux-devtools-extension 官网</a></p>
-<p><img src="09.png" alt="redux-devtools-extension"></p>
-<p><img src="10.png" alt="使用说明"><br>图片来源：<a href="https://blog.csdn.net/achenyuan/article/details/80884895" target="_blank" rel="noopener">https://blog.csdn.net/achenyuan/article/details/80884895</a></p>
+<p><img data-src="09.png" alt="redux-devtools-extension"></p>
+<p><img data-src="10.png" alt="使用说明"><br>图片来源：<a href="https://blog.csdn.net/achenyuan/article/details/80884895" target="_blank" rel="noopener">https://blog.csdn.net/achenyuan/article/details/80884895</a></p>
 <h2 id="第三部分-数据链路"><a href="#第三部分-数据链路" class="headerlink" title="第三部分 数据链路"></a>第三部分 数据链路</h2><p>redux在之前的文章中已经有过学习，包含了主要的步骤以及概念。可以参考前几天的<a href="https://simuty.com/2020/04/10React%E7%B3%BB%E5%88%97-Redux/">—-React系列-Redux&lt;2&gt;</a>。</p>
 <p>可以参考下册两个图，加以回忆。</p>
-<p><img src="04.gif" alt="流程"></p>
-<p><img src="03.png" alt="代码主要步骤"></p>
+<p><img data-src="04.gif" alt="流程"></p>
+<p><img data-src="03.png" alt="代码主要步骤"></p>
 <p>按照之前的理解就可以直接上手，初始化<br>action -&gt; dispatch -&gt; reducer =&gt; new state =&gt; update UI.</p>
 <p>其中有个问题，如何 <strong>高效</strong> 的处理state事关 <strong>性能优劣</strong>。前一节，对<a href="https://simuty.com/2020/04/13React%E7%B3%BB%E5%88%97-immutable%E4%B8%8A%E4%B8%8B%E6%96%87/"></a></p>
 <h3 id="react-amp-redux-amp-react-redux"><a href="#react-amp-redux-amp-react-redux" class="headerlink" title="react &amp; redux &amp; react-redux"></a>react &amp; redux &amp; react-redux</h3><p>三者之间的关系可以看下册官方说明</p>
@@ -371,8 +372,8 @@
 <li>Redux：数据处理中心； <a href="https://redux.js.org/introduction/getting-started" target="_blank" rel="noopener">redux 官网</a></li>
 <li>React-Redux：连接组件和数据中心，也就是把React和Redux联系起来。 <a href="https://react-redux.js.org/" target="_blank" rel="noopener">react-redux 官网</a></li>
 </ol>
-<p><img src="05.jpg" alt="回顾下react生命周期"></p>
-<p><img src="06.jpg" alt="redex核心"></p>
+<p><img data-src="05.jpg" alt="回顾下react生命周期"></p>
+<p><img data-src="06.jpg" alt="redex核心"></p>
 <p><strong>React-Redux</strong></p>
 <p>Redux 本身和React没有关系，只是数据处理中心，是React-Redux让他们联系在一起。</p>
 <p>React-Redux提供两个方法：</p>
@@ -388,8 +389,8 @@
 <li>mapStateToProps：从Redux状态树中提取需要的部分作为props传递给当前的组件。</li>
 <li>mapDispatchToProps：将需要绑定的响应事件（action）作为props传递到组件上。</li>
 </ol>
-<p><img src="07.jpg" alt="connent"></p>
-<h4 id="三者之间的关系"><a href="#三者之间的关系" class="headerlink" title="三者之间的关系"></a>三者之间的关系</h4><p><img src="08.jpg" alt="关系"></p>
+<p><img data-src="07.jpg" alt="connent"></p>
+<h4 id="三者之间的关系"><a href="#三者之间的关系" class="headerlink" title="三者之间的关系"></a>三者之间的关系</h4><p><img data-src="08.jpg" alt="关系"></p>
 <h3 id="redux-thunk"><a href="#redux-thunk" class="headerlink" title="redux-thunk"></a>redux-thunk</h3><p><a href="https://github.com/reduxjs/redux-thunk" target="_blank" rel="noopener">redux-thunk</a><br>With a plain basic Redux store, you can only do simple synchronous updates by dispatching an action. Middleware extend the store’s abilities, and let you write async logic that interacts with the store.</p>
 <p>Thunks are the recommended middleware for basic Redux side effects logic, including complex synchronous logic that needs access to the store, and simple async logic like AJAX requests.</p>
 <p>学习 <a href="https://zhuanlan.zhihu.com/p/85403048" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/85403048</a></p>
@@ -619,6 +620,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

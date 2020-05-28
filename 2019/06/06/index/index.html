@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="温故知新推荐一本书 —《网络是怎样连接的》  本系列为学习该书📚的学习汇总   同时会包含一些补充   完整内容可购买阅读相关该📚   目标 回顾 HTTP 请求消息 掌握 ip地址、子网掩码、子网的计算   目录  接下来会围绕第一章进行学习   第一部分 整体概述HTTP 请求消息URL： Uniform Resource Locator，统一资源定位符。FTP： File Transf">
@@ -289,30 +290,30 @@
 <li>掌握 ip地址、子网掩码、子网的计算</li>
 </ul>
 <hr>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><img src="1.jpg" alt="目录"></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><img data-src="1.jpg" alt="目录"></p>
 <blockquote>
 <p>接下来会围绕第一章进行学习</p>
 </blockquote>
-<p><img src="15598029663358.jpg" alt="-w545"></p>
+<p><img data-src="15598029663358.jpg" alt="-w545"></p>
 <h3 id="第一部分-整体概述"><a href="#第一部分-整体概述" class="headerlink" title="第一部分 整体概述"></a>第一部分 整体概述</h3><h4 id="HTTP-请求消息"><a href="#HTTP-请求消息" class="headerlink" title="HTTP 请求消息"></a>HTTP 请求消息</h4><p>URL： Uniform Resource Locator，统一资源定位符。<br>FTP： File Transfer Protocol， 文件传送协议。 这是一种在上传、下载文件时使用的协议。使用 FTP 协议来传送文件的程序也被叫作 FTP。</p>
-<h4 id="常见的URL分类"><a href="#常见的URL分类" class="headerlink" title="常见的URL分类"></a>常见的URL分类</h4><p>日常用的最多的是HTTP： Hypertext Transfer Protocol，超文本传送协议, 但也有其他一些，如下图：<br><img src="15598034956658.jpg" alt="-w543"></p>
+<h4 id="常见的URL分类"><a href="#常见的URL分类" class="headerlink" title="常见的URL分类"></a>常见的URL分类</h4><p>日常用的最多的是HTTP： Hypertext Transfer Protocol，超文本传送协议, 但也有其他一些，如下图：<br><img data-src="15598034956658.jpg" alt="-w543"></p>
 <h4 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h4><p>HTTP 协议定义了<code>客户端和服务器之间交互的消息内容和步骤</code>。</p>
 <p>大致过程如下，客户端请求，服务器返回相应的数据。</p>
-<p><img src="15598039794266.jpg" alt="-w544"></p>
+<p><img data-src="15598039794266.jpg" alt="-w544"></p>
 <p>如何访问服务器中，特定的资源？看下边的URL图解</p>
-<p><img src="15598039030172.jpg" alt="-w548"></p>
+<p><img data-src="15598039030172.jpg" alt="-w548"></p>
 <h4 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h4><p>有了整体的大致流程，也有了拆分URL的图解，就看下有哪些方法吧，浏览器访问属于GET.</p>
-<p><img src="15598043575873.jpg" alt="-w560"></p>
+<p><img data-src="15598043575873.jpg" alt="-w560"></p>
 <blockquote>
 <p>URI： Uniform Resource Identifier，统一资源标识符。</p>
 </blockquote>
-<p><img src="15598053253527.jpg" alt="-w535"><br><img src="15598053387188.jpg" alt="-w535"><br><img src="15598053724873.jpg" alt="-w551"></p>
-<p><img src="15598051510339.jpg" alt="-w2002"></p>
+<p><img data-src="15598053253527.jpg" alt="-w535"><br><img data-src="15598053387188.jpg" alt="-w535"><br><img data-src="15598053724873.jpg" alt="-w551"></p>
+<p><img data-src="15598051510339.jpg" alt="-w2002"></p>
 <h3 id="第二部分-IP地址"><a href="#第二部分-IP地址" class="headerlink" title="第二部分 IP地址"></a>第二部分 IP地址</h3><blockquote>
 <p>该部分摘录自<a href="https://blog.51cto.com/6930123/2112403" target="_blank" rel="noopener">《IP地址详解》</a>，详情请参看原文。</p>
 </blockquote>
 <h4 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a>IP地址分类</h4><p><strong>IP地址（Internet Protocol Address），缩写为IP Adress</strong>，是一种在Internet上的给主机统一编址的地址格式，也称为网络协议（IP协议）地址。它为互联网上的每一个网络和每一台主机分配一个逻辑地址，常见的IP地址，分为<code>IPv4</code>与<code>IPv6</code>两大类，当前广泛应用的是IPv4，目前IPv4几乎耗尽，下一阶段必然会进行版本升级到IPv6；如无特别注明，一般我们讲的的IP地址所指的是IPv4。</p>
-<p><img src="01b93a1d0acac52cc0bd4878696d4098.png" alt="01b93a1d0acac52cc0bd4878696d4098-w473"></p>
+<p><img data-src="01b93a1d0acac52cc0bd4878696d4098.png" alt="01b93a1d0acac52cc0bd4878696d4098-w473"></p>
 <p>IP地址分<strong>A、B、C、D、E五类</strong>，其中A、B、C这三类是比较常用的IP地址，D、E类为特殊地址。</p>
 <blockquote>
 <p>IP 地址是一串 32 比特的数字，按照 8 比特（1 字节）为一组分成 4 组，分别用十进制表示 然后再用圆点隔开。</p>
@@ -320,9 +321,9 @@
 <blockquote>
 <p>在计算机二进制中，1个字节 = 8位 = 8bit（比特）</p>
 </blockquote>
-<p><img src="15598063874073.jpg" alt="-w375"></p>
+<p><img data-src="15598063874073.jpg" alt="-w375"></p>
 <p><strong>Ip地址汇总</strong></p>
-<p><img src="15598087831047.jpg" alt=""></p>
+<p><img data-src="15598087831047.jpg" alt=""></p>
 <blockquote>
 <p><strong>注：</strong> 为何减去2？</p>
 </blockquote>
@@ -331,8 +332,8 @@
 <p><code>私网IP地址</code><br>创建IP寻址方案的人也创建了私网IP地址。这些地址可以被用于私有网络，在Internet没有这些IP地址，Internet上的路由器也没有到私有网络的路由表。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A类：10.0.0.0 255.0.0.0，保留了1个A类网络。</span><br><span class="line">B类：172.16.0.0 255.255.0.0～172.31.0.0 255.255.0.0，保留了16个B类网络。</span><br><span class="line">C类：192.168.0.0 255.255.255.0～192.168.255.0 255.255.255.0，保留了256个C类网络。</span><br><span class="line">PS：私网地址访问Internet需要做NAT或PAT网络地址转换</span><br></pre></td></tr></table></figure>
 
-<p><img src="15598095553143.jpg" alt=""></p>
-<p><img src="15598095596202.jpg" alt=""></p>
+<p><img data-src="15598095553143.jpg" alt=""></p>
+<p><img data-src="15598095596202.jpg" alt=""></p>
 <h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><h5 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h5><p>IP地址在设计时就考虑到<code>地址分配的层次特点</code>，将每个IP地址都分割成<code>网络号</code>和<code>主机号</code>两部分，以便于IP地址的<strong>寻址操作</strong>。</p>
 <blockquote>
 <p>如何确定：IP地址的网络号和主机号各是多少位呢？</p>
@@ -354,7 +355,7 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">And按位与运算：</span><br><span class="line">与运算是计算机中一种基本的逻辑运算方式，符号表示为&amp;，也可以表示为 and。</span><br><span class="line">参加运算的两个数据，按二进制位进行“与”运算。</span><br><span class="line">运算规则：0&amp;0&#x3D;0；0&amp;1&#x3D;0；1&amp;0&#x3D;0；1&amp;1&#x3D;1；</span><br><span class="line">即：两位同时为“1”，结果才为“1”，否则为0</span><br></pre></td></tr></table></figure>
 
-<p><img src="15598304763666.jpg" alt=""></p>
+<p><img data-src="15598304763666.jpg" alt=""></p>
 <blockquote>
 <p>网络地址计算小技巧：IP地址和子网掩码做与运算，把IP地址的主机位直接归0，就快速得到网络地址。所以只要一看到IP地址和子网掩码，就能马上确认网络地址。</p>
 </blockquote>
@@ -366,7 +367,7 @@
 </blockquote>
 <p>做子网划分后的IP地址：网络号＋子网号＋子网主机号<br>举个栗子：<br>如：192.168.1.100/25，其子网掩码表示：255.255.255.128</p>
 <h4 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h4><p>子网划分是通过<strong>借用IP地址中若干位【主机地址】来充当子网的【网络地址】，从而将原网络划分为若干子网。</strong></p>
-<p><img src="15598306058611.jpg" alt=""></p>
+<p><img data-src="15598306058611.jpg" alt=""></p>
 <p>划分子网时，随着子网地址借用主机位数的增多，子网的数目随之增加，但每个子网中的可用主机数逐渐减少。</p>
 <p>如C类地址，原有8位主机位，2^8-2即254个主机地址，默认子网掩码255.255.255.0。(全0或全1不可用）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">借用1位主机位，产生2^1-2&#x3D;0个子网，每个子网有2^7-2个主机地址；</span><br><span class="line">借用2位主机位，产生2^2-2&#x3D;2个子网，每个子网有2^6-2个主机地址;</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
@@ -407,7 +408,7 @@
 <p>11111111 11111111 <code>11</code>000000 00000000 [255.255.192.0]<br>11111111 11111111 00000000 00000000 [255.255.255.0]</p>
 <p>①利用子网掩码计算，最多可以划分4个子网络,【差两位，2的2次方=4】<br>②利用子网掩码计算，每个子网络可容纳16384台主机（包括网络地址和广播地址）【2的14次方-2】<br>③用16384除以256（网段内包括网络地址和广播地址的全部主机数），结果是<code>64</code><br>④具体划分网络起止方法如下：</p>
 <p>172.16.0.0～172.16.<code>63</code>.255<br>172.16.<code>64</code>.0～172.16.127.255<br>172.16.<code>128</code>.0～172.16.191.255<br>172.16.<code>192</code>.0～172.16.255.255</p>
-<p><img src="15598058385491.jpg" alt="-w556"></p>
+<p><img data-src="15598058385491.jpg" alt="-w556"></p>
 <h3 id="推荐阅读【参考链接】："><a href="#推荐阅读【参考链接】：" class="headerlink" title="推荐阅读【参考链接】："></a>推荐阅读【参考链接】：</h3><p><a href="https://blog.51cto.com/6930123/2112403" target="_blank" rel="noopener">IP地址和子网划分学习笔记之《IP地址详解》系列</a><br><a href="http://www.360doc.com/content/18/0921/19/37113458_788584404.shtml" target="_blank" rel="noopener">什么是子网？什么是子网掩码？</a><br><a href="https://baike.baidu.com/item/%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86/5446046" target="_blank" rel="noopener">百度百科—子网划分</a><br><a href="https://blog.csdn.net/xwq911/article/details/45368853" target="_blank" rel="noopener">子网数、主机数与子网掩码的关系</a></p>
 
     </div>
@@ -633,6 +634,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="总览 Python 数据类型  目标   了解Python有几种数据类型    认识Python的数字类型    重点掌握对数字类型的操作     第一部分 数字类型数字类型用于存储数学意义上的数值。 Python 支持三种不同的数字类型，整数、浮点数和复数： 1. 整数定义：正或负整数，不带小数点的数 Python 的整数长度为 32 位，并且通常是连续分配内存空间的。 12345&gt;&amp;g">
@@ -275,7 +276,7 @@
 </ol>
 </li>
 </ul>
-<p><img src="type.png" alt="Python数据类型"></p>
+<p><img data-src="type.png" alt="Python数据类型"></p>
 <h2 id="第一部分-数字类型"><a href="#第一部分-数字类型" class="headerlink" title="第一部分 数字类型"></a>第一部分 数字类型</h2><p><strong>数字类型用于存储数学意义上的数值。</strong></p>
 <p>Python 支持三种不同的数字类型，<strong>整数、浮点数和复数</strong>：</p>
 <h3 id="1-整数"><a href="#1-整数" class="headerlink" title="1. 整数"></a>1. 整数</h3><p>定义：正或负整数，不带小数点的数</p>
@@ -297,7 +298,7 @@
 <p>把 a 删了，然后创建一个 b,地址是一样的。</p>
 <h3 id="2-浮点数"><a href="#2-浮点数" class="headerlink" title="2. 浮点数"></a>2. 浮点数</h3><p>浮点数也就是小数<br>对于很大或很小的浮点数，一般用科学计数法表示，把10用e替代，1.23x10^9就是1.23e9，或者12.3e8，0.000012可以写成1.2e-5，等等。</p>
 <h3 id="3-复数"><a href="#3-复数" class="headerlink" title="3. 复数"></a>3. 复数</h3><p><strong>复数由实数部分和虚数部分构成</strong>，可以用a + bj,或者complex(a,b)表示，复数的实部a和虚部b都是浮点型。关于复数，不做科学计算或其它特殊需要，通常很难遇到。</p>
-<h2 id="第二部分-操作数字类型"><a href="#第二部分-操作数字类型" class="headerlink" title="第二部分 操作数字类型"></a>第二部分 操作数字类型</h2><p><img src="number.png" alt="数字类型操作"></p>
+<h2 id="第二部分-操作数字类型"><a href="#第二部分-操作数字类型" class="headerlink" title="第二部分 操作数字类型"></a>第二部分 操作数字类型</h2><p><img data-src="number.png" alt="数字类型操作"></p>
 <h3 id="1-简单常用的计算"><a href="#1-简单常用的计算" class="headerlink" title="1. 简单常用的计算"></a>1. 简单常用的计算</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line"># print(dir(math))</span><br><span class="line"># print(abs(-10))</span><br><span class="line"># print(cmp(1, 3))</span><br><span class="line"># print(math.exp(2))</span><br><span class="line"># print(math.ceil(1.2), math.ceil(-1.2))</span><br><span class="line"># print(math.floor(1.2))</span><br><span class="line"># print(max([12, 1]))</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-随机操作"><a href="#2-随机操作" class="headerlink" title="2. 随机操作"></a>2. 随机操作</h3><p>主要还没涉及更复杂的计算，只是罗列一些可能常用的方法；<br>真值分部相关的操作，如正态分部啥的，因为暂无需求，</p>
@@ -529,6 +530,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

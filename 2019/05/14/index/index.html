@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="目标 掌握Node.js核心模块之网络模块    Node.js标准库提供了 http 模块，是Node.js中非常重要的一个核心模块。  通过http模块，你可以使用其http.createServer方法创建一个http服务器，也可以使用其http.request方法创建一个http客户端。 第一部分: http服务端1.1 HTTP是什么?HTTP是一个用来传送数据的应用层协议，在其底层使用">
@@ -36,9 +37,9 @@
 <meta property="article:published_time" content="2019-05-14T02:38:59.000Z">
 <meta property="article:modified_time" content="2020-05-15T18:54:00.843Z">
 <meta property="article:author" content="Howard">
+<meta property="article:tag" content="Http">
 <meta property="article:tag" content="模块">
 <meta property="article:tag" content="Node">
-<meta property="article:tag" content="Http">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/326255-c6a6ee0a6a22f108.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
@@ -264,7 +265,7 @@
         <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
 <li>掌握Node.js核心模块之网络模块</li>
 </ul>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-c6a6ee0a6a22f108.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章目录"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-c6a6ee0a6a22f108.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章目录"></p>
 <blockquote>
 <p>Node.js标准库提供了 http 模块，是Node.js中非常重要的一个核心模块。</p>
 </blockquote>
@@ -272,16 +273,16 @@
 <h3 id="第一部分-http服务端"><a href="#第一部分-http服务端" class="headerlink" title="第一部分: http服务端"></a>第一部分: http服务端</h3><h4 id="1-1-HTTP是什么"><a href="#1-1-HTTP是什么" class="headerlink" title="1.1 HTTP是什么?"></a>1.1 HTTP是什么?</h4><p>HTTP是一个用来传送数据的应用层协议，在其底层使用TCP传输协议。HTTP是互联网数据通信的基础，要响应客户端请求（如：浏览器访问），首先要布署HTTP服务器。</p>
 <h4 id="1-2-HTTP之URL"><a href="#1-2-HTTP之URL" class="headerlink" title="1.2 HTTP之URL"></a>1.2 HTTP之URL</h4><p>URL: (Uniform / Universal Resource Locator，常缩写为URL)统一资源定位符,统一资源定位符的标准格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">协议类型:&#x2F;&#x2F;服务器地址（必要时需加上端口号）&#x2F;路径&#x2F;文件名</span><br></pre></td></tr></table></figure>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-0ada86699d61295d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="http1-url-structure.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-0ada86699d61295d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="http1-url-structure.png"></p>
 <h4 id="1-3-http之请求报文"><a href="#1-3-http之请求报文" class="headerlink" title="1.3 http之请求报文"></a>1.3 http之请求报文</h4><p>一个HTTP请求报文由请求行（request line）、请求头部（header）、空行和请求数据4个部分组成;</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-f50e4e26dd6acfa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2012072810301161.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-f50e4e26dd6acfa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2012072810301161.png"></p>
 <p><strong>举例子:</strong></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-cf0c5d48bf504245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201411187986714.png"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-cf0c5d48bf504245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201411187986714.png"></p>
 <p>请求报文中关键的字段:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">User-Agent：产生请求的浏览器类型;</span><br><span class="line">Accept：客户端可识别的响应内容类型列表;星号 “ * ” 用于按范围将类型分组，用 “ *&#x2F;* ” 指示可接受全部类型，用“ type&#x2F;* ”指示可接受 type 类型的所有子类型;</span><br><span class="line">Accept-Language：客户端可接受的自然语言;</span><br><span class="line">Accept-Encoding：客户端可接受的编码压缩格式;</span><br><span class="line">Accept-Charset：可接受的应答的字符集;</span><br><span class="line">Host：请求的主机名，允许多个域名同处一个IP 地址，即虚拟主机;</span><br><span class="line">connection：连接方式(close 或 keepalive);</span><br><span class="line">Cookie：存储于客户端扩展字段，向同一域名的服务端发送属于该域的cookie;</span><br></pre></td></tr></table></figure>
 
 <h4 id="1-4-HTTP响应报文"><a href="#1-4-HTTP响应报文" class="headerlink" title="1.4 HTTP响应报文"></a>1.4 HTTP响应报文</h4><p>HTTP 响应报文由<code>状态行、响应头部、空行 和 响应包体</code> 4 个部分组成</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-7c6e79fa4c5d355a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201446213766964.jpg"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-7c6e79fa4c5d355a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201446213766964.jpg"></p>
 <p>状态代码由三位数字组成，第一个数字定义了响应的类别，且有五种可能取值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1xx：指示信息--表示请求已接收，继续处理。</span><br><span class="line">2xx：成功--表示请求已被成功接收、理解、接受。</span><br><span class="line">3xx：重定向--要完成请求必须进行更进一步的操作。</span><br><span class="line">4xx：客户端错误--请求有语法错误或请求无法实现。</span><br><span class="line">5xx：服务器端错误--服务器未能实现合法的请求。</span><br></pre></td></tr></table></figure>
 
@@ -332,7 +333,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line"></span><br><span class="line">http.createServer(function(req, res) &#123;</span><br><span class="line">	&#x2F;&#x2F;fs模块创建流文件, 名称为post.txt</span><br><span class="line">	var file &#x3D; fs.createWriteStream(&#39;post.txt&#39;);</span><br><span class="line">	&#x2F;&#x2F;&#x2F;&#x2F;管子 pipe自动调用了data,end等事件 writeStream&#x2F;readStream</span><br><span class="line">	req.pipe(file);</span><br><span class="line">	&#x2F;&#x2F; 当有数据流时，写入数据</span><br><span class="line">	req.on(&#39;data&#39;, function(postData)&#123;</span><br><span class="line">		console.log(postData);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	req.on(&#39;end&#39;, function()&#123;</span><br><span class="line">		res.end(&#39;end&#39;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;).listen(3000);</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="http://upload-images.jianshu.io/upload_images/326255-3bdb0fd3627591a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="post请求"></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-3bdb0fd3627591a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="post请求"></p>
 <p>参考链接<br><a href="http://www.ruanyifeng.com/blog/2016/08/http.html" target="_blank" rel="noopener">1.HTTP 协议入门</a><br><a href="http://www.ruanyifeng.com/blog/2016/08/migrate-from-http-to-https.html" target="_blank" rel="noopener">2.HTTPS 升级指南</a><br><a href="http://www.cnblogs.com/biyeymyhjob/archive/2012/07/28/2612910.html" target="_blank" rel="noopener">3.HTTP请求报文和HTTP响应报文</a><br><a href="http://yijiebuyi.com/blog/d37512fc6df0fc4d0adfc2ec5c3d46ff.html" target="_blank" rel="noopener">4.node.js querystring类介绍</a><br><a href="https://segmentfault.com/a/1190000000519006" target="_blank" rel="noopener">5.nodejs中流(stream)的理解</a><br><a href="http://www.cnblogs.com/dolphinX/p/3460545.html" target="_blank" rel="noopener">6.简单理解Socket</a></p>
 
     </div>
@@ -360,9 +361,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/Http/" rel="tag"># Http</a>
               <a href="/tags/%E6%A8%A1%E5%9D%97/" rel="tag"># 模块</a>
               <a href="/tags/Node/" rel="tag"># Node</a>
-              <a href="/tags/Http/" rel="tag"># Http</a>
           </div>
 
         
@@ -559,6 +560,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="目标 掌握 Python 函数–定义、参数类型 掌握 Python 函数–变量作用域   正确理解 Python 函数，能够更好地理解 Python 装饰器、匿名函数（lambda）、函数式编程等高阶技术。  文章较长，整体内容包含如下思维导图  第一部分 重新认识函数1. 定义Python 中函数的定义如下： 123def 函数名(参数):    # 内部代码    return 表达式  注意">
@@ -265,7 +266,7 @@
 <p>正确理解 Python 函数，能够更好地理解 <strong>Python 装饰器、匿名函数（lambda）、函数式编程</strong>等高阶技术。</p>
 </blockquote>
 <p>文章较长，整体内容包含如下思维导图</p>
-<p><img src="func.png" alt="概述"></p>
+<p><img data-src="func.png" alt="概述"></p>
 <h3 id="第一部分-重新认识函数"><a href="#第一部分-重新认识函数" class="headerlink" title="第一部分 重新认识函数"></a>第一部分 重新认识函数</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>Python 中函数的定义如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名<span class="params">(参数)</span>:</span></span><br><span class="line">    <span class="comment"># 内部代码</span></span><br><span class="line">    <span class="keyword">return</span> 表达式</span><br></pre></td></tr></table></figure>
 
@@ -294,7 +295,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd = add</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add <span class="keyword">is</span> newAdd</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
 
 <p>其实上侧的，只是不同的名字指向同一个内存地址，同时这块地址被多次引用。</p>
-<p><img src="1.jpg" alt="变量"></p>
+<p><img data-src="1.jpg" alt="变量"></p>
 <blockquote>
 <p>了解了函数是对象，以及上侧的几个性质，更得牢记一切都是对象。<br>既然是对象，性质都类似，其余的集合、参数、返回值，思考下就明白了</p>
 </blockquote>
@@ -602,6 +603,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

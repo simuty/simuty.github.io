@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"./public/search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="还记得之前说，NodeJs 拥有丰富的第三方模块吗？  如何利用现有的模块，快速、高效的实现需求呢？   第一部分 模块管理工具几个关键字 121. nvm：主要管理nodejs版本；2. npm：nodejs自带模块管理工具；  1. NPM 是什么? npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。  NPM 官网给出解">
@@ -292,7 +293,7 @@
 <h5 id="实例一-眼见为实"><a href="#实例一-眼见为实" class="headerlink" title="实例一 眼见为实"></a>实例一 眼见为实</h5><p>下载一个常用的框架—ExpressJs，借此展示一下效果，并熟悉一个 ExpressJs</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
+<p><img data-src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
 <h5 id="实例二-初识-package-json-文件"><a href="#实例二-初识-package-json-文件" class="headerlink" title="实例二 初识 package.json 文件"></a>实例二 初识 package.json 文件</h5><p>简单说就是，记录文件，记录项目依赖的模块。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
 
@@ -352,7 +353,7 @@
 <td>不符合传统编程思维</td>
 </tr>
 </tbody></table>
-<p><img src="/2019/05/03/index/3.jpg" alt="对比"></p>
+<p><img data-src="/2019/05/03/index/3.jpg" alt="对比"></p>
 <h4 id="第二部分-异步式编程-函数式编程"><a href="#第二部分-异步式编程-函数式编程" class="headerlink" title="第二部分 异步式编程(函数式编程)"></a>第二部分 异步式编程(函数式编程)</h4><p>有异步I/O，就必然有异步编程。<br>首先以同步式编程的语法读取一个文件:</p>
 <p><em>创建readfilesync.js, 并执行</em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
@@ -367,7 +368,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
 
 <p>fs.readFile 调用时所做的工作只是<code>将异步式 I/O 请求发给了操作系统</code>， 然后<code>立即返回</code>并执行后面的语句，执行完以后进入事件循环监听事件。  fs 接到I/O 请求完成的事件时，<code>事件循环会主动调用</code>回调函数以完成后续工作。<code>因此我们会先看到 end.然后看到 file.txt 文件的内容。</code></p>
-<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img src="/2019/05/03/index/4.jpg" alt="循环"></p>
+<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img data-src="/2019/05/03/index/4.jpg" alt="循环"></p>
 <blockquote>
 <p>Node.js 在什么时候会进入事件循环呢? </p>
 </blockquote>
@@ -602,6 +603,9 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
