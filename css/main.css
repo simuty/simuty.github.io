@@ -1654,7 +1654,7 @@ details[open] > div.content details:last-child {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fed16b;
+  background: #8aafff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3258,3 +3258,36 @@ mjx-container + br {
     margin: 8px 0 0;
   }
 }
+.geyan {
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f0f0f0;
+}
+/** ============== markdown 样式 ============== */
+strong {
+  font-weight: bold;
+  color: #e96900;
+/*更改默认的颜色*/
+}
+em {
+/*font-style:italic;*/
+/*把默认的斜体去掉*/
+  color: #6200ea;
+/*更改默认的颜色*/
+}
+del {
+  font-style: italic;
+  text-decoration: none;
+/*把默认的删除线去掉*/
+  color: #2962ff;
+/*更改默认的颜色*/
+}
+strong em {
+  font-weight: bold;
+  color: #c51162;
+/*更改默认的颜色*/
+}
+/** ============== markdown 样式 ============== */
