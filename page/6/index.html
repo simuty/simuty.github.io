@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="记录点滴、分享所得">
@@ -182,6 +182,208 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/03/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/03/index/" class="post-title-link" itemprop="url">NodeJs 基础系列之--基本概念</a>
+        </h2>
+
+        <div class="post-meta">
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 19:53:09" itemprop="dateModified" datetime="2020-05-28T19:53:09+08:00">2020-05-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>还记得之前说，NodeJs 拥有丰富的第三方模块吗？</p>
+<blockquote>
+<p>如何利用现有的模块，快速、高效的实现需求呢？</p>
+</blockquote>
+</blockquote>
+<h2 id="第一部分-模块管理工具"><a href="#第一部分-模块管理工具" class="headerlink" title="第一部分 模块管理工具"></a>第一部分 模块管理工具</h2><p><strong>几个关键字</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. nvm：主要管理nodejs版本；</span><br><span class="line">2. npm：nodejs自带模块管理工具；</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-NPM-是什么"><a href="#1-NPM-是什么" class="headerlink" title="1. NPM 是什么?"></a>1. NPM 是什么?</h3><blockquote>
+<p>npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。</p>
+</blockquote>
+<p><a href="https://www.npmjs.com.cn/getting-started/what-is-npm/" target="_blank" rel="noopener">NPM 官网</a>给出解释如下:</p>
+<ol>
+<li>npm 为你和你的团队打开了连接整个 JavaScript 天才世界的一扇大门。</li>
+<li>它是世界上最大的软件注册表，每星期大约有 30 亿次的下载量，包含超过 600000 个 包（package） （即，代码模块）。</li>
+</ol>
+<p><strong>npm 由三个独立的部分组成：</strong></p>
+<ol>
+<li>网站：开发者查找包（package）、设置参数以及管理 npm 使用体验的主要途径；</li>
+<li>注册表（registry）：巨大的数据库，保存了每个包（package）的信息；</li>
+<li>命令行工具 (CLI)： 开发者通过 CLI 与 npm 打交道。</li>
+</ol>
+<p>总之一句话，<strong>想简单高效的完成任务么？NPM 你值得拥有</strong></p>
+<blockquote>
+<p>接下来主要介绍使用</p>
+<blockquote>
+<p>至于自我创建模块，暂不讨论</p>
+</blockquote>
+</blockquote>
+<h3 id="2-安装配置"><a href="#2-安装配置" class="headerlink" title="2. 安装配置"></a>2. 安装配置</h3><p>NodeJs 自带 npm, 故无需安装。<br>罗列几个常用的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 查看 npm 命令列表</span><br><span class="line">$ npm help</span><br><span class="line"></span><br><span class="line"># 查看各个命令的简单用法</span><br><span class="line">$ npm -l</span><br><span class="line"></span><br><span class="line"># 查看 npm 的版本</span><br><span class="line">$ npm -v</span><br><span class="line"></span><br><span class="line"># 查看 npm 的配置</span><br><span class="line">$ npm config list -l</span><br><span class="line"></span><br><span class="line">$ npm list</span><br><span class="line"></span><br><span class="line"># 加上 global 参数，会列出全局安装的模块</span><br><span class="line">$ npm list -global</span><br><span class="line"></span><br><span class="line"># 搜索模块</span><br><span class="line">$ npm search &lt;关键字&gt;</span><br><span class="line"></span><br><span class="line"># 本地安装</span><br><span class="line">$ npm install &lt;package name&gt;</span><br><span class="line"></span><br><span class="line"># 全局安装</span><br><span class="line">$ sudo npm install -global &lt;package name&gt;</span><br><span class="line">$ sudo npm install -g &lt;package name&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="实例一-眼见为实"><a href="#实例一-眼见为实" class="headerlink" title="实例一 眼见为实"></a>实例一 眼见为实</h5><p>下载一个常用的框架—ExpressJs，借此展示一下效果，并熟悉一个 ExpressJs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
+<h5 id="实例二-初识-package-json-文件"><a href="#实例二-初识-package-json-文件" class="headerlink" title="实例二 初识 package.json 文件"></a>实例二 初识 package.json 文件</h5><p>简单说就是，记录文件，记录项目依赖的模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
+
+<p>实例说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 名称</span><br><span class="line">  &quot;name&quot;: &quot;npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 版本</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &#x2F;&#x2F; 描述</span><br><span class="line">  &quot;description&quot;: &quot;study npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 入口文件</span><br><span class="line">  &quot;main&quot;: &quot;app.js&quot;,</span><br><span class="line">  &#x2F;&#x2F; 模块依赖</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;express&quot;: &quot;^4.16.4&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;&#125;,</span><br><span class="line">  &#x2F;&#x2F; 执行脚本</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; 关键词</span><br><span class="line">  &quot;keywords&quot;: [</span><br><span class="line">    &quot;npm&quot;</span><br><span class="line">  ],</span><br><span class="line">  &#x2F;&#x2F; 作者</span><br><span class="line">  &quot;author&quot;: &quot;howard&quot;,</span><br><span class="line">  &#x2F;&#x2F; 协议</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如我们需要下载ExpressJs,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 一下命令即可将Express依赖加入到上边的文件中，偷个懒，不在重负写了</span><br><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure>
+
+<p>实例三 更改npm源</p>
+<p>可能你发现下载东西简直如龟速，这个你得感谢<a href="https://baike.baidu.com/item/%E6%96%B9%E6%BB%A8%E5%85%B4/9525950?fr=aladdin" target="_blank" rel="noopener">防火墙之父</a></p>
+<p>为了更快更好的完成工作，我们可以用国内的<a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝</a>、清华等源；</p>
+<p><strong>淘宝镜像说明：这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用方法类似，用cnpm即可</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install [name]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><blockquote>
+<p>Node.js 最大的特点就是异步式 I/O(或者非阻塞I/O)与事件紧密结合的编程模式。</p>
+</blockquote>
+<h4 id="1-阻塞I-O与非阻塞I-O概念"><a href="#1-阻塞I-O与非阻塞I-O概念" class="headerlink" title="1.阻塞I/O与非阻塞I/O概念"></a>1.阻塞I/O与非阻塞I/O概念</h4><h5 id="1-1-阻塞I-O-同步I-O"><a href="#1-1-阻塞I-O-同步I-O" class="headerlink" title="1.1 阻塞I/O(同步I/O)"></a>1.1 阻塞I/O(同步I/O)</h5><p>线程在执行中如果遇到磁盘读写或网络通信(<strong>统称为I/O 操作</strong>)， 通常要耗费较长的时间，这时操作系统会剥夺这个线程的 CPU 控制权，使其暂停执行，同时将资源让给其他的工作线程，这种线程调度方式称为<strong>阻塞</strong>,当<strong>I/O 操作</strong>完成时，操作系统将这个线程的阻塞解除，恢复其对CPU的控制 ，令其继续运行。这种 I/O 模式就是通常的<strong>同步式 I/O(Synchronous I/O)或阻塞式 I/O (Blocking I/O)。</strong></p>
+<h5 id="1-2-非阻塞I-O-异步I-O"><a href="#1-2-非阻塞I-O-异步I-O" class="headerlink" title="1.2 非阻塞I/O(异步I/O)"></a>1.2 非阻塞I/O(异步I/O)</h5><p>非阻塞I/O是针对所有的I/O<strong>不采用阻塞的策略</strong>, 当线程遇到I/O 操作时, <strong>不会阻塞等待完成</strong>, 而是将I/O 操作发送给操作系统, <strong>继续执行下一个语句</strong>, 等操作系统完成I/O 操作以后, 会以<strong>事件的形式</strong>发送通知执行I/O 操作的线程, 线程会在特定的时候处理这个事件; 也就是线程中会不停的监听时间循环, 看是否有未处理的事件, 并以此处理.</p>
+<blockquote>
+<p>举个通俗的例子：<br><a href="https://www.zhihu.com/question/19732473/answer/20851256" target="_blank" rel="noopener">例子来自知乎网友</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">你打电话问书店老板有没有《分布式系统》这本书，如果是&#96;同步通信机制&#96;，书店老板会说，你稍等，”我查一下&quot;，</span><br><span class="line">然后开始查啊查，等查好了（可能是5秒，也可能是一天）告诉你结果（返回结果）。</span><br><span class="line"></span><br><span class="line">而&#96;异步通信机制&#96;，书店老板直接告诉你我查一下啊，查好了打电话给你，然后直接挂电话了（不返回结果）。</span><br><span class="line">然后查好了，他会主动打电话给你。在这里老板通过“回电”这种方式来回调。</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="2-阻塞I-O与非阻塞I-O特点"><a href="#2-阻塞I-O与非阻塞I-O特点" class="headerlink" title="2.阻塞I/O与非阻塞I/O特点"></a>2.阻塞I/O与非阻塞I/O特点</h5><table>
+<thead>
+<tr>
+<th>同步I/O(阻塞式)</th>
+<th>异步I/O(非阻塞式)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>利用多线程提供吞吐量</td>
+<td>单线程可实现高吞吐量</td>
+</tr>
+<tr>
+<td>通过事件分割和线程调度利用多核CPU</td>
+<td>通过功能划分利用多核CPU</td>
+</tr>
+<tr>
+<td>需要由操作系统调度多线程使用多核CPU</td>
+<td>可以将单进程绑定到单核 CPU</td>
+</tr>
+<tr>
+<td>难以充分利用 CPU 资源</td>
+<td>可以充分利用 CPU 资源</td>
+</tr>
+<tr>
+<td>符合线性的编程思维</td>
+<td>不符合传统编程思维</td>
+</tr>
+</tbody></table>
+<p><img data-src="/2019/05/03/index/3.jpg" alt="对比"></p>
+<h4 id="第二部分-异步式编程-函数式编程"><a href="#第二部分-异步式编程-函数式编程" class="headerlink" title="第二部分 异步式编程(函数式编程)"></a>第二部分 异步式编程(函数式编程)</h4><p>有异步I/O，就必然有异步编程。<br>首先以同步式编程的语法读取一个文件:</p>
+<p><em>创建readfilesync.js, 并执行</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
+<p>打印的结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfilesync.js </span><br><span class="line">你好呀</span><br><span class="line">end.</span><br></pre></td></tr></table></figure>
+
+<p>以上代码很容易理解, 自上而下的执行, 那么异步编程的做法呢?</p>
+<p><em>创建readfileasync.js, 并执行</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">fs.readFile(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;, function(err, data) &#123;</span><br><span class="line">if (err)&#123; </span><br><span class="line">    console.error(err);</span><br><span class="line">&#125; else &#123; </span><br><span class="line">    console.log(data);</span><br><span class="line">&#125; </span><br><span class="line">&#125;);</span><br><span class="line">    console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>打印的结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+
+<p>fs.readFile 调用时所做的工作只是<code>将异步式 I/O 请求发给了操作系统</code>， 然后<code>立即返回</code>并执行后面的语句，执行完以后进入事件循环监听事件。  fs 接到I/O 请求完成的事件时，<code>事件循环会主动调用</code>回调函数以完成后续工作。<code>因此我们会先看到 end.然后看到 file.txt 文件的内容。</code></p>
+<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img data-src="/2019/05/03/index/4.jpg" alt="循环"></p>
+<blockquote>
+<p>Node.js 在什么时候会进入事件循环呢? </p>
+</blockquote>
+<p><strong>生命周期为:</strong><code>Node.js 程序由事件循环环开始，到事件循环结束</code>.</p>
+<p>所有的逻辑都是事件的回调函数，所以 Node.js 始终在事件循环中，程序入口就是 事件循环第一个事件的回调函数。事件的回调函数在执行的过程中，可能会发出 I/O 请求或直接发射  (emit)事件，执行完成后再返回事件 循环，事件循环会会检查循环中有没有  处理的事件,直到到程序结束。</p>
+<h4 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h4><p>Node 版本区别:</p>
+<p>从对 ES6 的支持来简单的区分是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0.x 完全不支持ES6</span><br><span class="line">4.x 部分支持ES6特性，并处在LTS阶段</span><br><span class="line">5.x 部分支持ES6特性（比4.x多些），属于过渡产品，现在来说应该没有什么理由去用这个了</span><br><span class="line">6.x 支持98%的ES6特性</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考链接</strong></p>
+<p><a href="https://www.byvoid.com/zhs/project/node" target="_blank" rel="noopener">Node.js开发指南</a><br><a href="http://www.infoq.com/cn/master-nodejs" target="_blank" rel="noopener">深入浅出Node.js</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/02/index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -200,14 +402,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-02 23:59:59" itemprop="dateCreated datePublished" datetime="2019-05-02T23:59:59+08:00">2019-05-02</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -486,14 +680,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-01 23:59:59" itemprop="dateCreated datePublished" datetime="2019-05-01T23:59:59+08:00">2019-05-01</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -644,165 +830,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-16 02:54:00" itemprop="dateModified" datetime="2020-05-16T02:54:00+08:00">2020-05-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>第一部分</p>
-<p>语言</p>
-<p>rss</p>
-<p>标签、类别、</p>
-<p>账户</p>
-<p>公益</p>
-<p>首页显示</p>
-<h4 id="背景显示"><a href="#背景显示" class="headerlink" title="背景显示"></a>背景显示</h4><p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">参考链接</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd themes&#x2F;next</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-canvas-nest source&#x2F;lib&#x2F;canvas-nest</span><br></pre></td></tr></table></figure>
-
-<p>更改配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canvas_nest:</span><br><span class="line">  enable: true</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">https://github.com/theme-next/theme-next-canvas-nest</a></p>
-<h4 id="侧边栏推荐阅读"><a href="#侧边栏推荐阅读" class="headerlink" title="侧边栏推荐阅读"></a>侧边栏推荐阅读</h4><p><code>theme/next/_config.yml</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Blogrolls</span><br><span class="line">links_title: 推荐阅读</span><br><span class="line">#links_layout: block</span><br><span class="line">links_layout: inline</span><br><span class="line">links:</span><br><span class="line">  简单即是美: https:&#x2F;&#x2F;simuty.github.io&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>第二部分</p>
-<p>文章头</p>
-<h4 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h4><p>打开<code>\themes\next\source\css\_custom\custom.styl</code>,向里面加入：(颜色可以自己定义)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>统计字数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/themes/next/layout/_partials/footer.swig</code>文件尾部加上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;theme-info&quot;&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;powered-by&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-count&quot;&gt;博客全站共&#123;&#123; totalcount(site) &#125;&#125;字&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p>阅读时长</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
-<p>在<code>hexo/_config.yml</code>中添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">	symbols: true</span><br><span class="line">	time: true</span><br><span class="line">	total_symbols: true</span><br><span class="line">	total_time: true</span><br></pre></td></tr></table></figure>
-
-<p>在<code>hexo/theme/next/_config.yml</code>中找到</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Post wordcount display settings</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-symbols-count-time</span><br><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: true</span><br><span class="line">  item_text_post: true</span><br><span class="line">  item_text_total: false</span><br><span class="line">  awl: 4</span><br><span class="line">  wpm: 275</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>代码</p>
-<p>音视频</p>
-<p>post阴影</p>
-<p>打开\themes\next\source\css_custom\custom.styl,向里面加入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 主页文章添加阴影效果</span><br><span class="line"> .post &#123;</span><br><span class="line">   margin-top: 60px;</span><br><span class="line">   margin-bottom: 60px;</span><br><span class="line">   padding: 25px;</span><br><span class="line">   -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);</span><br><span class="line">   -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/" target="_blank" rel="noopener">http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/</a></p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
-
-
-<p>打开 站点配置文件 ,添加配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br><span class="line">打开 主题配置文件 ,搜索关键字local_search,设置为true</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Local search</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;flashlab&#x2F;hexo-generator-search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br><span class="line">  # if auto, trigger search by changing input</span><br><span class="line">  # if manual, trigger search by pressing enter key or search button</span><br><span class="line">  trigger: auto</span><br><span class="line">  # show top n results per article, show all results by setting to -1</span><br><span class="line">  top_n_per_article: 1</span><br></pre></td></tr></table></figure>
-
-<p>打赏</p>
-<p>文章加密<br><a href="https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md" target="_blank" rel="noopener">https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md</a><br>hexo-blog-encrypt</p>
-<p>参考链接</p>
-<p><a href="https://co5.me/2018/180613-wordcount.html" target="_blank" rel="noopener">†少女癌†</a></p>
-<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E5%9B%9B/" target="_blank" rel="noopener"></a></p>
-<p><a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener"></a></p>
-<p><a href="https://www.vincentqin.tech/" target="_blank" rel="noopener"></a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">NexT使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -946,14 +973,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1019,6 +1038,149 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">NexT使用</a>
+        </h2>
+
+        <div class="post-meta">
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-16 02:54:00" itemprop="dateModified" datetime="2020-05-16T02:54:00+08:00">2020-05-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>第一部分</p>
+<p>语言</p>
+<p>rss</p>
+<p>标签、类别、</p>
+<p>账户</p>
+<p>公益</p>
+<p>首页显示</p>
+<h4 id="背景显示"><a href="#背景显示" class="headerlink" title="背景显示"></a>背景显示</h4><p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">参考链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd themes&#x2F;next</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-canvas-nest source&#x2F;lib&#x2F;canvas-nest</span><br></pre></td></tr></table></figure>
+
+<p>更改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canvas_nest:</span><br><span class="line">  enable: true</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">https://github.com/theme-next/theme-next-canvas-nest</a></p>
+<h4 id="侧边栏推荐阅读"><a href="#侧边栏推荐阅读" class="headerlink" title="侧边栏推荐阅读"></a>侧边栏推荐阅读</h4><p><code>theme/next/_config.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Blogrolls</span><br><span class="line">links_title: 推荐阅读</span><br><span class="line">#links_layout: block</span><br><span class="line">links_layout: inline</span><br><span class="line">links:</span><br><span class="line">  简单即是美: https:&#x2F;&#x2F;simuty.github.io&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>第二部分</p>
+<p>文章头</p>
+<h4 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h4><p>打开<code>\themes\next\source\css\_custom\custom.styl</code>,向里面加入：(颜色可以自己定义)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>统计字数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
+<p>然后在<code>/themes/next/layout/_partials/footer.swig</code>文件尾部加上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;theme-info&quot;&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;powered-by&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-count&quot;&gt;博客全站共&#123;&#123; totalcount(site) &#125;&#125;字&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>阅读时长</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
+<p>在<code>hexo/_config.yml</code>中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">	symbols: true</span><br><span class="line">	time: true</span><br><span class="line">	total_symbols: true</span><br><span class="line">	total_time: true</span><br></pre></td></tr></table></figure>
+
+<p>在<code>hexo/theme/next/_config.yml</code>中找到</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Post wordcount display settings</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-symbols-count-time</span><br><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: true</span><br><span class="line">  item_text_post: true</span><br><span class="line">  item_text_total: false</span><br><span class="line">  awl: 4</span><br><span class="line">  wpm: 275</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>代码</p>
+<p>音视频</p>
+<p>post阴影</p>
+<p>打开\themes\next\source\css_custom\custom.styl,向里面加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 主页文章添加阴影效果</span><br><span class="line"> .post &#123;</span><br><span class="line">   margin-top: 60px;</span><br><span class="line">   margin-bottom: 60px;</span><br><span class="line">   padding: 25px;</span><br><span class="line">   -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);</span><br><span class="line">   -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/" target="_blank" rel="noopener">http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/</a></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+
+<p>打开 站点配置文件 ,添加配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br><span class="line">打开 主题配置文件 ,搜索关键字local_search,设置为true</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Local search</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;flashlab&#x2F;hexo-generator-search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br><span class="line">  # if auto, trigger search by changing input</span><br><span class="line">  # if manual, trigger search by pressing enter key or search button</span><br><span class="line">  trigger: auto</span><br><span class="line">  # show top n results per article, show all results by setting to -1</span><br><span class="line">  top_n_per_article: 1</span><br></pre></td></tr></table></figure>
+
+<p>打赏</p>
+<p>文章加密<br><a href="https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md" target="_blank" rel="noopener">https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md</a><br>hexo-blog-encrypt</p>
+<p>参考链接</p>
+<p><a href="https://co5.me/2018/180613-wordcount.html" target="_blank" rel="noopener">†少女癌†</a></p>
+<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E5%9B%9B/" target="_blank" rel="noopener"></a></p>
+<p><a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener"></a></p>
+<p><a href="https://www.vincentqin.tech/" target="_blank" rel="noopener"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/25/index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1037,14 +1199,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-25 18:06:41" itemprop="dateCreated datePublished" datetime="2019-04-25T18:06:41+08:00">2019-04-25</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1174,20 +1328,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1242,7 +1396,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:22</span>
+    <span title="站点阅读时长">2:23</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

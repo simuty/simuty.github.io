@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="记录点滴、分享所得">
@@ -182,6 +182,205 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/15/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/15/index/" class="post-title-link" itemprop="url">Python基础系列之--函数【9】</a>
+        </h2>
+
+        <div class="post-meta">
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 19:53:09" itemprop="dateModified" datetime="2020-05-28T19:53:09+08:00">2020-05-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握 Python 函数–定义、参数类型</li>
+<li>掌握 Python 函数–变量作用域</li>
+</ol>
+<blockquote>
+<p>正确理解 Python 函数，能够更好地理解 <strong>Python 装饰器、匿名函数（lambda）、函数式编程</strong>等高阶技术。</p>
+</blockquote>
+<p>文章较长，整体内容包含如下思维导图</p>
+<p><img data-src="func.png" alt="概述"></p>
+<h3 id="第一部分-重新认识函数"><a href="#第一部分-重新认识函数" class="headerlink" title="第一部分 重新认识函数"></a>第一部分 重新认识函数</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>Python 中函数的定义如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名<span class="params">(参数)</span>:</span></span><br><span class="line">    <span class="comment"># 内部代码</span></span><br><span class="line">    <span class="keyword">return</span> 表达式</span><br></pre></td></tr></table></figure>
+
+<p>注意点：</p>
+<ol>
+<li>函数代码块以<code>def关键词</code>开头，一个空格之后接<code>函数标识符名称</code>和<code>圆括号()</code>，再接个<code>冒号</code>。</li>
+<li>圆括号中间存放参数</li>
+<li>使用 return 结束函数。默认返回 None。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a + b</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum</span><br><span class="line"><span class="comment"># 函数地址</span></span><br><span class="line">&lt;function sum at <span class="number">0x10af4f158</span>&gt;</span><br><span class="line"><span class="comment">## 函数方法</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(sum)</span><br><span class="line">[<span class="string">'__annotations__'</span>, <span class="string">'__call__'</span>, <span class="string">'__class__'</span>, <span class="string">'__closure__'</span>, <span class="string">'__code__'</span>, <span class="string">'__defaults__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>, <span class="string">'__get__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__globals__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>, <span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__kwdefaults__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__module__'</span>, <span class="string">'__name__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__qualname__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>, <span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>, <span class="string">'__subclasshook__'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum.__name__</span><br><span class="line"><span class="string">'sum'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum.__module__</span><br><span class="line"><span class="string">'__main__'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-调用函数"><a href="#2-调用函数" class="headerlink" title="2 调用函数"></a>2 调用函数</h4><p>使用函数名后跟圆括号的方式调用函数。<br>调用的同时要根据函数的定义体，提供<code>相应个数和类型的参数</code>，每个参数之间用逗号分隔。</p>
+<h4 id="3-函数是对象"><a href="#3-函数是对象" class="headerlink" title="3. 函数是对象"></a>3. 函数是对象</h4><p><strong>在 Python 中万物皆为对象</strong>，函数也不例外，</p>
+<ol>
+<li>可以作为对象可以赋值给一个变量</li>
+<li>可以作为元素添加到集合对象中</li>
+<li>可作为参数值传递给其它函数</li>
+<li>可以当做函数的返回值</li>
+</ol>
+<blockquote>
+<p>函数身为一个对象，拥有对象模型的三个通用属性：<strong>id、类型、和值。</strong></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a + b</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(add)</span><br><span class="line"><span class="number">4472644200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(add)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">function</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">add</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">function</span> <span class="title">add</span> <span class="title">at</span> 0<span class="title">x10a972268</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>变量赋值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd = add</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add <span class="keyword">is</span> newAdd</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>其实上侧的，只是不同的名字指向同一个内存地址，同时这块地址被多次引用。</p>
+<p><img data-src="1.jpg" alt="变量"></p>
+<blockquote>
+<p>了解了函数是对象，以及上侧的几个性质，更得牢记一切都是对象。<br>既然是对象，性质都类似，其余的集合、参数、返回值，思考下就明白了</p>
+</blockquote>
+<h3 id="第二部分-参数类型"><a href="#第二部分-参数类型" class="headerlink" title="第二部分 参数类型"></a>第二部分 参数类型</h3><p>其实就是下侧那个括号里的数据，但是需要注意的是，<code>传的是什么</code>，<code>怎么传</code></p>
+<p><strong>定义</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名<span class="params">(参数)</span>:</span></span><br><span class="line">    <span class="comment"># 内部代码</span></span><br><span class="line">    <span class="keyword">return</span> 表达式</span><br></pre></td></tr></table></figure>
+
+<p><strong>完整的语法</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(positional_args, keyword_args, *tuple_nonkw_args, **dict_kw_args)</span><br></pre></td></tr></table></figure>
+
+<p><strong>函数的参数的分类</strong></p>
+<ol>
+<li>位置参数(必选参数)</li>
+<li>默认参数</li>
+<li>可变参数 *args</li>
+<li>可变参数 **kwargs</li>
+<li>必选参数</li>
+</ol>
+<h4 id="1-位置参数"><a href="#1-位置参数" class="headerlink" title="1. 位置参数"></a>1. 位置参数</h4><p>定义：<code>调用</code>时候的传的<code>参数</code>必须与<code>定义</code>时的<code>参数</code>一一对应。<br>注意事项：<br>不能多也不能少。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a + b</span><br><span class="line"><span class="comment"># 一一对应</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="comment"># 参数缺失</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(sum(<span class="number">1</span>))</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: sum() missing <span class="number">1</span> required positional argument: <span class="string">'b'</span></span><br><span class="line"><span class="comment"># 关键字参数,顺序不重要，存在即可</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(sum(b=<span class="number">10</span>, a=<span class="number">4</span>))</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-默认值"><a href="#2-默认值" class="headerlink" title="2. 默认值"></a>2. 默认值</h4><p>定义：在函数声明的时候，可以给某个参数指定默认值<br>注意事项：<br>位置：需要放在<code>位置参数</code>之后</p>
+<p><strong>默认参数需要在位置参数的后边</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">power</span><span class="params">(x, n = <span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x**n</span><br><span class="line">ret1 = power(<span class="number">10</span>)   <span class="comment"># 使用默认的参数值n=2</span></span><br><span class="line">ret2 = power(<span class="number">10</span>, <span class="number">4</span>)  <span class="comment"># 将4传给n，实际计算10**4的值</span></span><br><span class="line">ret3 = power(n=<span class="number">1</span>, x=<span class="number">100</span>) <span class="comment"># 指定参数名传值</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>来个例子</strong><br>主要涉及：内存地址、参数默认值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=[])</span>:</span></span><br><span class="line">    a.append(<span class="string">"A"</span>)</span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line"></span><br><span class="line">print(func())</span><br><span class="line">print(func())</span><br><span class="line">print(func())</span><br></pre></td></tr></table></figure>
+
+<p><strong>三思</strong><br><strong>三思</strong><br><strong>三思</strong></p>
+<p>答案如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'A'</span>]</span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'A'</span>]</span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'A'</span>, <span class="string">'A'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果真正理解了，Python 对象的<strong>变量名与内存地址</strong>,这个问题还是很简单的。</p>
+<ol>
+<li>默认参数 a 指向的空列表对象就会被创建，假如内存地址为<code>0x123</code>;</li>
+<li>之后每次调用，都会在原地址后追加<code>A</code>;</li>
+<li>可以试着在函数内部打印 a 的内存地址，应该是一致的。</li>
+</ol>
+<blockquote>
+<p>如何避免这种操作？</p>
+<blockquote>
+<p>让 a 的默认值指向一个<strong>不可变对象即可</strong>，如：数字、None 等</p>
+</blockquote>
+</blockquote>
+<h4 id="3-可变参数-args"><a href="#3-可变参数-args" class="headerlink" title="3. 可变参数 *args"></a>3. 可变参数 *args</h4><p>在 python 里面，函数在声明的时候，参数中可以使用(<em>变量名)的方式来接受<code>不确定长度的参数</code>，但是在 python 里面大家约定俗成使用`</em>args<code>接受不定长参数，之后将这些参数放到一个</code>tuple`里面，可以通过访问 args 来获取这些不定长参数。</p>
+<p><code>例子一</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">changeFunc</span><span class="params">(*args)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(type(args))</span><br><span class="line"><span class="meta">... </span>    print(args)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>changeFunc(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">3</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><code>例子二</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>changeFunc([<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">3</span>])</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">([<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>],)</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为何打印出来是这样？<br>因为是数组是作为一个整体传过来的。<br>如何将 list 的元素转换为 tuple 的元素？结果与例子一一致？</p>
+</blockquote>
+<p><strong>答案：</strong> 参数前加个星号,<a href="https://docs.python.org/2/tutorial/controlflow.html#unpacking-argument-lists" target="_blank" rel="noopener">解压参数列表</a>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>tmpList = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(*tmpList)</span><br><span class="line">a b <span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(tmpList)</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment"># 调用函数时，数组➕星号，解压参数列表</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>changeFunc(*tmpList)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>当参数已经在<code>列表或元组中</code>但需要为需要单独位置参数的函数, 需要解压参数, 然后再一一传进去</p>
+<p>针对字典带上*号，解压的是 key</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict = &#123;<span class="string">"a"</span>: <span class="number">1</span>, <span class="string">"b"</span>: <span class="number">2</span>, <span class="string">"c"</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(*dict)</span><br><span class="line">a b c</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-可变参数-args"><a href="#4-可变参数-args" class="headerlink" title="4. 可变参数 *args"></a>4. 可变参数 *args</h4><p>定义：<code>*args</code>参数表示未知的位置参数序列长度，而<code>\*\*kwargs</code>代表包含<strong>关键字和值映射关系的字典</strong>，它可以包含任意数量的关键字和值映射，并且在函数定义中“*args”必须位于“**kwargs”前面。</p>
+<blockquote>
+<p>*args 必须在**kwargs 之前。<br>默认值参数必须再必选参数之前。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">kwargs</span><span class="params">(first, second=<span class="number">2</span>, *args, **kwargs)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(first, second)</span><br><span class="line"><span class="meta">... </span>    print(args)</span><br><span class="line"><span class="meta">... </span>    print(kwargs)</span><br><span class="line">...</span><br><span class="line"><span class="comment"># kwargs为空是因为被*args吃掉了</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>kwargs(<span class="number">1</span>, <span class="number">3</span>, <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, &#123;<span class="string">"key1"</span>: <span class="string">"value"</span>&#125;)</span><br><span class="line"><span class="number">1</span> <span class="number">3</span></span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, &#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict = &#123;<span class="string">"key1"</span>: <span class="string">"value"</span>&#125;</span><br><span class="line"><span class="comment"># 解压参数，</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>kwargs(<span class="number">1</span>, <span class="number">3</span>, *list, **dict)</span><br><span class="line"><span class="number">1</span> <span class="number">3</span></span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>)</span><br><span class="line">&#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 后边不能追加参数了。。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(**kw, error)</span>:</span></span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(**kw, error)</span>:</span></span><br><span class="line">                       ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-关键字参数"><a href="#5-关键字参数" class="headerlink" title="5. 关键字参数"></a>5. 关键字参数</h4><blockquote>
+<p>位置参数可以不带参数名，但是星号后边的就必选带上参数名</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 星号后必选加上参数名字</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(loction, second, *, must)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(loction, second, must)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: func() takes <span class="number">2</span> positional arguments but <span class="number">3</span> were given</span><br><span class="line"><span class="comment"># 符合预期</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>func(<span class="number">1</span>, <span class="number">2</span>, must=<span class="number">3</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>来一个汇总的骚操作</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">student</span><span class="params">(name, age=<span class="number">18</span>, *args, sex, classroom, **kwargs)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(name, age, args, sex, classroom, kwargs)</span><br><span class="line">...</span><br><span class="line"><span class="comment"># *args 之后的一般参数默认更改为关键字参数，sex/classroom未传递，报错</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student(<span class="string">"howard"</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: student() missing <span class="number">2</span> required keyword-only arguments: <span class="string">'sex'</span> <span class="keyword">and</span> <span class="string">'classroom'</span></span><br><span class="line"><span class="comment"># 位置参数与关键字参数【必选】，可选参数【可选】</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student(<span class="string">"howard"</span>, sex=<span class="string">"1"</span>, classroom=<span class="string">"python"</span>)</span><br><span class="line">howard <span class="number">10</span> () <span class="number">1</span> python &#123;&#125;</span><br><span class="line"><span class="comment"># dict</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict</span><br><span class="line">&#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student(<span class="string">"howard"</span>, sex=<span class="string">"1"</span>, classroom=<span class="string">"python"</span>, **dict)</span><br><span class="line">howard <span class="number">10</span> () <span class="number">1</span> python &#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="本文重点注意事项："><a href="#本文重点注意事项：" class="headerlink" title="本文重点注意事项："></a>本文重点注意事项：</h3><ol>
+<li>牢记函数为第一类对象；</li>
+<li>可选参数注意解压参数；</li>
+</ol>
+<p>参考<br><a href="https://www.zhihu.com/question/25950466" target="_blank" rel="noopener">函数作为参数的问题</a><br><a href="http://python.jobbole.com/81646/" target="_blank" rel="noopener">Python 中的函数详解</a><br><a href="http://python.jobbole.com/81646/" target="_blank" rel="noopener"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/14/index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -200,14 +399,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-14 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-14T10:38:59+08:00">2019-05-14</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -360,14 +551,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-13 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-13T10:38:59+08:00">2019-05-13</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -535,14 +718,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-12 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-12T10:38:59+08:00">2019-05-12</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -657,14 +832,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-10 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-10T10:38:59+08:00">2019-05-10</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -834,14 +1001,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-09 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-09T10:38:59+08:00">2019-05-09</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1011,14 +1170,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-08 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-08T10:38:59+08:00">2019-05-08</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1129,14 +1280,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-06 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-06T10:38:59+08:00">2019-05-06</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1309,14 +1452,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-05 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-05T10:38:59+08:00">2019-05-05</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1434,14 +1569,6 @@
         </h2>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-04 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-04T10:38:59+08:00">2019-05-04</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
@@ -1546,216 +1673,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/03/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/03/index/" class="post-title-link" itemprop="url">NodeJs 基础系列之--基本概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-03 23:59:59" itemprop="dateCreated datePublished" datetime="2019-05-03T23:59:59+08:00">2019-05-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-28 19:53:09" itemprop="dateModified" datetime="2020-05-28T19:53:09+08:00">2020-05-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>还记得之前说，NodeJs 拥有丰富的第三方模块吗？</p>
-<blockquote>
-<p>如何利用现有的模块，快速、高效的实现需求呢？</p>
-</blockquote>
-</blockquote>
-<h2 id="第一部分-模块管理工具"><a href="#第一部分-模块管理工具" class="headerlink" title="第一部分 模块管理工具"></a>第一部分 模块管理工具</h2><p><strong>几个关键字</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. nvm：主要管理nodejs版本；</span><br><span class="line">2. npm：nodejs自带模块管理工具；</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-NPM-是什么"><a href="#1-NPM-是什么" class="headerlink" title="1. NPM 是什么?"></a>1. NPM 是什么?</h3><blockquote>
-<p>npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。</p>
-</blockquote>
-<p><a href="https://www.npmjs.com.cn/getting-started/what-is-npm/" target="_blank" rel="noopener">NPM 官网</a>给出解释如下:</p>
-<ol>
-<li>npm 为你和你的团队打开了连接整个 JavaScript 天才世界的一扇大门。</li>
-<li>它是世界上最大的软件注册表，每星期大约有 30 亿次的下载量，包含超过 600000 个 包（package） （即，代码模块）。</li>
-</ol>
-<p><strong>npm 由三个独立的部分组成：</strong></p>
-<ol>
-<li>网站：开发者查找包（package）、设置参数以及管理 npm 使用体验的主要途径；</li>
-<li>注册表（registry）：巨大的数据库，保存了每个包（package）的信息；</li>
-<li>命令行工具 (CLI)： 开发者通过 CLI 与 npm 打交道。</li>
-</ol>
-<p>总之一句话，<strong>想简单高效的完成任务么？NPM 你值得拥有</strong></p>
-<blockquote>
-<p>接下来主要介绍使用</p>
-<blockquote>
-<p>至于自我创建模块，暂不讨论</p>
-</blockquote>
-</blockquote>
-<h3 id="2-安装配置"><a href="#2-安装配置" class="headerlink" title="2. 安装配置"></a>2. 安装配置</h3><p>NodeJs 自带 npm, 故无需安装。<br>罗列几个常用的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 查看 npm 命令列表</span><br><span class="line">$ npm help</span><br><span class="line"></span><br><span class="line"># 查看各个命令的简单用法</span><br><span class="line">$ npm -l</span><br><span class="line"></span><br><span class="line"># 查看 npm 的版本</span><br><span class="line">$ npm -v</span><br><span class="line"></span><br><span class="line"># 查看 npm 的配置</span><br><span class="line">$ npm config list -l</span><br><span class="line"></span><br><span class="line">$ npm list</span><br><span class="line"></span><br><span class="line"># 加上 global 参数，会列出全局安装的模块</span><br><span class="line">$ npm list -global</span><br><span class="line"></span><br><span class="line"># 搜索模块</span><br><span class="line">$ npm search &lt;关键字&gt;</span><br><span class="line"></span><br><span class="line"># 本地安装</span><br><span class="line">$ npm install &lt;package name&gt;</span><br><span class="line"></span><br><span class="line"># 全局安装</span><br><span class="line">$ sudo npm install -global &lt;package name&gt;</span><br><span class="line">$ sudo npm install -g &lt;package name&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="实例一-眼见为实"><a href="#实例一-眼见为实" class="headerlink" title="实例一 眼见为实"></a>实例一 眼见为实</h5><p>下载一个常用的框架—ExpressJs，借此展示一下效果，并熟悉一个 ExpressJs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
-<h5 id="实例二-初识-package-json-文件"><a href="#实例二-初识-package-json-文件" class="headerlink" title="实例二 初识 package.json 文件"></a>实例二 初识 package.json 文件</h5><p>简单说就是，记录文件，记录项目依赖的模块。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
-
-<p>实例说明</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 名称</span><br><span class="line">  &quot;name&quot;: &quot;npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 版本</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &#x2F;&#x2F; 描述</span><br><span class="line">  &quot;description&quot;: &quot;study npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 入口文件</span><br><span class="line">  &quot;main&quot;: &quot;app.js&quot;,</span><br><span class="line">  &#x2F;&#x2F; 模块依赖</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;express&quot;: &quot;^4.16.4&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;&#125;,</span><br><span class="line">  &#x2F;&#x2F; 执行脚本</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; 关键词</span><br><span class="line">  &quot;keywords&quot;: [</span><br><span class="line">    &quot;npm&quot;</span><br><span class="line">  ],</span><br><span class="line">  &#x2F;&#x2F; 作者</span><br><span class="line">  &quot;author&quot;: &quot;howard&quot;,</span><br><span class="line">  &#x2F;&#x2F; 协议</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如我们需要下载ExpressJs,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 一下命令即可将Express依赖加入到上边的文件中，偷个懒，不在重负写了</span><br><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure>
-
-<p>实例三 更改npm源</p>
-<p>可能你发现下载东西简直如龟速，这个你得感谢<a href="https://baike.baidu.com/item/%E6%96%B9%E6%BB%A8%E5%85%B4/9525950?fr=aladdin" target="_blank" rel="noopener">防火墙之父</a></p>
-<p>为了更快更好的完成工作，我们可以用国内的<a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝</a>、清华等源；</p>
-<p><strong>淘宝镜像说明：这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>使用方法类似，用cnpm即可</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install [name]</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><blockquote>
-<p>Node.js 最大的特点就是异步式 I/O(或者非阻塞I/O)与事件紧密结合的编程模式。</p>
-</blockquote>
-<h4 id="1-阻塞I-O与非阻塞I-O概念"><a href="#1-阻塞I-O与非阻塞I-O概念" class="headerlink" title="1.阻塞I/O与非阻塞I/O概念"></a>1.阻塞I/O与非阻塞I/O概念</h4><h5 id="1-1-阻塞I-O-同步I-O"><a href="#1-1-阻塞I-O-同步I-O" class="headerlink" title="1.1 阻塞I/O(同步I/O)"></a>1.1 阻塞I/O(同步I/O)</h5><p>线程在执行中如果遇到磁盘读写或网络通信(<strong>统称为I/O 操作</strong>)， 通常要耗费较长的时间，这时操作系统会剥夺这个线程的 CPU 控制权，使其暂停执行，同时将资源让给其他的工作线程，这种线程调度方式称为<strong>阻塞</strong>,当<strong>I/O 操作</strong>完成时，操作系统将这个线程的阻塞解除，恢复其对CPU的控制 ，令其继续运行。这种 I/O 模式就是通常的<strong>同步式 I/O(Synchronous I/O)或阻塞式 I/O (Blocking I/O)。</strong></p>
-<h5 id="1-2-非阻塞I-O-异步I-O"><a href="#1-2-非阻塞I-O-异步I-O" class="headerlink" title="1.2 非阻塞I/O(异步I/O)"></a>1.2 非阻塞I/O(异步I/O)</h5><p>非阻塞I/O是针对所有的I/O<strong>不采用阻塞的策略</strong>, 当线程遇到I/O 操作时, <strong>不会阻塞等待完成</strong>, 而是将I/O 操作发送给操作系统, <strong>继续执行下一个语句</strong>, 等操作系统完成I/O 操作以后, 会以<strong>事件的形式</strong>发送通知执行I/O 操作的线程, 线程会在特定的时候处理这个事件; 也就是线程中会不停的监听时间循环, 看是否有未处理的事件, 并以此处理.</p>
-<blockquote>
-<p>举个通俗的例子：<br><a href="https://www.zhihu.com/question/19732473/answer/20851256" target="_blank" rel="noopener">例子来自知乎网友</a></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">你打电话问书店老板有没有《分布式系统》这本书，如果是&#96;同步通信机制&#96;，书店老板会说，你稍等，”我查一下&quot;，</span><br><span class="line">然后开始查啊查，等查好了（可能是5秒，也可能是一天）告诉你结果（返回结果）。</span><br><span class="line"></span><br><span class="line">而&#96;异步通信机制&#96;，书店老板直接告诉你我查一下啊，查好了打电话给你，然后直接挂电话了（不返回结果）。</span><br><span class="line">然后查好了，他会主动打电话给你。在这里老板通过“回电”这种方式来回调。</span><br></pre></td></tr></table></figure>
-
-
-<h5 id="2-阻塞I-O与非阻塞I-O特点"><a href="#2-阻塞I-O与非阻塞I-O特点" class="headerlink" title="2.阻塞I/O与非阻塞I/O特点"></a>2.阻塞I/O与非阻塞I/O特点</h5><table>
-<thead>
-<tr>
-<th>同步I/O(阻塞式)</th>
-<th>异步I/O(非阻塞式)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>利用多线程提供吞吐量</td>
-<td>单线程可实现高吞吐量</td>
-</tr>
-<tr>
-<td>通过事件分割和线程调度利用多核CPU</td>
-<td>通过功能划分利用多核CPU</td>
-</tr>
-<tr>
-<td>需要由操作系统调度多线程使用多核CPU</td>
-<td>可以将单进程绑定到单核 CPU</td>
-</tr>
-<tr>
-<td>难以充分利用 CPU 资源</td>
-<td>可以充分利用 CPU 资源</td>
-</tr>
-<tr>
-<td>符合线性的编程思维</td>
-<td>不符合传统编程思维</td>
-</tr>
-</tbody></table>
-<p><img data-src="/2019/05/03/index/3.jpg" alt="对比"></p>
-<h4 id="第二部分-异步式编程-函数式编程"><a href="#第二部分-异步式编程-函数式编程" class="headerlink" title="第二部分 异步式编程(函数式编程)"></a>第二部分 异步式编程(函数式编程)</h4><p>有异步I/O，就必然有异步编程。<br>首先以同步式编程的语法读取一个文件:</p>
-<p><em>创建readfilesync.js, 并执行</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
-<p>打印的结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfilesync.js </span><br><span class="line">你好呀</span><br><span class="line">end.</span><br></pre></td></tr></table></figure>
-
-<p>以上代码很容易理解, 自上而下的执行, 那么异步编程的做法呢?</p>
-<p><em>创建readfileasync.js, 并执行</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">fs.readFile(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;, function(err, data) &#123;</span><br><span class="line">if (err)&#123; </span><br><span class="line">    console.error(err);</span><br><span class="line">&#125; else &#123; </span><br><span class="line">    console.log(data);</span><br><span class="line">&#125; </span><br><span class="line">&#125;);</span><br><span class="line">    console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
-
-<p>打印的结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
-
-<p>fs.readFile 调用时所做的工作只是<code>将异步式 I/O 请求发给了操作系统</code>， 然后<code>立即返回</code>并执行后面的语句，执行完以后进入事件循环监听事件。  fs 接到I/O 请求完成的事件时，<code>事件循环会主动调用</code>回调函数以完成后续工作。<code>因此我们会先看到 end.然后看到 file.txt 文件的内容。</code></p>
-<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img data-src="/2019/05/03/index/4.jpg" alt="循环"></p>
-<blockquote>
-<p>Node.js 在什么时候会进入事件循环呢? </p>
-</blockquote>
-<p><strong>生命周期为:</strong><code>Node.js 程序由事件循环环开始，到事件循环结束</code>.</p>
-<p>所有的逻辑都是事件的回调函数，所以 Node.js 始终在事件循环中，程序入口就是 事件循环第一个事件的回调函数。事件的回调函数在执行的过程中，可能会发出 I/O 请求或直接发射  (emit)事件，执行完成后再返回事件 循环，事件循环会会检查循环中有没有  处理的事件,直到到程序结束。</p>
-<h4 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h4><p>Node 版本区别:</p>
-<p>从对 ES6 的支持来简单的区分是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0.x 完全不支持ES6</span><br><span class="line">4.x 部分支持ES6特性，并处在LTS阶段</span><br><span class="line">5.x 部分支持ES6特性（比4.x多些），属于过渡产品，现在来说应该没有什么理由去用这个了</span><br><span class="line">6.x 支持98%的ES6特性</span><br></pre></td></tr></table></figure>
-
-<p><strong>参考链接</strong></p>
-<p><a href="https://www.byvoid.com/zhs/project/node" target="_blank" rel="noopener">Node.js开发指南</a><br><a href="http://www.infoq.com/cn/master-nodejs" target="_blank" rel="noopener">深入浅出Node.js</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1825,20 +1742,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1893,7 +1810,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:22</span>
+    <span title="站点阅读时长">2:23</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="恐惧让你沦为囚犯，希望让你重获自由。 Fear can hold you prisoner, hope can set you free. --《肖申克的救赎》">
@@ -29,6 +29,7 @@
 <meta property="og:description" content="恐惧让你沦为囚犯，希望让你重获自由。 Fear can hold you prisoner, hope can set you free. --《肖申克的救赎》">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://simuty.com/images/photos/2020/017.jpg">
+<meta property="og:image" content="https://simuty.com/2020/05/17/civil_servant_graph/86.png">
 <meta property="og:image" content="https://simuty.com/2020/05/17/civil_servant_graph/04.png">
 <meta property="og:image" content="https://simuty.com/2020/05/17/civil_servant_graph/05.png">
 <meta property="og:image" content="https://simuty.com/2020/05/17/civil_servant_graph/06.png">
@@ -113,7 +114,7 @@
 <meta property="og:image" content="https://simuty.com/2020/05/17/civil_servant_graph/85.png">
 <meta property="og:image" content="https://simuty.com/2020/05/17/civil_servant_graph/86.png">
 <meta property="article:published_time" content="2020-05-17T12:37:30.000Z">
-<meta property="article:modified_time" content="2020-05-28T11:53:09.027Z">
+<meta property="article:modified_time" content="2020-05-29T11:51:39.492Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="图形">
 <meta name="twitter:card" content="summary">
@@ -288,20 +289,12 @@
         </h1>
 
         <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-17 20:37:30" itemprop="dateCreated datePublished" datetime="2020-05-17T20:37:30+08:00">2020-05-17</time>
-            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-28 19:53:09" itemprop="dateModified" datetime="2020-05-28T19:53:09+08:00">2020-05-28</time>
+                <time title="修改时间：2020-05-29 19:51:39" itemprop="dateModified" datetime="2020-05-29T19:51:39+08:00">2020-05-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -327,7 +320,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>362</span>
+              <span>293</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -357,11 +350,10 @@ Fear can hold you prisoner, hope can set you free.<br>
 
 
 <hr>
-<p>元素相同看位置，平移旋转和翻转</p>
-<p>元素相似看样式，遍历加减黑白块</p>
-<p>元素不同看属性，对称曲直开闭性</p>
-<p>属性不明看数量，点线面素看特征</p>
-<p>特殊规律经常考，素间关系和标记</p>
+<p>图形推理口诀</p>
+<img data-src="86.png" width=70% />
+
+
 <hr>
 <ol>
 <li>考点<ol>
@@ -626,20 +618,20 @@ Fear can hold you prisoner, hope can set you free.<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -694,7 +686,7 @@ Fear can hold you prisoner, hope can set you free.<br>
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:22</span>
+    <span title="站点阅读时长">2:23</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
