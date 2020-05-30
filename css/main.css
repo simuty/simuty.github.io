@@ -1654,7 +1654,7 @@ details[open] > div.content details:last-child {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff63ff;
+  background: #d9e879;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
