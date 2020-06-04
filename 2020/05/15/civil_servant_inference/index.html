@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.3","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="美好的东西是不会死的。 The good things are not dead. --《肖申克的救赎》">
@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://simuty.com/2020/05/15/civil_servant_inference/75.png">
 <meta property="og:image" content="https://simuty.com/2020/05/15/civil_servant_inference/76.png">
 <meta property="article:published_time" content="2020-05-15T12:37:30.000Z">
-<meta property="article:modified_time" content="2020-05-31T07:13:28.935Z">
+<meta property="article:modified_time" content="2020-06-03T13:34:31.026Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="推理">
 <meta name="twitter:card" content="summary">
@@ -121,8 +121,26 @@
 
   <title>推理判断--逻辑 | 简单即是美</title>
   
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
 
 
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -275,12 +293,20 @@
         </h1>
 
         <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-15 20:37:30" itemprop="dateCreated datePublished" datetime="2020-05-15T20:37:30+08:00">2020-05-15</time>
+            </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-31 15:13:28" itemprop="dateModified" datetime="2020-05-31T15:13:28+08:00">2020-05-31</time>
+                <time title="修改时间：2020-06-03 21:34:31" itemprop="dateModified" datetime="2020-06-03T21:34:31+08:00">2020-06-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,19 +327,19 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>834</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>1k</span>
             </span>
 
         </div>
@@ -353,19 +379,10 @@ The good things are not dead.<br>
 <li>为了。一定/必须。</li>
 <li>。是。的充分条件</li>
 </ol>
-<img data-src="04.png" width=80% />
+<div class="tabs" id="前推后"><ul class="nav-tabs"><li class="tab active"><a href="#前推后-1">前推后</a></li><li class="tab"><a href="#前推后-2">等价</a></li><li class="tab"><a href="#前推后-3">实例</a></li></ul><div class="tab-content"><div class="tab-pane active" id="前推后-1"><img data-src="04.png" width=80% /></div><div class="tab-pane" id="前推后-2"><img data-src="05.png" width=80% /></div><div class="tab-pane" id="前推后-3"><img data-src="06.png" titie="串起来" width=80% /></div></div></div>
 
-<img data-src="05.png" width=80% />
-
-<img data-src="06.png" titie="串起来" width=80% />
-
-<h3 id="后推前"><a href="#后推前" class="headerlink" title="后推前"></a>后推前</h3><img data-src="07.png" width=80% />
-
-<img data-src="08.png" title="答案：B" width=80% />
-
-<img data-src="09.png" width=80% />
-<img data-src="10.png" width=80% />
-<img data-src="11.png" width=80% />
+<h3 id="后推前"><a href="#后推前" class="headerlink" title="后推前"></a>后推前</h3><div class="tabs" id="后推前"><ul class="nav-tabs"><li class="tab active"><a href="#后推前-1">公式</a></li><li class="tab"><a href="#后推前-2">实例</a></li><li class="tab"><a href="#后推前-3">实例</a></li><li class="tab"><a href="#后推前-4">变形</a></li></ul><div class="tab-content"><div class="tab-pane active" id="后推前-1"><img data-src="07.png" width=80% /></div><div class="tab-pane" id="后推前-2"><img data-src="08.png" title="答案：B" width=80% /></div><div class="tab-pane" id="后推前-3"><img data-src="09.png" width=80% /></div><div class="tab-pane" id="后推前-4"><img data-src="10.png" width=80% />
+<img data-src="11.png" width=80% /></div></div></div>
 
 <blockquote>
 <p>谁必不可少 就放在箭头后边</p>
@@ -374,11 +391,7 @@ The good things are not dead.<br>
 
 <img data-src="13.png" width=80% />
 
-<h3 id="且-或"><a href="#且-或" class="headerlink" title="且 或"></a>且 或</h3><img data-src="14.png" width=80% />
-<img data-src="15.png" width=80% />
-<img data-src="16.png" title="答案：C" width=80% />
-<img data-src="17.png" title="答案：C" width=80% />
-<img data-src="18.png" width=80% />
+<h3 id="且-或"><a href="#且-或" class="headerlink" title="且 或"></a>且 或</h3><div class="tabs" id="且或"><ul class="nav-tabs"><li class="tab active"><a href="#且或-1">概念</a></li><li class="tab"><a href="#且或-2">概念 1</a></li><li class="tab"><a href="#且或-3">实例</a></li><li class="tab"><a href="#且或-4">实例</a></li><li class="tab"><a href="#且或-5">实例</a></li></ul><div class="tab-content"><div class="tab-pane active" id="且或-1"><img data-src="14.png" width=80% /></div><div class="tab-pane" id="且或-2"><img data-src="15.png" width=80% /></div><div class="tab-pane" id="且或-3"><img data-src="16.png" title="答案：C" width=80% /></div><div class="tab-pane" id="且或-4"><img data-src="17.png" title="答案：C" width=80% /></div><div class="tab-pane" id="且或-5"><img data-src="18.png" width=80% /></div></div></div>
 
 <h3 id="德-摩根定律"><a href="#德-摩根定律" class="headerlink" title="德 摩根定律"></a>德 摩根定律</h3><img data-src="19.png" width=80% />
 <img data-src="20.png" width=80% />
@@ -399,25 +412,10 @@ The good things are not dead.<br>
 <li>何时用：题干条件为真，选项信息充分。</li>
 <li>如何用：读一句，排一句</li>
 </ol>
-<img data-src="23.png" width=80% />
+<div class="tabs" id="排除法"><ul class="nav-tabs"><li class="tab active"><a href="#排除法-1">排除法</a></li><li class="tab"><a href="#排除法-2">实例</a></li><li class="tab"><a href="#排除法-3">实例</a></li></ul><div class="tab-content"><div class="tab-pane active" id="排除法-1"><img data-src="23.png" width=80% /></div><div class="tab-pane" id="排除法-2"><img data-src="24.png" width=80% /></div><div class="tab-pane" id="排除法-3"><img data-src="25.png" width=80% /></div></div></div>
 
-<img data-src="24.png" width=80% />
-
-<img data-src="25.png" width=80% />
-
-<h3 id="辅助技巧"><a href="#辅助技巧" class="headerlink" title="辅助技巧"></a>辅助技巧</h3><img data-src="27.png" width=80% />
-
-<img data-src="26.png" width=80% />
-
-<img data-src="28.png" title="列公式" width=80% />
-
-<img data-src="29.png" titile="好好看" width=80% />
-
-<img data-src="30.png" titile="有点复杂" width=100% />
-
-<img data-src="31.png" titile="还不定项" width=80% />
-
-<img data-src="32.png" titile="还不定项" width=80% />
+<h3 id="辅助技巧"><a href="#辅助技巧" class="headerlink" title="辅助技巧"></a>辅助技巧</h3><div class="tabs" id="辅助技巧"><ul class="nav-tabs"><li class="tab active"><a href="#辅助技巧-1">技巧</a></li><li class="tab"><a href="#辅助技巧-2">实例</a></li><li class="tab"><a href="#辅助技巧-3">实例</a></li><li class="tab"><a href="#辅助技巧-4">实例</a></li><li class="tab"><a href="#辅助技巧-5">复杂</a></li><li class="tab"><a href="#辅助技巧-6">选丙</a></li></ul><div class="tab-content"><div class="tab-pane active" id="辅助技巧-1"><img data-src="27.png" width=80% /></div><div class="tab-pane" id="辅助技巧-2"><img data-src="26.png" width=80% /></div><div class="tab-pane" id="辅助技巧-3"><img data-src="28.png" title="列公式" width=80% /></div><div class="tab-pane" id="辅助技巧-4"><img data-src="29.png" titile="好好看" width=80% /></div><div class="tab-pane" id="辅助技巧-5"><img data-src="30.png" titile="有点复杂" width=100% /></div><div class="tab-pane" id="辅助技巧-6"><img data-src="31.png" titile="还不定项" width=80% /></div></div></div>
+<img data-src="32.png" width=80% />
 
 <h2 id="日常结论"><a href="#日常结论" class="headerlink" title="日常结论"></a>日常结论</h2><span id="inline-purple"> 
 类似于言语的细节判断
@@ -448,127 +446,115 @@ The good things are not dead.<br>
 </ol>
 </li>
 </ol>
-<blockquote>
+<div class="note danger">
+
 <p><strong>警惕</strong>五大坑王：更！最！越！首！极！</p>
-</blockquote>
+</div>
+
 <hr>
-<img data-src="33.png" titile="" width=80% />
+<div class="tabs" id="日常，3"><ul class="nav-tabs"><li class="tab active"><a href="#日常，3-1">实例 1</a></li><li class="tab"><a href="#日常，3-2">实例 2</a></li><li class="tab"><a href="#日常，3-3">实例 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="日常，3-1"><img data-src="33.png" titile="" width=80% /></div><div class="tab-pane" id="日常，3-2"><img data-src="34.png" titile="" width=80% /></div><div class="tab-pane" id="日常，3-3"><img data-src="35.png" titile="" width=100% /></div></div></div>
 
-<img data-src="34.png" titile="" width=80% />
+<h2 id="逻辑论证-🚩"><a href="#逻辑论证-🚩" class="headerlink" title="逻辑论证 🚩"></a>逻辑论证 🚩</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><div class="note danger">
+消弱题型：反对
+<div class="note success">
+加强题型：赞同
+</div>
 
-<img data-src="35.png" titile="" width=100% />
+</div>
 
-<h2 id="逻辑论证"><a href="#逻辑论证" class="headerlink" title="逻辑论证"></a>逻辑论证</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>消弱题型：反对</p>
-<p>加强题型：赞同</p>
-<img data-src="36.png" titile="" width=80% />
-<img data-src="37.png" titile="" width=80% />
-<img data-src="38.png" titile="" width=80% />
-<img data-src="39.png" titile="" width=80% />
-<img data-src="40.png" titile="" width=80% />
-<img data-src="41.png" titile="" width=80% />
-<img data-src="42.png" titile="" width=80% />
-<img data-src="43.png" titile="" width=80% />
+<div class="tabs" id="逻辑论证"><ul class="nav-tabs"><li class="tab active"><a href="#逻辑论证-1">概念</a></li><li class="tab"><a href="#逻辑论证-2">定位</a></li><li class="tab"><a href="#逻辑论证-3">快速</a></li><li class="tab"><a href="#逻辑论证-4">定位</a></li><li class="tab"><a href="#逻辑论证-5">定位</a></li></ul><div class="tab-content"><div class="tab-pane active" id="逻辑论证-1"><img data-src="36.png" titile="" width=80% /></div><div class="tab-pane" id="逻辑论证-2"><img data-src="37.png" titile="" width=80% />
+<img data-src="38.png" titile="" width=80% /></div><div class="tab-pane" id="逻辑论证-3"><img data-src="39.png" titile="" width=80% />
+<img data-src="40.png" titile="" width=80% /></div><div class="tab-pane" id="逻辑论证-4"><img data-src="41.png" titile="" width=80% />
+<img data-src="42.png" titile="" width=80% /></div><div class="tab-pane" id="逻辑论证-5"><img data-src="43.png" titile="" width=80% />
+<img data-src="44.png" titile="优选：B" width=80% /></div></div></div>
 
-<img data-src="44.png" titile="优选：B" width=80% />
-
-<h3 id="加强"><a href="#加强" class="headerlink" title="加强"></a>加强</h3><h4 id="解释原因-amp-举例子"><a href="#解释原因-amp-举例子" class="headerlink" title="解释原因 &amp; 举例子"></a>解释原因 &amp; 举例子</h4><p>采用 解释说明 ｜｜ 举例子</p>
-<ol>
-<li>只有论点</li>
-<li>论点与论据话题不一致</li>
-</ol>
-<img data-src="45.png" titile="" width=80% />
-
-<img data-src="46.png" titile="" width=80% />
-
-<h4 id="论点-amp-论据搭桥"><a href="#论点-amp-论据搭桥" class="headerlink" title="论点&amp;论据搭桥"></a>论点&amp;论据搭桥</h4><ol>
-<li>论点 论据不一致<ol>
-<li>去同存异</li>
-</ol>
-</li>
-</ol>
-<img data-src="50.png" width=80% />
-<img data-src="51.png" width=80% />
-<img data-src="52.png" width=80% />
-<img data-src="53.png" title="答案：C"  width=80% />
-<img data-src="54.png" width=80% />
-
-<h4 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h4><p>属于补充论据</p>
-<img data-src="55.png" width=80% />
-
-<img data-src="56.png" width=80% />
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><img data-src="57.png" width=80% />
-<img data-src="58.png" width=80% />
-<img data-src="59.png" width=80% />
+<h3 id="加强"><a href="#加强" class="headerlink" title="加强"></a>加强</h3><h4 id="解释原因-amp-举例子"><a href="#解释原因-amp-举例子" class="headerlink" title="解释原因 &amp; 举例子"></a>解释原因 &amp; 举例子</h4><div class="note success">
+解释说明 ｜｜ 举例子
+</div>
 
 <ol>
-<li>示例–解释说明<ol>
-<li>论点：伐木 &amp; 文明</li>
-<li>解释说明：伐木 与 文明的关系</li>
+<li><em>只有论点</em></li>
+<li><em>论点与论据话题不一致</em></li>
 </ol>
-</li>
-<li>示例–搭桥<ol>
-<li>论点：文明。</li>
-<li>论据：伐木。</li>
-<li>搭桥：伐木 与 文明的关系</li>
-</ol>
-</li>
-</ol>
+<div class="tabs" id="解释原因"><ul class="nav-tabs"><li class="tab active"><a href="#解释原因-1">举例子</a></li><li class="tab"><a href="#解释原因-2">解释说明</a></li></ul><div class="tab-content"><div class="tab-pane active" id="解释原因-1"><img data-src="45.png" titile="" width=80% /></div><div class="tab-pane" id="解释原因-2"><img data-src="46.png" titile="" width=80% /></div></div></div>
+
+<h4 id="论点-amp-论据搭桥"><a href="#论点-amp-论据搭桥" class="headerlink" title="论点&amp;论据搭桥"></a>论点&amp;论据搭桥</h4><div class="note info">
+论点 论据不一致
+<div class="note warning">
+   搭桥： *去同存异*
+</div>
+<div class="note primary">
+必要条件
+</div>
+
+</div>
+
+
+<div class="tabs" id="搭桥"><ul class="nav-tabs"><li class="tab"><a href="#搭桥-1">搭桥 1</a></li><li class="tab active"><a href="#搭桥-2">搭桥 2</a></li><li class="tab"><a href="#搭桥-3">搭桥 3</a></li><li class="tab"><a href="#搭桥-4">搭桥 4</a></li><li class="tab"><a href="#搭桥-5">搭桥 5</a></li></ul><div class="tab-content"><div class="tab-pane" id="搭桥-1"><img data-src="50.png" width=80% /></div><div class="tab-pane active" id="搭桥-2"><img data-src="51.png" width=80% /></div><div class="tab-pane" id="搭桥-3"><img data-src="52.png" width=80% /></div><div class="tab-pane" id="搭桥-4"><img data-src="53.png" title="答案：C"  width=80% /></div><div class="tab-pane" id="搭桥-5"><img data-src="54.png" width=80% /></div></div></div>
+
+<h4 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h4><blockquote>
+<p>属于补充论据</p>
+</blockquote>
+<div class="tabs" id="必要条件"><ul class="nav-tabs"><li class="tab active"><a href="#必要条件-1">必要条件 1</a></li><li class="tab"><a href="#必要条件-2">必要条件 2</a></li></ul><div class="tab-content"><div class="tab-pane active" id="必要条件-1"><img data-src="55.png" width=80% /></div><div class="tab-pane" id="必要条件-2"><img data-src="56.png" width=80% /></div></div></div>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><div class="tabs" id="总结"><ul class="nav-tabs"><li class="tab active"><a href="#总结-1">提分方式</a></li><li class="tab"><a href="#总结-2">步骤🚩</a></li><li class="tab"><a href="#总结-3">错误❌</a></li></ul><div class="tab-content"><div class="tab-pane active" id="总结-1"><img data-src="57.png" width=80% /></div><div class="tab-pane" id="总结-2"><img data-src="58.png" width=80% /></div><div class="tab-pane" id="总结-3"><img data-src="59.png" width=80% /></div></div></div>
+
+
+<div class="note danger">
+
+<div class="note primary">
+
+<p>示例–解释说明<br>    1. 论点：伐木 &amp; 文明<br>    2. 解释说明：伐木 与 文明的关系</p>
+</div>
+
+<div class="note success">
+
+<p>示例–搭桥<br>    1. 论点：文明。<br>    2. 论据：伐木。<br>    3. 搭桥：伐木 与 文明的关系</p>
+</div>
+
+</div>
+
+
 <h3 id="削弱"><a href="#削弱" class="headerlink" title="削弱"></a>削弱</h3><img data-src="60.png" width=80% />
 
-<h4 id="否论点-amp-举反例"><a href="#否论点-amp-举反例" class="headerlink" title="否论点 &amp; 举反例"></a>否论点 &amp; 举反例</h4><img data-src="61.png" width=80% />
-<img data-src="62.png" width=80% />
-<img data-src="63.png" width=80% />
-<img data-src="64.png" width=80% />
-<img data-src="65.png" width=80% />
-<img data-src="66.png" width=80% />
+<h4 id="否论点-amp-举反例"><a href="#否论点-amp-举反例" class="headerlink" title="否论点 &amp; 举反例"></a>否论点 &amp; 举反例</h4><div class="tabs" id="否论点"><ul class="nav-tabs"><li class="tab active"><a href="#否论点-1">漂亮的实例👌</a></li><li class="tab"><a href="#否论点-2">排除法</a></li><li class="tab"><a href="#否论点-3">有难度</a></li><li class="tab"><a href="#否论点-4">技巧</a></li><li class="tab"><a href="#否论点-5">难🚫</a></li></ul><div class="tab-content"><div class="tab-pane active" id="否论点-1"><img data-src="61.png" width=80% />
+<!-- enttab -->
+<!-- tab 别加戏 -->
+<img data-src="62.png" width=80% /></div><div class="tab-pane" id="否论点-2"><img data-src="63.png" width=80% /></div><div class="tab-pane" id="否论点-3"><img data-src="64.png" width=80% /></div><div class="tab-pane" id="否论点-4"><img data-src="65.png" width=80% /></div><div class="tab-pane" id="否论点-5"><div class="note danger">用代替的方法</div>
+<img data-src="66.png" width=80% /></div></div></div>
 
-<h4 id="拆桥-论点-amp-论据"><a href="#拆桥-论点-amp-论据" class="headerlink" title="拆桥-论点&amp;论据"></a>拆桥-论点&amp;论据</h4><img data-src="67.png" width=80% />
-<img data-src="68.png" width=80% />
-<img data-src="69.png" width=80% />
+<h4 id="拆桥-论点-amp-论据"><a href="#拆桥-论点-amp-论据" class="headerlink" title="拆桥-论点&amp;论据"></a>拆桥-论点&amp;论据</h4><div class="tabs" id="拆桥"><ul class="nav-tabs"><li class="tab active"><a href="#拆桥-1">对比搭桥</a></li><li class="tab"><a href="#拆桥-2">拆桥 2</a></li><li class="tab"><a href="#拆桥-3">拆桥 3</a></li></ul><div class="tab-content"><div class="tab-pane active" id="拆桥-1"><img data-src="67.png" width=80% /></div><div class="tab-pane" id="拆桥-2"><img data-src="68.png" width=80% /></div><div class="tab-pane" id="拆桥-3"><img data-src="69.png" width=80% /></div></div></div>
 
-<p>总结<br><img data-src="70.png" width=80% /></p>
-<h4 id="否定论据"><a href="#否定论据" class="headerlink" title="否定论据"></a>否定论据</h4><img data-src="71.png" width=80% />
-<img data-src="72.png" width=80% />
-<img data-src="73.png" width=80% />
-<img data-src="74.png" title="B" width=80% />
-<img data-src="75.png" title="很好的综合选项" width=80% />
+<div class="note danger">
 
-<img data-src="76.png" width=80% />
+<p>注意<br><img data-src="70.png" width=80% /></p>
+</div>
 
-<h2 id="❌易错点❌"><a href="#❌易错点❌" class="headerlink" title="❌易错点❌"></a>❌易错点❌</h2><span id="inline-purple">
-对策
-<span>
 
+<h4 id="否定论据"><a href="#否定论据" class="headerlink" title="否定论据"></a>否定论据</h4><div class="tabs" id="否定论据"><ul class="nav-tabs"><li class="tab active"><a href="#否定论据-1">特征</a></li><li class="tab"><a href="#否定论据-2">排除</a></li><li class="tab"><a href="#否定论据-3">直截了当</a></li><li class="tab"><a href="#否定论据-4">麻烦</a></li><li class="tab"><a href="#否定论据-5">漂亮的实例</a></li><li class="tab"><a href="#否定论据-6">排除</a></li></ul><div class="tab-content"><div class="tab-pane active" id="否定论据-1"><div class="note danger">
+论点特征，预测、建议；
+</div>
+<img data-src="71.png" width=80% /></div><div class="tab-pane" id="否定论据-2"><img data-src="72.png" width=80% /></div><div class="tab-pane" id="否定论据-3"><img data-src="73.png" width=80% /></div><div class="tab-pane" id="否定论据-4"><img data-src="74.png" title="B" width=80% /></div><div class="tab-pane" id="否定论据-5"><img data-src="75.png" title="很好的综合选项" width=80% /></div><div class="tab-pane" id="否定论据-6"><img data-src="76.png" width=80% /></div></div></div>
+
+
+<h2 id="❌易错点❌"><a href="#❌易错点❌" class="headerlink" title="❌易错点❌"></a>❌易错点❌</h2><p><span id="inline-purple"> 对策 <span></p>
 <p>选项中出现<strong>对策</strong>类的词汇，并不知道对策是否执行，所以一定要注意，<code>有问题</code>–不选择<br>如：</p>
 <ol>
 <li>法律 <strong>应该</strong> 制定 …</li>
 <li>企业 <strong>应当</strong> 担负 …</li>
 </ol>
-<span id="inline-blue">
-诉诸无知 == 不知道
-<span>
-
+<p><span id="inline-blue"> 诉诸无知 == 不知道 <span></p>
 <p>不知道的<strong>论据</strong>，不能当论据了，<code>不选择</code>。如：</p>
 <ol>
 <li><strong>没有实际数据显示。..</strong></li>
 <li><strong>没有研究表明。…</strong></li>
 <li>我们<code>没注意</code>到。..</li>
 </ol>
-<span id="inline-yellow">
-超出范围
-<span>
-
+<p><span id="inline-yellow"> 超出范围 <span></p>
 <p>如果讨论的是 [A, B], 结果来了个论据是 <strong>还有更好的</strong>，超出谈论范围，<strong>不选择</strong></p>
-<span id="inline-purple">
-无关选项
-<span>
-
+<p><span id="inline-purple"> 无关选项 <span></p>
 <p>和<strong>话题、主体</strong>不一致的不选择</p>
-<span id="inline-blue">
-类比的选项
-<span>
-
+<p><span id="inline-blue"> 类比的选项 <span></p>
 <p>类比一般比较弱，<strong>慎选</strong> 如：<code>两者类似</code></p>
 
     </div>
@@ -671,7 +657,7 @@ The good things are not dead.<br>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#翻译推理"><span class="nav-number">1.</span> <span class="nav-text">翻译推理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前推后"><span class="nav-number">1.1.</span> <span class="nav-text">前推后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后推前"><span class="nav-number">1.2.</span> <span class="nav-text">后推前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#且-或"><span class="nav-number">1.3.</span> <span class="nav-text">且 或</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#德-摩根定律"><span class="nav-number">1.4.</span> <span class="nav-text">德 摩根定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推理方式"><span class="nav-number">1.5.</span> <span class="nav-text">推理方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合排列"><span class="nav-number">2.</span> <span class="nav-text">组合排列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#排除法、代入法"><span class="nav-number">2.1.</span> <span class="nav-text">排除法、代入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#辅助技巧"><span class="nav-number">2.2.</span> <span class="nav-text">辅助技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日常结论"><span class="nav-number">3.</span> <span class="nav-text">日常结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑论证"><span class="nav-number">4.</span> <span class="nav-text">逻辑论证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">4.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加强"><span class="nav-number">4.2.</span> <span class="nav-text">加强</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解释原因-amp-举例子"><span class="nav-number">4.2.1.</span> <span class="nav-text">解释原因 &amp; 举例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#论点-amp-论据搭桥"><span class="nav-number">4.2.2.</span> <span class="nav-text">论点&amp;论据搭桥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#必要条件"><span class="nav-number">4.2.3.</span> <span class="nav-text">必要条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#削弱"><span class="nav-number">4.3.</span> <span class="nav-text">削弱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#否论点-amp-举反例"><span class="nav-number">4.3.1.</span> <span class="nav-text">否论点 &amp; 举反例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拆桥-论点-amp-论据"><span class="nav-number">4.3.2.</span> <span class="nav-text">拆桥-论点&amp;论据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#否定论据"><span class="nav-number">4.3.3.</span> <span class="nav-text">否定论据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#❌易错点❌"><span class="nav-number">5.</span> <span class="nav-text">❌易错点❌</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#翻译推理"><span class="nav-number">1.</span> <span class="nav-text">翻译推理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前推后"><span class="nav-number">1.1.</span> <span class="nav-text">前推后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后推前"><span class="nav-number">1.2.</span> <span class="nav-text">后推前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#且-或"><span class="nav-number">1.3.</span> <span class="nav-text">且 或</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#德-摩根定律"><span class="nav-number">1.4.</span> <span class="nav-text">德 摩根定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推理方式"><span class="nav-number">1.5.</span> <span class="nav-text">推理方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合排列"><span class="nav-number">2.</span> <span class="nav-text">组合排列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#排除法、代入法"><span class="nav-number">2.1.</span> <span class="nav-text">排除法、代入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#辅助技巧"><span class="nav-number">2.2.</span> <span class="nav-text">辅助技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日常结论"><span class="nav-number">3.</span> <span class="nav-text">日常结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑论证-🚩"><span class="nav-number">4.</span> <span class="nav-text">逻辑论证 🚩</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">4.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加强"><span class="nav-number">4.2.</span> <span class="nav-text">加强</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解释原因-amp-举例子"><span class="nav-number">4.2.1.</span> <span class="nav-text">解释原因 &amp; 举例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#论点-amp-论据搭桥"><span class="nav-number">4.2.2.</span> <span class="nav-text">论点&amp;论据搭桥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#必要条件"><span class="nav-number">4.2.3.</span> <span class="nav-text">必要条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#削弱"><span class="nav-number">4.3.</span> <span class="nav-text">削弱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#否论点-amp-举反例"><span class="nav-number">4.3.1.</span> <span class="nav-text">否论点 &amp; 举反例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拆桥-论点-amp-论据"><span class="nav-number">4.3.2.</span> <span class="nav-text">拆桥-论点&amp;论据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#否定论据"><span class="nav-number">4.3.3.</span> <span class="nav-text">否定论据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#❌易错点❌"><span class="nav-number">5.</span> <span class="nav-text">❌易错点❌</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -685,20 +671,20 @@ The good things are not dead.<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -747,13 +733,13 @@ The good things are not dead.<br>
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">159k</span>
+    <span title="站点总字数">162k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:24</span>
+    <span title="站点阅读时长">2:28</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
@@ -783,6 +769,77 @@ The good things are not dead.<br>
 
 
 
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
 
 
 

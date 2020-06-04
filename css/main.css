@@ -741,53 +741,53 @@ pre code {
   grid-gap: 1.5rem 1.5rem;
   grid-template-columns: 1fr 1fr;
   padding: 1.5rem;
-  user-select: none;
 }
 @media (max-width: 767px) {
   .post-body .link-grid {
     grid-template-columns: 1fr;
   }
 }
-.post-body .link-grid div {
+.post-body .link-grid .link-grid-container {
   border: solid #ddd;
   box-shadow: 1rem 1rem 0.5rem #808080;
   height: 5rem;
-  transition: background 0.3s;
   padding: 0.5rem;
   position: relative;
+  transition: background 0.3s;
 }
-.post-body .link-grid div:hover {
+.post-body .link-grid .link-grid-container:hover {
   animation: shake 0.5s;
   background: rgba(230,244,250,0.5);
 }
-.post-body .link-grid div:active {
+.post-body .link-grid .link-grid-container:active {
   box-shadow: 0.5rem 0.5rem 0.25rem #808080;
   transform: translate(0.2rem, 0.2rem);
 }
-.post-body .link-grid div img {
+.post-body .link-grid .link-grid-container .link-grid-image {
+  background-clip: content-box;
+  background-origin: content-box;
+  background-size: cover;
   border: 1px solid #ddd;
   border-radius: 50%;
   box-sizing: border-box;
   height: 5rem;
-  left: 0.5rem;
   padding: 3px;
   position: absolute;
-  top: 0.5rem;
   width: 5rem;
 }
-.post-body .link-grid div p {
+.post-body .link-grid .link-grid-container p {
   margin: 0 1rem 0 6rem;
 }
-.post-body .link-grid div p:first-of-type {
+.post-body .link-grid .link-grid-container p:first-of-type {
   font-size: 1.2em;
 }
-.post-body .link-grid div p:last-of-type {
+.post-body .link-grid .link-grid-container p:last-of-type {
   font-size: 0.8em;
   line-height: 1.3rem;
   opacity: 0.7;
 }
-.post-body .link-grid div a {
-  border: none;
+.post-body .link-grid .link-grid-container a {
+  border: 0;
   height: 100%;
   left: 0;
   position: absolute;
@@ -1146,7 +1146,7 @@ details {
   padding: 16px;
   margin: 0.5rem 0;
   border-radius: 4px;
-  background: #fff;
+  background: #282828;
   font-size: 0.9375rem;
   transition: all 0.28s ease;
   -moz-transition: all 0.28s ease;
@@ -1191,35 +1191,35 @@ details summary:hover:after {
 details > summary {
   background: #f6f6f6;
 }
-details[blue] {
-  border-color: #e8f4fd;
+details[primary] {
+  border-color: #6f42c1;
 }
-details[blue] > summary {
-  background: #e8f4fd;
+details[primary] > summary {
+  background: #6f42c1;
 }
-details[cyan] {
-  border-color: #e8fafe;
+details[info] {
+  border-color: #428bca;
 }
-details[cyan] > summary {
-  background: #e8fafe;
+details[info] > summary {
+  background: #428bca;
 }
-details[green] {
-  border-color: #ebf9ed;
+details[success] {
+  border-color: #5cb85c;
 }
-details[green] > summary {
-  background: #ebf9ed;
+details[success] > summary {
+  background: #5cb85c;
 }
-details[yellow] {
-  border-color: #fff8e9;
+details[warning] {
+  border-color: #f0ad4e;
 }
-details[yellow] > summary {
-  background: #fff8e9;
+details[warning] > summary {
+  background: #f0ad4e;
 }
-details[red] {
-  border-color: #feefee;
+details[danger] {
+  border-color: #d9534f;
 }
-details[red] > summary {
-  background: #feefee;
+details[danger] > summary {
+  background: #d9534f;
 }
 details[open] {
   border-color: rgba(85,85,85,0.2);
@@ -1229,35 +1229,35 @@ details[open] > summary {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-details[open][blue] {
-  border-color: rgba(33,150,243,0.3);
+details[open][primary] {
+  border-color: rgba(111,66,193,0.3);
 }
-details[open][blue] > summary {
-  border-bottom-color: rgba(33,150,243,0.3);
+details[open][primary] > summary {
+  border-bottom-color: rgba(111,66,193,0.3);
 }
-details[open][cyan] {
-  border-color: rgba(27,205,252,0.3);
+details[open][info] {
+  border-color: rgba(66,139,202,0.3);
 }
-details[open][cyan] > summary {
-  border-bottom-color: rgba(27,205,252,0.3);
+details[open][info] > summary {
+  border-bottom-color: rgba(66,139,202,0.3);
 }
-details[open][green] {
-  border-color: rgba(61,197,80,0.3);
+details[open][success] {
+  border-color: rgba(92,184,92,0.3);
 }
-details[open][green] > summary {
-  border-bottom-color: rgba(61,197,80,0.3);
+details[open][success] > summary {
+  border-bottom-color: rgba(92,184,92,0.3);
 }
-details[open][yellow] {
-  border-color: rgba(255,189,43,0.3);
+details[open][warning] {
+  border-color: rgba(240,173,78,0.3);
 }
-details[open][yellow] > summary {
-  border-bottom-color: rgba(255,189,43,0.3);
+details[open][warning] > summary {
+  border-bottom-color: rgba(240,173,78,0.3);
 }
-details[open][red] {
-  border-color: rgba(254,95,88,0.3);
+details[open][danger] {
+  border-color: rgba(217,83,79,0.3);
 }
-details[open][red] > summary {
-  border-bottom-color: rgba(254,95,88,0.3);
+details[open][danger] > summary {
+  border-bottom-color: rgba(217,83,79,0.3);
 }
 details[open] > summary {
   color: #555;
@@ -1654,7 +1654,7 @@ details[open] > div.content details:last-child {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #4ffffa;
+  background: #4e1d47;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3291,3 +3291,57 @@ strong em {
 /*更改默认的颜色*/
 }
 /** ============== markdown 样式 ============== */
+/** ============== 标签 样式 ============== */
+span#inline-green {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 80%;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0;
+  background-color: #5cb85c;
+}
+span#inline-blue {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 80%;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0;
+  background-color: #2780e3;
+}
+span#inline-yellow {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 80%;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0;
+  background-color: #f0ad4e;
+}
+span#inline-purple {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 80%;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0;
+  background-color: #9954bb;
+}
+/** ============== 标签 样式 ============== */
