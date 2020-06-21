@@ -1179,6 +1179,11 @@ pre code {
 .post-body .note.danger h6 {
   color: #d9534f;
 }
+.pdfobject-container iframe,
+.pdfobject-container embed {
+  height: 500px;
+  width: 100%;
+}
 details {
   display: block;
   padding: 16px;
@@ -1692,7 +1697,7 @@ details[open] > div.content details:last-child {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fff5d0;
+  background: #4d1d1d;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -3318,8 +3323,6 @@ em {
 }
 del {
   font-style: italic;
-  text-decoration: none;
-/*把默认的删除线去掉*/
   color: #2962ff;
 /*更改默认的颜色*/
 }
