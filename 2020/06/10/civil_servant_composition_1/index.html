@@ -14,11 +14,13 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
-<script id="hexo-configurations">
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.3","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="任重道远者，不择地而息；家贫亲老者，不择官而仕。（《韩诗外传》）">
@@ -151,7 +153,7 @@
 <link rel="canonical" href="https://simuty.com/2020/06/10/civil_servant_composition_1/">
 
 
-<script id="page-configurations">
+<script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -189,24 +191,36 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
@@ -216,8 +230,9 @@
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
         <span class="toggle-line toggle-line-first"></span>
@@ -229,9 +244,9 @@
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">简单即是美</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
   </div>
 
@@ -292,7 +307,7 @@
 </div>
 <div id="search-result">
   <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
 
@@ -300,19 +315,96 @@
   </div>
 
 </div>
-    </header>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-    
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#答题步骤"><span class="nav-number">2.</span> <span class="nav-text">答题步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#答题要素-单一题"><span class="nav-number">3.</span> <span class="nav-text">答题要素 || 单一题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">3.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#意义"><span class="nav-number">3.2.</span> <span class="nav-text">意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#措施"><span class="nav-number">3.3.</span> <span class="nav-text">措施</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原因"><span class="nav-number">3.4.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他类"><span class="nav-number">3.5.</span> <span class="nav-text">其他类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#综合题"><span class="nav-number">4.</span> <span class="nav-text">综合题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#观点分析"><span class="nav-number">4.1.</span> <span class="nav-text">观点分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现象分析类"><span class="nav-number">4.2.</span> <span class="nav-text">现象分析类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#词汇解释题"><span class="nav-number">4.3.</span> <span class="nav-text">词汇解释题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#句子解释题"><span class="nav-number">4.4.</span> <span class="nav-text">句子解释题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较"><span class="nav-number">4.5.</span> <span class="nav-text">比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他类型"><span class="nav-number">4.6.</span> <span class="nav-text">其他类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-分"><span class="nav-number">4.7.</span> <span class="nav-text">6.5 分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公文题"><span class="nav-number">5.</span> <span class="nav-text">公文题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案类"><span class="nav-number">5.1.</span> <span class="nav-text">方案类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宣传类"><span class="nav-number">5.2.</span> <span class="nav-text">宣传类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变形"><span class="nav-number">5.2.1.</span> <span class="nav-text">变形</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结类"><span class="nav-number">5.3.</span> <span class="nav-text">总结类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#评论类"><span class="nav-number">5.4.</span> <span class="nav-text">评论类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大作文"><span class="nav-number">6.</span> <span class="nav-text">大作文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基础概念"><span class="nav-number">6.1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#审题"><span class="nav-number">6.2.</span> <span class="nav-text">审题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#审题–指向明确型"><span class="nav-number">6.2.1.</span> <span class="nav-text">审题–指向明确型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#审题–指向关系型"><span class="nav-number">6.2.2.</span> <span class="nav-text">审题–指向关系型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#审题–指向多元型"><span class="nav-number">6.2.3.</span> <span class="nav-text">审题–指向多元型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#框架"><span class="nav-number">6.3.</span> <span class="nav-text">框架</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#提炼观点"><span class="nav-number">6.3.1.</span> <span class="nav-text">提炼观点</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
   <div class="reading-progress-bar"></div>
 
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
+
       <div class="main-inner">
-        <div class="content-wrap">
-          
+        
 
-          <div class="content post posts-expand">
-            
+        <div class="content post posts-expand">
+          
 
     
   
@@ -397,17 +489,13 @@
 <a id="more"></a>
 
 <blockquote class="blockquote-center">
-<i class="fa fa-quote-left"></i>
 <p>听了一些课，却不知道从何下手！<br>粉笔的训练营走起！</p>
 
-<i class="fa fa-quote-right"></i>
 </blockquote>
 
 <h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><blockquote class="blockquote-center">
-<i class="fa fa-quote-left"></i>
 <p>申论是测查<em>从事机关工作</em>应当具备的<strong>基本能力</strong></p>
 
-<i class="fa fa-quote-right"></i>
 </blockquote>
 
 <div class="tabs" id="基础知识"><ul class="nav-tabs"><li class="tab active"><a href="#基础知识-1">阅读理解能力</a></li><li class="tab"><a href="#基础知识-2">综合分析能力</a></li><li class="tab"><a href="#基础知识-3">提出解决问题</a></li><li class="tab"><a href="#基础知识-4">文字表达能力</a></li><li class="tab"><a href="#基础知识-5">小结🌈</a></li></ul><div class="tab-content"><div class="tab-pane active" id="基础知识-1"><p><strong>客观性</strong>：全面把握给定资料的内容，准确理解给定资料的含义。<em>尊重材料、不要随意主观发挥</em><br><strong>准确性</strong>：</p>
@@ -570,10 +658,8 @@
 
 <p><em>分为以下几个方面</em></p>
 <blockquote class="blockquote-center">
-<i class="fa fa-quote-left"></i>
 <p><strong>为啥总是想要自己概括呢！！！</strong></p>
 
-<p><i class="fa fa-quote-right"></i></p>
 </blockquote>
 
 <p><strong>三步走</strong></p>
@@ -606,7 +692,7 @@
 
 <h4 id="词汇解释题"><a href="#词汇解释题" class="headerlink" title="词汇解释题"></a>词汇解释题</h4><div class="tabs" id="词汇解释题"><ul class="nav-tabs"><li class="tab active"><a href="#词汇解释题-1">基本信息</a></li><li class="tab"><a href="#词汇解释题-2">事例</a></li><li class="tab"><a href="#词汇解释题-3">总结</a></li></ul><div class="tab-content"><div class="tab-pane active" id="词汇解释题-1"><details ><summary> <p>基本信息</p> </summary>
               <div class='content'>
-              <div class="note danger"><p><strong>题型特征</strong></p><p><em>谈。.. 词的含义；对。.. 词进行解释；谈对。.. 词的理解</em></p><div class="note success">如：谈谈死海。<p>不能只说表面的意思，如：地中海可以漂浮起来的海。<strong>—0 分</strong></p><ol><li><p>要解释深层含义。<em>词汇附近找</em></p></li><li><p>一道题几十分，即便含义有 30 个字，也对不起分数，所以需要针对 <em>词意</em> 进行扩展。</p></li></ol></div><p><strong>解题思路</strong></p><blockquote class="blockquote-center"><i class="fa fa-quote-left"></i><p>感情色彩与答案相同</p><p><i class="fa fa-quote-right"></i></p></blockquote><div class="note info"><p>相关要素&lt;<em>问题、危害、意义、事例</em>等&gt;；</p><p>需要从 <strong>词意</strong> 的 正负面，去找</p><ol><li>好的就找好的；<strong>意义</strong></li><li>坏的就找坏的。<em>问题、危害</em></div></li></ol><p><strong>对策</strong></p><div class="note warning"><ol><li>有对策就直接抄</li><li>没有就总结。</div></li></ol></div>
+              <div class="note danger"><p><strong>题型特征</strong></p><p><em>谈。.. 词的含义；对。.. 词进行解释；谈对。.. 词的理解</em></p><div class="note success">如：谈谈死海。<p>不能只说表面的意思，如：地中海可以漂浮起来的海。<strong>—0 分</strong></p><ol><li><p>要解释深层含义。<em>词汇附近找</em></p></li><li><p>一道题几十分，即便含义有 30 个字，也对不起分数，所以需要针对 <em>词意</em> 进行扩展。</p></li></ol></div><p><strong>解题思路</strong></p><blockquote class="blockquote-center"><p>感情色彩与答案相同</p></blockquote><div class="note info"><p>相关要素&lt;<em>问题、危害、意义、事例</em>等&gt;；</p><p>需要从 <strong>词意</strong> 的 正负面，去找</p><ol><li>好的就找好的；<strong>意义</strong></li><li>坏的就找坏的。<em>问题、危害</em></div></li></ol><p><strong>对策</strong></p><div class="note warning"><ol><li>有对策就直接抄</li><li>没有就总结。</div></li></ol></div>
               </div>
             </details></div><div class="tab-pane" id="词汇解释题-2"><details ><summary> <p>事例-本领恐慌</p> </summary>
               <div class='content'>
@@ -725,7 +811,7 @@
 
 <details ><summary> <p>问题汇总</p> </summary>
               <div class='content'>
-              <div class="note success"><blockquote class="blockquote-center"><i class="fa fa-quote-left"></i><p>分数低的几个原因</p><p><i class="fa fa-quote-right"></i></p></blockquote><ol><li>找到点，不知道抄多还是少</li><li>总是过度引申</li><li>写的时候，不知道<em>格式是啥</em>、怎么个分结构法，概念不明。</li><li>规范词也不够</li></ol></div>
+              <div class="note success"><blockquote class="blockquote-center"><p>分数低的几个原因</p></blockquote><ol><li>找到点，不知道抄多还是少</li><li>总是过度引申</li><li>写的时候，不知道<em>格式是啥</em>、怎么个分结构法，概念不明。</li><li>规范词也不够</li></ol></div>
               </div>
             </details></div></div></div>
 
@@ -900,8 +986,8 @@
 
 
 
-          </div>
-          
+        </div>
+        
     <div class="comments" id="gitalk-container"></div>
 
 <script>
@@ -925,83 +1011,6 @@
     });
   }
 </script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#答题步骤"><span class="nav-number">2.</span> <span class="nav-text">答题步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#答题要素-单一题"><span class="nav-number">3.</span> <span class="nav-text">答题要素 || 单一题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">3.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#意义"><span class="nav-number">3.2.</span> <span class="nav-text">意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#措施"><span class="nav-number">3.3.</span> <span class="nav-text">措施</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原因"><span class="nav-number">3.4.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他类"><span class="nav-number">3.5.</span> <span class="nav-text">其他类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#综合题"><span class="nav-number">4.</span> <span class="nav-text">综合题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#观点分析"><span class="nav-number">4.1.</span> <span class="nav-text">观点分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现象分析类"><span class="nav-number">4.2.</span> <span class="nav-text">现象分析类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#词汇解释题"><span class="nav-number">4.3.</span> <span class="nav-text">词汇解释题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#句子解释题"><span class="nav-number">4.4.</span> <span class="nav-text">句子解释题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较"><span class="nav-number">4.5.</span> <span class="nav-text">比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他类型"><span class="nav-number">4.6.</span> <span class="nav-text">其他类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-分"><span class="nav-number">4.7.</span> <span class="nav-text">6.5 分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公文题"><span class="nav-number">5.</span> <span class="nav-text">公文题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案类"><span class="nav-number">5.1.</span> <span class="nav-text">方案类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宣传类"><span class="nav-number">5.2.</span> <span class="nav-text">宣传类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变形"><span class="nav-number">5.2.1.</span> <span class="nav-text">变形</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结类"><span class="nav-number">5.3.</span> <span class="nav-text">总结类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#评论类"><span class="nav-number">5.4.</span> <span class="nav-text">评论类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大作文"><span class="nav-number">6.</span> <span class="nav-text">大作文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基础概念"><span class="nav-number">6.1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#审题"><span class="nav-number">6.2.</span> <span class="nav-text">审题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#审题–指向明确型"><span class="nav-number">6.2.1.</span> <span class="nav-text">审题–指向明确型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#审题–指向关系型"><span class="nav-number">6.2.2.</span> <span class="nav-text">审题–指向关系型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#审题–指向多元型"><span class="nav-number">6.2.3.</span> <span class="nav-text">审题–指向多元型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#框架"><span class="nav-number">6.3.</span> <span class="nav-text">框架</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#提炼观点"><span class="nav-number">6.3.1.</span> <span class="nav-text">提炼观点</span></a></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Howard</p>
-  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">60</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">34</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">60</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-  <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-  </div>
-
-
-
-      </div>
-        <div class="back-to-top motion-element">
-          <i class="fa fa-arrow-up"></i>
-          <span>0%</span>
-        </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
 
       </div>
     </main>
@@ -1143,22 +1152,15 @@
   
   <script src="/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/pisces.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
-
 
 
   

@@ -14,11 +14,13 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
-<script id="hexo-configurations">
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.3","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="目标 区分模块、包； ✅掌握引用模块、包 ✅进阶一点   原本以为今晚可以早早的睡觉，谁知道东西还是蛮多的。。。  第一部分 模块与包在编程语言中，代码块、函数、类、模块，一直到包，逐级封装，层层调用。  模块(module)含义python中每个python文件就是一个模块，每个python文件中，封装类似功能的变量、函数、类型等等，可以被其他的python模块通过import关键字引入重复使用">
@@ -46,7 +48,7 @@
 <link rel="canonical" href="https://simuty.com/2019/06/04/index/">
 
 
-<script id="page-configurations">
+<script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -84,24 +86,36 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
@@ -111,8 +125,9 @@
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
         <span class="toggle-line toggle-line-first"></span>
@@ -124,9 +139,9 @@
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">简单即是美</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
   </div>
 
@@ -187,7 +202,7 @@
 </div>
 <div id="search-result">
   <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
 
@@ -195,19 +210,96 @@
   </div>
 
 </div>
-    </header>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-    
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分-模块与包"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分 模块与包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块-module"><span class="nav-number">1.1.1.</span> <span class="nav-text">模块(module)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包（package）"><span class="nav-number">1.1.2.</span> <span class="nav-text">包（package）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二部分-使用"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#导入方法"><span class="nav-number">1.2.1.</span> <span class="nav-text">导入方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块搜索顺序🔍【原理看第三部分】"><span class="nav-number">1.2.2.</span> <span class="nav-text">模块搜索顺序🔍【原理看第三部分】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例一-同级目录"><span class="nav-number">1.2.3.</span> <span class="nav-text">示例一 同级目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例二-他级目录"><span class="nav-number">1.2.4.</span> <span class="nav-text">示例二 他级目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三部分-深入理解引用"><span class="nav-number">1.3.</span> <span class="nav-text">第三部分 深入理解引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python运行机制"><span class="nav-number">1.3.1.</span> <span class="nav-text">Python运行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#“标准”import，顶部导入"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">“标准”import，顶部导入</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#嵌套import"><span class="nav-number">1.3.2.</span> <span class="nav-text">嵌套import</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#顺序导入-import"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">顺序导入-import</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#循环导入-嵌套导入-import"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">循环导入&#x2F;嵌套导入-import</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#參考"><span class="nav-number">1.4.</span> <span class="nav-text">參考</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
   <div class="reading-progress-bar"></div>
 
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
+
       <div class="main-inner">
-        <div class="content-wrap">
-          
+        
 
-          <div class="content post posts-expand">
-            
+        <div class="content post posts-expand">
+          
 
     
   
@@ -458,8 +550,8 @@
 
 
 
-          </div>
-          
+        </div>
+        
     <div class="comments" id="gitalk-container"></div>
 
 <script>
@@ -483,83 +575,6 @@
     });
   }
 </script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一部分-模块与包"><span class="nav-number">1.1.</span> <span class="nav-text">第一部分 模块与包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块-module"><span class="nav-number">1.1.1.</span> <span class="nav-text">模块(module)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包（package）"><span class="nav-number">1.1.2.</span> <span class="nav-text">包（package）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二部分-使用"><span class="nav-number">1.2.</span> <span class="nav-text">第二部分 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#导入方法"><span class="nav-number">1.2.1.</span> <span class="nav-text">导入方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块搜索顺序🔍【原理看第三部分】"><span class="nav-number">1.2.2.</span> <span class="nav-text">模块搜索顺序🔍【原理看第三部分】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例一-同级目录"><span class="nav-number">1.2.3.</span> <span class="nav-text">示例一 同级目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例二-他级目录"><span class="nav-number">1.2.4.</span> <span class="nav-text">示例二 他级目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三部分-深入理解引用"><span class="nav-number">1.3.</span> <span class="nav-text">第三部分 深入理解引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python运行机制"><span class="nav-number">1.3.1.</span> <span class="nav-text">Python运行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#“标准”import，顶部导入"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">“标准”import，顶部导入</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#嵌套import"><span class="nav-number">1.3.2.</span> <span class="nav-text">嵌套import</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#顺序导入-import"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">顺序导入-import</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#循环导入-嵌套导入-import"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">循环导入&#x2F;嵌套导入-import</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#參考"><span class="nav-number">1.4.</span> <span class="nav-text">參考</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Howard</p>
-  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">60</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">34</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">60</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-  <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-  </div>
-
-
-
-      </div>
-        <div class="back-to-top motion-element">
-          <i class="fa fa-arrow-up"></i>
-          <span>0%</span>
-        </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
 
       </div>
     </main>
@@ -701,22 +716,15 @@
   
   <script src="/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/pisces.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
-
 
 
   
