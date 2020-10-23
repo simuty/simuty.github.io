@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="学不可以已。（《荀子·劝学》）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node&amp;RabbitMQ 系列一">
+<meta property="og:url" content="https://simuty.com/2020/10/23/RabbitMQ_1/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="学不可以已。（《荀子·劝学》）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/022.jpg">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/006.png">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/007.png">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/008.png">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/009.png">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/010.png">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/011.png">
+<meta property="og:image" content="https://simuty.com/2020/10/23/RabbitMQ_1/012.png">
+<meta property="article:published_time" content="2020-10-23T14:14:14.000Z">
+<meta property="article:modified_time" content="2020-10-23T07:51:20.237Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/022.jpg">
+
+<link rel="canonical" href="https://simuty.com/2020/10/23/RabbitMQ_1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Node&RabbitMQ 系列一 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息中间件"><span class="nav-number">1.</span> <span class="nav-text">消息中间件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Broker：消息中间件的服务节点"><span class="nav-number">2.1.1.</span> <span class="nav-text">Broker：消息中间件的服务节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exchange：交换机"><span class="nav-number">2.1.2.</span> <span class="nav-text">Exchange：交换机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RoutingKey-与-Binding-Key"><span class="nav-number">2.1.3.</span> <span class="nav-text">RoutingKey 与 Binding Key</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例代码"><span class="nav-number">2.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#direct"><span class="nav-number">2.2.1.</span> <span class="nav-text">direct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#topic"><span class="nav-number">2.2.2.</span> <span class="nav-text">topic</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/10/23/RabbitMQ_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Node&RabbitMQ 系列一
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-23 22:14:14 / 修改时间：15:51:20" itemprop="dateCreated datePublished" datetime="2020-10-23T22:14:14+08:00">2020-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MQ/" itemprop="url" rel="index"><span itemprop="name">MQ</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/022.jpg" width=80% />
+
+<span class='geyan'>
+学不可以已。（《荀子·劝学》）
+</span>
+<a id="more"></a>
+
+
+<h2 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h2><p>消息队列中间件（Message Queue Middleware， 简称为 MQ）是指利用<code>高效可靠</code>的消息传递机制进行与<code>平台无关</code>的数据交流， 并基于数据通信来进行分布式系统的集成。 通过提供消息传递和消息排队模型 ，它可以在<strong>分布式环境下扩展进程间</strong>的通信。一般有两种传递模式：点对 点 ( P2P, Point-to-Point ）模式和发布／订阅（ Pub/Sub ）模式</p>
+<p>MQ的作用<br>1）解耦：在项目启动之初是很难预测未来会遇到什么困难的，消息中间件在处理过程中插入了一个隐含的，基于数据的接口层，两边都实现这个接口，这样就允许独立的修改或者扩展两边的处理过程，只要两边遵守相同的接口约束即可。<br>2）冗余（存储）：在某些情况下处理数据的过程中会失败，消息中间件允许把数据持久化知道他们完全被处理<br>扩展性：消息中间件解耦了应用的过程，所以提供消息入队和处理的效率是很容易的，只需要增加处理流程就可以了。<br>3）削峰：在访问量剧增的情况下，但是应用仍然需要发挥作用，但是这样的突发流量并不常见。而使用消息中间件采用队列的形式可以减少突发访问压力，不会因为突发的超时负荷要求而崩溃<br>4）可恢复性：当系统一部分组件失效时，不会影响到整个系统。消息中间件降低了进程间的耦合性，当一个处理消息的进程挂掉后，加入消息中间件的消息仍然可以在系统恢复后重新处理<br>5）顺序保证：在大多数场景下，处理数据的顺序也很重要，大部分消息中间件支持一定的顺序性<br>6）缓冲：消息中间件通过一个缓冲层来帮助任务最高效率的执行<br>7）异步通信：通过把把消息发送给消息中间件，消息中间件并不立即处。</p>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><img data-src="006.png" width=80% />
+
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>RabbitMQ 整体上是一个生产者与消费者模型， 主要负责接收、存储和转发消息。 可以把消 息传递的过程想象成： 当你将一个包裹送到邮局， 邮局会暂存并最终将邮件通过邮递员送到收 件人的手上， RabbitMQ 就好比由邮局、邮箱和邮递员组成的一个系统。 从计算机术语层面来说， RabbitMQ 模型更像是一种交换机模型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Broker:它提供一种传输服务,它的角色就是维护一条从生产者到消费者的路线，保证数据能按照指定的方式进行传输, </span><br><span class="line">Exchange：消息交换机,它指定消息按什么规则,路由到哪个队列。 </span><br><span class="line">Queue:消息的载体,每个消息都会被投到一个或多个队列。 </span><br><span class="line">Binding:绑定，它的作用就是把exchange和queue按照路由规则绑定起来.</span><br><span class="line">Routing Key:路由关键字,exchange根据这个关键字进行消息投递。</span><br><span class="line">vhost:虚拟主机,一个broker里可以有多个vhost，用作不同用户的权限分离。</span><br><span class="line">Producer:消息生产者,就是投递消息的程序.</span><br><span class="line">Consumer:消息消费者,就是接受消息的程序.</span><br><span class="line">Channel:消息通道,在客户端的每个连接里,可建立多个channel.</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Broker：消息中间件的服务节点"><a href="#Broker：消息中间件的服务节点" class="headerlink" title="Broker：消息中间件的服务节点"></a>Broker：消息中间件的服务节点</h4><p>对于 RabbitMQ 来说， 一个 RabbitMQ Broker 可以简单地看作一个 RabbitMQ 服务节点， 或者 RabbitMQ 服务实例。 大多数情况下也可以将一个 RabbitMQ Broker 看作一 台 RabbitMQ 服务器 。</p>
+<img data-src="007.png" width="80%" />
+
+
+<h4 id="Exchange：交换机"><a href="#Exchange：交换机" class="headerlink" title="Exchange：交换机"></a>Exchange：交换机</h4><p>生产者将消息发送到 Exchange ，由交换器将消息路由到一个或者多个队列中。</p>
+<img data-src="008.png" width="80%" />
+
+<h4 id="RoutingKey-与-Binding-Key"><a href="#RoutingKey-与-Binding-Key" class="headerlink" title="RoutingKey 与 Binding Key"></a>RoutingKey 与 Binding Key</h4><p>生产者在将消息发送给Exchange的时候，一般会指定一个routing key，来指定这个消息的路由规则，生产者就可以在发送消息给Exchange时，通过指定routing key来决定消息流向哪里。</p>
+<p>RabbitMQ常用的Exchange Type有三种：fanout、direct、topic。</p>
+<ol>
+<li>fanout:把所有发送到该Exchange的消息投递到所有与它绑定的队列中。</li>
+<li>direct:把消息投递到那些binding key与routing key完全匹配的队列中。</li>
+<li>topic:将消息路由到binding key与routing key模式匹配的队列中。</li>
+</ol>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><blockquote>
+<p>由官方教程翻译而来，用ts实现，因为觉得ts好使<br><a href="https://www.rabbitmq.com/tutorials" target="_blank" rel="noopener">https://www.rabbitmq.com/tutorials</a></p>
+</blockquote>
+<p>能搜索rabbitmq的一般都会了解一些概念，就直接上代码吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">v8.9.3</span><br><span class="line"># 为了执行ts代码</span><br><span class="line">$ ts-node -v</span><br><span class="line">v9.0.0</span><br><span class="line">$ brew install rabbitmq</span><br><span class="line">$ brew services start rabbitmq</span><br></pre></td></tr></table></figure>
+
+<p>访问 <a href="http://127.0.0.1:15672，">http://127.0.0.1:15672，</a> 进入rabbitmq后台管理界面。</p>
+<img data-src="009.png" width="80%" />
+
+<p>访问 <a href="http://tryrabbitmq.com/" target="_blank" rel="noopener">http://tryrabbitmq.com/</a> 进入模拟 <strong>生产-交换机-队列-消费者</strong></p>
+<img data-src="010.png" width="80%" />
+
+<div class="note danger"> 
+以上为准备阶段与可视化阶段
+</div>
+
+<h4 id="direct"><a href="#direct" class="headerlink" title="direct"></a>direct</h4><p>以下代码主要实现生产者</p>
+<img data-src="011.png" width="80%" />
+
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// emit_log_direct.ts 生产者</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> amqp <span class="keyword">from</span> <span class="string">'amqplib'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">`amqp://localhost`</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">publish</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> exchange = <span class="string">'direct_logs'</span>;</span><br><span class="line">    <span class="keyword">const</span> msg = <span class="string">'hello world'</span>;</span><br><span class="line">    <span class="keyword">const</span> routingKeys = [<span class="string">'info'</span>, <span class="string">'error'</span>, <span class="string">'warning'</span>];</span><br><span class="line">    <span class="comment">// 1. 创建链接</span></span><br><span class="line">    <span class="keyword">const</span> connect = <span class="keyword">await</span> amqp.connect(url);</span><br><span class="line">    <span class="comment">// 2. 创建channel</span></span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connect.createChannel();</span><br><span class="line">    <span class="comment">// 3. 创建or连上 交换机</span></span><br><span class="line">    <span class="comment">// 3.1 直连方式；</span></span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, <span class="string">'direct'</span>, &#123; <span class="attr">durable</span>: <span class="literal">false</span> &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> index = random(<span class="number">3</span>);</span><br><span class="line">        <span class="comment">// 4. 消息发给交换机</span></span><br><span class="line">        channel.publish(exchange, routingKeys[index], Buffer.from(msg));</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`[x] Sent <span class="subst">$&#123;msg&#125;</span>-- <span class="subst">$&#123;routingKeys[index]&#125;</span>`</span>);</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">await</span> sleep(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">await</span> connect.close();</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">time: number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> setTimeout(resolve, time*<span class="number">1000</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">random</span>(<span class="params">max: number</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="built_in">Math</span>.floor(max));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// receive_logs_direct.ts 消费者</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> amqp <span class="keyword">from</span> <span class="string">'amqplib'</span></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">`amqp://localhost`</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">receive</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> connect = <span class="keyword">await</span> amqp.connect(url);</span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connect.createChannel();</span><br><span class="line">    <span class="keyword">const</span> exchange = <span class="string">'direct_logs'</span>;</span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, <span class="string">'direct'</span>, &#123; <span class="attr">durable</span>: <span class="literal">false</span> &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> routingKeys = [<span class="string">'info'</span>, <span class="string">'error'</span>, <span class="string">'warning'</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> queueA = <span class="keyword">await</span> channel.assertQueue(<span class="string">'queueA'</span>);</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueA.queue, exchange, routingKeys[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueA.queue, exchange, routingKeys[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueA.queue, exchange, routingKeys[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> queueB = <span class="keyword">await</span> channel.assertQueue(<span class="string">'queueB'</span>);</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueB.queue, exchange, routingKeys[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    channel.consume(queueA.queue, msg =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"队列AAAAA："</span>, msg.content.toString())</span><br><span class="line">    &#125;, &#123; <span class="attr">noAck</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">    channel.consume(queueB.queue, msg =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"队列BBBBBBBB："</span>, msg.content.toString())</span><br><span class="line">    &#125;, &#123; <span class="attr">noAck</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">    <span class="comment">// await connect.close();</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行</span></span><br><span class="line">$ ts-node emit_log_direct.ts</span><br><span class="line">[x] Sent hello world-- error</span><br><span class="line">[x] Sent hello world-- info</span><br><span class="line"></span><br><span class="line">$ ts-node receive_logs_direct.ts</span><br><span class="line">队列AAAAA： hello world</span><br><span class="line">队列BBBBBBBB： hello world</span><br><span class="line"></span><br><span class="line">队列AAAAA： hello world</span><br></pre></td></tr></table></figure>
+
+<h4 id="topic"><a href="#topic" class="headerlink" title="topic"></a>topic</h4><p>发送到主题交换机的消息 <strong>必须是单词列表，以.分割</strong>， routing_key无效。通常它们指定与消息相关的某些功能。 一些有效的路由关键示例：“stock.usd.nyse”，“ nyse.vmw”，“ quick.orange.rabbit”。 路由关键字中可以包含任意多个单词，最多255个字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* (star) : 匹配一个单词</span><br><span class="line"># (hash) : 匹配 0 或 更多单词</span><br></pre></td></tr></table></figure>
+
+<img data-src="012.png" width="80%" />
+
+
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// emit_log_topic.ts</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> amqp <span class="keyword">from</span> <span class="string">'amqplib'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">`amqp://localhost`</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">publish</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> exchange = <span class="string">'topic_logs'</span>;</span><br><span class="line">    <span class="keyword">const</span> msg = <span class="string">'hello world'</span>;</span><br><span class="line">    <span class="comment">// bothqueue、firstqueue、secondqueue</span></span><br><span class="line">    <span class="keyword">const</span> keys = [<span class="string">'quick.orange.rabbit'</span>, <span class="string">'quick.orange.fox'</span>, <span class="string">'lazy.brown.fox'</span>];</span><br><span class="line">    <span class="comment">// 1. 创建链接</span></span><br><span class="line">    <span class="keyword">const</span> connect = <span class="keyword">await</span> amqp.connect(url);</span><br><span class="line">    <span class="comment">// 2. 创建channel</span></span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connect.createChannel();</span><br><span class="line">    <span class="comment">// 3. 创建or连上 交换机</span></span><br><span class="line">    <span class="comment">// 3.1 直连方式；</span></span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, <span class="string">'topic'</span>, &#123; <span class="attr">durable</span>: <span class="literal">false</span> &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> index = random(<span class="number">3</span>);</span><br><span class="line">        <span class="comment">// 4. 消息发给交换机</span></span><br><span class="line">        channel.publish(exchange, keys[index], Buffer.from(msg));</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`[x] Sent <span class="subst">$&#123;msg&#125;</span>-- <span class="subst">$&#123;keys[index]&#125;</span>`</span>);</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">await</span> sleep(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">await</span> connect.close();</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">time: number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> setTimeout(resolve, time*<span class="number">1000</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">random</span>(<span class="params">max: number</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="built_in">Math</span>.floor(max));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// receive_logs_topic.ts</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> amqp <span class="keyword">from</span> <span class="string">'amqplib'</span></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">`amqp://localhost`</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">receive</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> connect = <span class="keyword">await</span> amqp.connect(url);</span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connect.createChannel();</span><br><span class="line">    <span class="keyword">const</span> exchange = <span class="string">'topic_logs'</span>;</span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, <span class="string">'topic'</span>, &#123; <span class="attr">durable</span>: <span class="literal">false</span> &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> queueA = <span class="keyword">await</span> channel.assertQueue(<span class="string">'queue_topic_A'</span>);</span><br><span class="line">    <span class="comment">// # 匹配多个单词</span></span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueA.queue, exchange, <span class="string">'*.orange.*'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> queueB = <span class="keyword">await</span> channel.assertQueue(<span class="string">'queue_topic_B'</span>);</span><br><span class="line">    <span class="comment">// * 可以替代一个单词</span></span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueB.queue, exchange, <span class="string">'#'</span>);</span><br><span class="line"></span><br><span class="line">    channel.consume(queueA.queue, msg =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"队列AAAAA："</span>, msg.content.toString())</span><br><span class="line">    &#125;, &#123; <span class="attr">noAck</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">    channel.consume(queueB.queue, msg =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"队列BBBBBBBB："</span>, msg.content.toString())</span><br><span class="line">    &#125;, &#123; <span class="attr">noAck</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">    <span class="comment">// await connect.close();</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行</span></span><br><span class="line">$ ts-node emit_log_topic.ts</span><br><span class="line">[x] Sent hello world-- error</span><br><span class="line">[x] Sent hello world-- info</span><br><span class="line"></span><br><span class="line">$ ts-node receive_logs_topic.ts</span><br><span class="line">队列AAAAA： hello world</span><br><span class="line">队列BBBBBBBB： hello world</span><br><span class="line"></span><br><span class="line">队列AAAAA： hello world</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.rabbitmq.com/tutorials/tutorial-five-javascript.html" target="_blank" rel="noopener">rabbitmq官网教程</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2020/10/23/RabbitMQ_1/" title="Node&amp;RabbitMQ 系列一">https://simuty.com/2020/10/23/RabbitMQ_1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/01/civil_servant_everyDay/" rel="prev" title="备考">
+      <i class="fa fa-chevron-left"></i> 备考
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">214k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : '8add251bc3333b3aba91ff2aa0a9a051',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
