@@ -424,7 +424,7 @@
 <p>比如，对于这个列表 alist = [1, “a”, [11,22], {“k1”:”v1”}]，其在内存内的存储方式是这样的：</p>
 <p><img data-src="mem.png" alt="内存地址"></p>
 <h4 id="1-什么是list"><a href="#1-什么是list" class="headerlink" title="1. 什么是list?"></a>1. 什么是list?</h4><p>概念： 逗号分隔的不同的数据项使用方括号括起来即是list;<br>性质： list元素可变,改变的是原对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; tmpList &#x3D; []  # 创建一个空列表</span><br><span class="line">&gt;&gt;&gt; numList &#x3D; [1, 2, 3, 4]</span><br><span class="line">&gt;&gt;&gt; allList &#x3D; [1, &#39;a&#39;, [11,22], &#123;&#39;k1&#39;:&#39;v1&#39;&#125;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; tmpList &#x3D; []  # 创建一个空列表</span><br><span class="line">&gt;&gt;&gt; numList &#x3D; [1, 2, 3, 4]</span><br><span class="line">&gt;&gt;&gt; allList &#x3D; [1, &#39;a&#39;, [11,22], &#123;&#39;k1&#39;:&#39;v1&#39;&#125;]</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-增删改"><a href="#2-增删改" class="headerlink" title="2. 增删改"></a>2. 增删改</h3><p><strong>以xmind的方式呈现</strong></p>
 <p><img data-src="List.png" alt=""></p>
@@ -435,13 +435,13 @@
 </blockquote>
 </blockquote>
 <p><strong>重要的实例</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">alist &#x3D; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br><span class="line"># stop_index 逻辑上要大于 start_index</span><br><span class="line"># 正整数stop_index&gt;start_index</span><br><span class="line"># 负数：stop_index&lt;start_index &amp; step&lt;0</span><br><span class="line"></span><br><span class="line">print(alist[1:8:3])</span><br><span class="line"># 全部，正向取值</span><br><span class="line">print(alist[:])</span><br><span class="line"># 全部，反向取值</span><br><span class="line">print(alist[-1:-11:-1])</span><br><span class="line"># stop_index &gt; len(list), 不报错</span><br><span class="line">print(alist[-1:-12:-1])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alist &#x3D; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br><span class="line"># stop_index 逻辑上要大于 start_index</span><br><span class="line"># 正整数stop_index&gt;start_index</span><br><span class="line"># 负数：stop_index&lt;start_index &amp; step&lt;0</span><br><span class="line"></span><br><span class="line">print(alist[1:8:3])</span><br><span class="line"># 全部，正向取值</span><br><span class="line">print(alist[:])</span><br><span class="line"># 全部，反向取值</span><br><span class="line">print(alist[-1:-11:-1])</span><br><span class="line"># stop_index &gt; len(list), 不报错</span><br><span class="line">print(alist[-1:-12:-1])</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p><strong>类似于list, 相对不可更改</strong></p>
 </blockquote>
 <p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017092876846880" target="_blank" rel="noopener">参考：廖雪峰老师博客–使用list和tuple</a>的最后来看一个“可变的”tuple：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; t &#x3D; (&#39;a&#39;, &#39;b&#39;, [&#39;A&#39;, &#39;B&#39;])</span><br><span class="line">&gt;&gt;&gt; t[2][0] &#x3D; &#39;X&#39;</span><br><span class="line">&gt;&gt;&gt; t[2][1] &#x3D; &#39;Y&#39;</span><br><span class="line">&gt;&gt;&gt; t</span><br><span class="line">(&#39;a&#39;, &#39;b&#39;, [&#39;X&#39;, &#39;Y&#39;])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; t &#x3D; (&#39;a&#39;, &#39;b&#39;, [&#39;A&#39;, &#39;B&#39;])</span><br><span class="line">&gt;&gt;&gt; t[2][0] &#x3D; &#39;X&#39;</span><br><span class="line">&gt;&gt;&gt; t[2][1] &#x3D; &#39;Y&#39;</span><br><span class="line">&gt;&gt;&gt; t</span><br><span class="line">(&#39;a&#39;, &#39;b&#39;, [&#39;X&#39;, &#39;Y&#39;])</span><br></pre></td></tr></table></figure>
 
 <p>这个tuple定义的时候有3个元素，分别是’a’，’b’和一个list。不是说tuple一旦定义后就不可变了吗？怎么后来又变了？</p>
 <p>别急，我们先看看定义的时候tuple包含的3个元素：</p>
@@ -570,13 +570,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">223k</span>
+    <span title="站点总字数">218k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:23</span>
+    <span title="站点阅读时长">3:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

@@ -440,7 +440,7 @@
 <p>在计算机网络中，主机ID全部为<code>0</code>的地址为<code>网络地址</code>，而主机ID全部为<code>1</code>的地址为<code>广播地址</code>，这2个地址是不能分配给主机用的。</p>
 <h4 id="公网和私网IP地址"><a href="#公网和私网IP地址" class="headerlink" title="公网和私网IP地址"></a>公网和私网IP地址</h4><p><code>公网IP地址</code><br>公有地址分配和管理由Inter NIC（Internet Network Information Center 因特网信息中心）负责。各级ISP使用的公网地址都需要向Inter NIC提出申请，有Inter NIC统一发放，这样就能确保地址块不冲突。</p>
 <p><code>私网IP地址</code><br>创建IP寻址方案的人也创建了私网IP地址。这些地址可以被用于私有网络，在Internet没有这些IP地址，Internet上的路由器也没有到私有网络的路由表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A类：10.0.0.0 255.0.0.0，保留了1个A类网络。</span><br><span class="line">B类：172.16.0.0 255.255.0.0～172.31.0.0 255.255.0.0，保留了16个B类网络。</span><br><span class="line">C类：192.168.0.0 255.255.255.0～192.168.255.0 255.255.255.0，保留了256个C类网络。</span><br><span class="line">PS：私网地址访问Internet需要做NAT或PAT网络地址转换</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">A类：10.0.0.0 255.0.0.0，保留了1个A类网络。</span><br><span class="line">B类：172.16.0.0 255.255.0.0～172.31.0.0 255.255.0.0，保留了16个B类网络。</span><br><span class="line">C类：192.168.0.0 255.255.255.0～192.168.255.0 255.255.255.0，保留了256个C类网络。</span><br><span class="line">PS：私网地址访问Internet需要做NAT或PAT网络地址转换</span><br></pre></td></tr></table></figure>
 
 <p><img data-src="15598095553143.jpg" alt=""></p>
 <p><img data-src="15598095596202.jpg" alt=""></p>
@@ -463,7 +463,7 @@
 <h5 id="子网掩码和ip地址的关系"><a href="#子网掩码和ip地址的关系" class="headerlink" title="子网掩码和ip地址的关系"></a>子网掩码和ip地址的关系</h5><blockquote>
 <p>子网掩码是用来判断任意两台计算机的IP地址是否属于同一子网络的根据。</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">And按位与运算：</span><br><span class="line">与运算是计算机中一种基本的逻辑运算方式，符号表示为&amp;，也可以表示为 and。</span><br><span class="line">参加运算的两个数据，按二进制位进行“与”运算。</span><br><span class="line">运算规则：0&amp;0&#x3D;0；0&amp;1&#x3D;0；1&amp;0&#x3D;0；1&amp;1&#x3D;1；</span><br><span class="line">即：两位同时为“1”，结果才为“1”，否则为0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">And按位与运算：</span><br><span class="line">与运算是计算机中一种基本的逻辑运算方式，符号表示为&amp;，也可以表示为 and。</span><br><span class="line">参加运算的两个数据，按二进制位进行“与”运算。</span><br><span class="line">运算规则：0&amp;0&#x3D;0；0&amp;1&#x3D;0；1&amp;0&#x3D;0；1&amp;1&#x3D;1；</span><br><span class="line">即：两位同时为“1”，结果才为“1”，否则为0</span><br></pre></td></tr></table></figure>
 
 <p><img data-src="15598304763666.jpg" alt=""></p>
 <blockquote>
@@ -480,18 +480,18 @@
 <p><img data-src="15598306058611.jpg" alt=""></p>
 <p>划分子网时，随着子网地址借用主机位数的增多，子网的数目随之增加，但每个子网中的可用主机数逐渐减少。</p>
 <p>如C类地址，原有8位主机位，2^8-2即254个主机地址，默认子网掩码255.255.255.0。(全0或全1不可用）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">借用1位主机位，产生2^1-2&#x3D;0个子网，每个子网有2^7-2个主机地址；</span><br><span class="line">借用2位主机位，产生2^2-2&#x3D;2个子网，每个子网有2^6-2个主机地址;</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">借用1位主机位，产生2^1-2&#x3D;0个子网，每个子网有2^7-2个主机地址；</span><br><span class="line">借用2位主机位，产生2^2-2&#x3D;2个子网，每个子网有2^6-2个主机地址;</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
 
 
 <h4 id="计算子网掩码"><a href="#计算子网掩码" class="headerlink" title="计算子网掩码"></a>计算子网掩码</h4><h5 id="根据子网数"><a href="#根据子网数" class="headerlink" title="根据子网数"></a>根据子网数</h5><p>根据子网数，计算子网掩码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1)将子网数目转化为二进制来表示</span><br><span class="line">2)取得该二进制的位数，为 N</span><br><span class="line">3)取得该IP地址的类子网掩码，将其主机地址部分的前N位置1 即得出该IP地址划分子网的子网掩码。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1)将子网数目转化为二进制来表示</span><br><span class="line">2)取得该二进制的位数，为 N</span><br><span class="line">3)取得该IP地址的类子网掩码，将其主机地址部分的前N位置1 即得出该IP地址划分子网的子网掩码。</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>如欲将B类IP地址168.195.0.0划分成27个子网：</p>
 </blockquote>
 <p>1)27=11011<br>2)该二进制为五位数，<code>N = 5</code><br>3)将B类地址的子网掩码255.255.0.0的主机地址<code>前5位置1</code>（B类地址的主机位包括后两个字节，所以这里要把第三个字节的前5位置1），得到 255.255.248.0<br>即为划分成27个子网的B类IP地址 168.195.0.0的子网掩码（实际上是划成了32-2=30个子网）。</p>
 <p>10101000 11000011 00000000 00000000<br>11111111 11111111 00000000 00000000<br>11111111 11111111 11111000 00000000<br>11111111 11111111 11111000 00000000</p>
-<h5 id="根据主机数"><a href="#根据主机数" class="headerlink" title="根据主机数"></a>根据主机数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 根据主机数计算子网掩码</span><br><span class="line">2. 根据子网掩码计算子网数</span><br><span class="line">3. 根据子网掩码计算主机数</span><br><span class="line">4. 根据子网掩码确定子网络的起止地址</span><br></pre></td></tr></table></figure>
+<h5 id="根据主机数"><a href="#根据主机数" class="headerlink" title="根据主机数"></a>根据主机数</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 根据主机数计算子网掩码</span><br><span class="line">2. 根据子网掩码计算子网数</span><br><span class="line">3. 根据子网掩码计算主机数</span><br><span class="line">4. 根据子网掩码确定子网络的起止地址</span><br></pre></td></tr></table></figure>
 
 
 <h6 id="根据主机数计算子网掩码"><a href="#根据主机数计算子网掩码" class="headerlink" title="根据主机数计算子网掩码"></a>根据主机数计算子网掩码</h6><blockquote>
@@ -621,13 +621,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">223k</span>
+    <span title="站点总字数">218k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:23</span>
+    <span title="站点阅读时长">3:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

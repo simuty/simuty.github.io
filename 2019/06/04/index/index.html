@@ -360,7 +360,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.7k</span>
+              <span>3.6k</span>
             </span>
 
         </div>
@@ -397,7 +397,7 @@
 <h4 id="包（package）"><a href="#包（package）" class="headerlink" title="包（package）"></a>包（package）</h4><p><strong>含义</strong><br>包含多个python文件/模块的文件夹，并且文件夹中有一个名称为<strong><strong>init</strong>.py</strong>的特殊声明文件；</p>
 <p><strong>作用</strong><br>可以将大量功能相关的python模块包含起来统一管理，同样也可以被其他模块通过import关键字引入重复使用封装的模块和代码。</p>
 <p><strong>示例</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">package_a</span><br><span class="line">├── __init__.py</span><br><span class="line">├── module_a1.py</span><br><span class="line">└── module_a2.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">package_a</span><br><span class="line">├── __init__.py</span><br><span class="line">├── module_a1.py</span><br><span class="line">└── module_a2.py</span><br></pre></td></tr></table></figure>
 
 <p><code>__init__.py</code>的作用</p>
 <ol>
@@ -432,7 +432,7 @@
 <p>至于如何自定义个包，发布到GitHub，让后让别人用，我想那是不是现在关心的。</p>
 </blockquote>
 <h4 id="示例二-他级目录"><a href="#示例二-他级目录" class="headerlink" title="示例二 他级目录"></a>示例二 他级目录</h4><p>工作区目录结构如下，实现<strong>moduleA</strong>引用<code>文件夹module下的moduleC</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── Pipfile</span><br><span class="line">├── Pipfile.lock</span><br><span class="line">├── module</span><br><span class="line">│   └── moduleC.py</span><br><span class="line">├── moduleA.py</span><br><span class="line">└── moduleB.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Pipfile</span><br><span class="line">├── Pipfile.lock</span><br><span class="line">├── module</span><br><span class="line">│   └── moduleC.py</span><br><span class="line">├── moduleA.py</span><br><span class="line">└── moduleB.py</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>网上有很多实现的例子，但是，为何那样写？</p>
@@ -454,7 +454,7 @@
 <p><a href="https://docs.python.org/3.6/library/sys.html?highlight=sys%20modules#sys.modules" target="_blank" rel="noopener">官网解释</a><br><strong>sys.modules</strong>是一个 将模块名称（module_name）映射到已加载的模块（modules） 的<strong>字典</strong>。可用来强制重新加载modules。Python一启动，它将<strong>被加载在内存中。</strong></p>
 <p>当我们<code>导入新modules</code>，sys.modules将<code>自动记录</code>下该module；当第二次再导入该module时，Python将<code>直接</code>到字典中<code>查找</code>，加快运行速度。</p>
 <p>它是个字典，故拥有字典的一切方法，如<code>sys.modules.keys()、sys.modules.values()、sys.modules[‘os’]</code>。但请不要轻易替换字典、或从字典中删除某元素，将可能导致Python运行失败。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.modules)<span class="comment">#打印，查看该字典具体内容。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.modules)<span class="comment">#打印，查看该字典具体内容。</span></span><br></pre></td></tr></table></figure>
 
 
 <p><strong>导入分类</strong></p>
@@ -472,10 +472,10 @@
 </li>
 </ul>
 <h5 id="“标准”import，顶部导入"><a href="#“标准”import，顶部导入" class="headerlink" title="“标准”import，顶部导入"></a>“标准”import，顶部导入</h5><p>在 moduleA 中引用 moduleC </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── Pipfile</span><br><span class="line">├── Pipfile.lock</span><br><span class="line">├── module</span><br><span class="line">│   └── moduleC.py</span><br><span class="line">├── moduleA.py</span><br><span class="line">└── moduleB.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Pipfile</span><br><span class="line">├── Pipfile.lock</span><br><span class="line">├── module</span><br><span class="line">│   └── moduleC.py</span><br><span class="line">├── moduleA.py</span><br><span class="line">└── moduleB.py</span><br></pre></td></tr></table></figure>
 
 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">this is moduleA</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> sys, os</span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># 当前文件的绝对路径</span></span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># 获取目录</span></span><br><span class="line">print(BASE_DIR)</span><br><span class="line"><span class="comment"># 系统路径下加载</span></span><br><span class="line">sys.path.append(BASE_DIR)</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line">print(sys.path)</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line">print(sys.modules.keys())</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> module.moduleC <span class="keyword">import</span> add</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">···</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">this is moduleC</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">this is moduleA</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> sys, os</span><br><span class="line">BASE_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># 当前文件的绝对路径</span></span><br><span class="line">print(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># 获取目录</span></span><br><span class="line">print(BASE_DIR)</span><br><span class="line"><span class="comment"># 系统路径下加载</span></span><br><span class="line">sys.path.append(BASE_DIR)</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line">print(sys.path)</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line">print(sys.modules.keys())</span><br><span class="line">print(<span class="string">'\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> module.moduleC <span class="keyword">import</span> add</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">···</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">this is moduleC</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br></pre></td></tr></table></figure>
 
 <p><img data-src="5.jpg" alt="第五"></p>
 <p><img data-src="4.png" alt="第四"></p>
@@ -598,13 +598,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">223k</span>
+    <span title="站点总字数">218k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:23</span>
+    <span title="站点阅读时长">3:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

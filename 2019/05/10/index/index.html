@@ -23,12 +23,12 @@
     var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="目标 了解变量名与变量的关系 理解引用、拷贝、赋值等概念与含义  1 前提概况我们接触最多的就是变量，究竟变量名 与 变量值 关系是啥？如何存储？ 首先看一个最简单的 1a &#x3D; 100 上侧是一个赋值操作，其中a是变量名，100是变量的值。编程语言的编译器（或者解释器）处理到这一句代码的时候，一般语言会这样做  在内存中开辟一个内存空间, 地址0x4377878280; 存放100进第一步的空间中">
+  <meta name="description" content="目标 了解变量名与变量的关系 理解引用、拷贝、赋值等概念与含义  1 前提概况我们接触最多的就是变量，究竟变量名 与 变量值 关系是啥？如何存储？ 首先看一个最简单的 a &#x3D; 100 上侧是一个赋值操作，其中a是变量名，100是变量的值。编程语言的编译器（或者解释器）处理到这一句代码的时候，一般语言会这样做  在内存中开辟一个内存空间, 地址0x4377878280; 存放100进第一步的空间中；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python基础系列之--变量、赋值、引用【7】">
 <meta property="og:url" content="https://simuty.com/2019/05/10/index/index.html">
 <meta property="og:site_name" content="简单即是美">
-<meta property="og:description" content="目标 了解变量名与变量的关系 理解引用、拷贝、赋值等概念与含义  1 前提概况我们接触最多的就是变量，究竟变量名 与 变量值 关系是啥？如何存储？ 首先看一个最简单的 1a &#x3D; 100 上侧是一个赋值操作，其中a是变量名，100是变量的值。编程语言的编译器（或者解释器）处理到这一句代码的时候，一般语言会这样做  在内存中开辟一个内存空间, 地址0x4377878280; 存放100进第一步的空间中">
+<meta property="og:description" content="目标 了解变量名与变量的关系 理解引用、拷贝、赋值等概念与含义  1 前提概况我们接触最多的就是变量，究竟变量名 与 变量值 关系是啥？如何存储？ 首先看一个最简单的 a &#x3D; 100 上侧是一个赋值操作，其中a是变量名，100是变量的值。编程语言的编译器（或者解释器）处理到这一句代码的时候，一般语言会这样做  在内存中开辟一个内存空间, 地址0x4377878280; 存放100进第一步的空间中；">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://simuty.com/2019/05/10/index/a.jpg">
 <meta property="og:image" content="https://simuty.com/2019/05/10/index/1.jpg">
@@ -379,7 +379,7 @@
 </ol>
 <h4 id="1-前提概况"><a href="#1-前提概况" class="headerlink" title="1 前提概况"></a>1 前提概况</h4><p>我们接触最多的就是<strong>变量</strong>，究竟<code>变量名</code> 与 <code>变量值</code> 关系是啥？如何存储？</p>
 <p>首先看一个最简单的</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">100</span></span><br></pre></td></tr></table></figure>
 <p>上侧是一个<strong>赋值操作</strong>，其中<code>a是变量名</code>，<code>100是变量的值</code>。编程语言的编译器（或者解释器）处理到这一句代码的时候，一般语言会这样做</p>
 <ol>
 <li>在内存中<strong>开辟</strong>一个内存空间, <strong>地址</strong>0x4377878280;</li>
@@ -415,7 +415,7 @@
 <p><strong>变量名完全可以看成一个内存地址的别名（只是方便我们记忆），真正的数据是存在这个内存地址的存储空间上的。变量名在运行的时候，没有任何用处。</strong></p>
 <p><img data-src="a.jpg" alt="赋值"></p>
 <h4 id="2-深入一些"><a href="#2-深入一些" class="headerlink" title="2. 深入一些"></a>2. 深入一些</h4><p>奔着：以问题来解决疑问题，先看这个代码，思考一下结果</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values</span><br></pre></td></tr></table></figure>
 
 <p><strong>请认真思考此时 values 是多少？</strong><br><strong>请认真思考此时 values 是多少？</strong><br><strong>请认真思考此时 values 是多少？</strong></p>
 <p>也许你认为是<code>[0, [0, 1, 2], 2]</code>,原因可能是：</p>
@@ -424,12 +424,12 @@
 <li>把list[1]的位置直接添加一个list；</li>
 </ol>
 <p>代码如下，<code>完全符合预期</code>.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>但是结果却是 <strong>无限循环</strong></p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [...], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [...], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>❌就❎在第二步中<br>其中涉及两个概念：引用、拷贝</p>
@@ -443,16 +443,16 @@
 <p>如需达到预期效果，只需要类似于你的逻辑，<strong>指向一份值相同但内存不同的值</strong></p>
 <p><img data-src="5.jpg" alt="值相同但内存不同"></p>
 <p>代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拷贝生成一份新的数据，</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values[:]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拷贝生成一份新的数据，</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values[:]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 
 <p>往更深处说，values[:] 复制操作是所谓的「浅复制」(shallow copy)，当列表对象有嵌套的时候也会产生出乎意料的错误，比如</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = a[:]</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br><span class="line"><span class="comment"># 正确答案</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line">[<span class="number">8</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line">[<span class="number">0</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="comment"># a 与 b 的地址确实不同</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a))</span><br><span class="line"><span class="number">4355761096</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b))</span><br><span class="line"><span class="number">4355761416</span></span><br><span class="line"><span class="comment"># 但是内部list的地址确实相同的，也就是共同指向了同一块内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = a[:]</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br><span class="line"><span class="comment"># 正确答案</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line">[<span class="number">8</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line">[<span class="number">0</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="comment"># a 与 b 的地址确实不同</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a))</span><br><span class="line"><span class="number">4355761096</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b))</span><br><span class="line"><span class="number">4355761416</span></span><br><span class="line"><span class="comment"># 但是内部list的地址确实相同的，也就是共同指向了同一块内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br></pre></td></tr></table></figure>
 
 <p>看完上图的打印结果，请看下图；</p>
 <p><img data-src="7.jpg" alt="浅复制"></p>
 <p><strong>重点： values[:] 只是浅层复制</strong><br><strong>重点： values[:] 只是浅层复制</strong><br><strong>重点： values[:] 只是浅层复制</strong></p>
 <p>正确的复制嵌套元素的方法是进行「深复制」(deep copy)，方法是</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = copy.deepcopy(a)</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = copy.deepcopy(a)</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br></pre></td></tr></table></figure>
 
 <p><img data-src="9.jpg" alt="深复制"></p>
 <h4 id="3-引用-VS-拷贝："><a href="#3-引用-VS-拷贝：" class="headerlink" title="3 引用 VS 拷贝："></a>3 引用 VS 拷贝：</h4><ol>
@@ -566,13 +566,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">223k</span>
+    <span title="站点总字数">218k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:23</span>
+    <span title="站点阅读时长">3:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

@@ -23,12 +23,12 @@
     var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="还记得之前说，NodeJs 拥有丰富的第三方模块吗？  如何利用现有的模块，快速、高效的实现需求呢？   第一部分 模块管理工具几个关键字 121. nvm：主要管理nodejs版本；2. npm：nodejs自带模块管理工具；  1. NPM 是什么? npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。  NPM 官网给出解">
+  <meta name="description" content="还记得之前说，NodeJs 拥有丰富的第三方模块吗？  如何利用现有的模块，快速、高效的实现需求呢？   第一部分 模块管理工具几个关键字 1. nvm：主要管理nodejs版本；2. npm：nodejs自带模块管理工具；  1. NPM 是什么? npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。  NPM 官网给出解释如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NodeJs 基础系列之--基本概念">
 <meta property="og:url" content="https://simuty.com/2019/05/03/index/index.html">
 <meta property="og:site_name" content="简单即是美">
-<meta property="og:description" content="还记得之前说，NodeJs 拥有丰富的第三方模块吗？  如何利用现有的模块，快速、高效的实现需求呢？   第一部分 模块管理工具几个关键字 121. nvm：主要管理nodejs版本；2. npm：nodejs自带模块管理工具；  1. NPM 是什么? npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。  NPM 官网给出解">
+<meta property="og:description" content="还记得之前说，NodeJs 拥有丰富的第三方模块吗？  如何利用现有的模块，快速、高效的实现需求呢？   第一部分 模块管理工具几个关键字 1. nvm：主要管理nodejs版本；2. npm：nodejs自带模块管理工具；  1. NPM 是什么? npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。  NPM 官网给出解释如">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://simuty.com/2019/05/03/index/2.jpg">
 <meta property="og:image" content="https://simuty.com/2019/05/03/index/3.jpg">
@@ -355,7 +355,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>3.9k</span>
             </span>
 
         </div>
@@ -374,7 +374,7 @@
 </blockquote>
 </blockquote>
 <h2 id="第一部分-模块管理工具"><a href="#第一部分-模块管理工具" class="headerlink" title="第一部分 模块管理工具"></a>第一部分 模块管理工具</h2><p><strong>几个关键字</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. nvm：主要管理nodejs版本；</span><br><span class="line">2. npm：nodejs自带模块管理工具；</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. nvm：主要管理nodejs版本；</span><br><span class="line">2. npm：nodejs自带模块管理工具；</span><br></pre></td></tr></table></figure>
 
 <h3 id="1-NPM-是什么"><a href="#1-NPM-是什么" class="headerlink" title="1. NPM 是什么?"></a>1. NPM 是什么?</h3><blockquote>
 <p>npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。</p>
@@ -398,30 +398,30 @@
 </blockquote>
 </blockquote>
 <h3 id="2-安装配置"><a href="#2-安装配置" class="headerlink" title="2. 安装配置"></a>2. 安装配置</h3><p>NodeJs 自带 npm, 故无需安装。<br>罗列几个常用的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 查看 npm 命令列表</span><br><span class="line">$ npm help</span><br><span class="line"></span><br><span class="line"># 查看各个命令的简单用法</span><br><span class="line">$ npm -l</span><br><span class="line"></span><br><span class="line"># 查看 npm 的版本</span><br><span class="line">$ npm -v</span><br><span class="line"></span><br><span class="line"># 查看 npm 的配置</span><br><span class="line">$ npm config list -l</span><br><span class="line"></span><br><span class="line">$ npm list</span><br><span class="line"></span><br><span class="line"># 加上 global 参数，会列出全局安装的模块</span><br><span class="line">$ npm list -global</span><br><span class="line"></span><br><span class="line"># 搜索模块</span><br><span class="line">$ npm search &lt;关键字&gt;</span><br><span class="line"></span><br><span class="line"># 本地安装</span><br><span class="line">$ npm install &lt;package name&gt;</span><br><span class="line"></span><br><span class="line"># 全局安装</span><br><span class="line">$ sudo npm install -global &lt;package name&gt;</span><br><span class="line">$ sudo npm install -g &lt;package name&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看 npm 命令列表</span><br><span class="line">$ npm help</span><br><span class="line"></span><br><span class="line"># 查看各个命令的简单用法</span><br><span class="line">$ npm -l</span><br><span class="line"></span><br><span class="line"># 查看 npm 的版本</span><br><span class="line">$ npm -v</span><br><span class="line"></span><br><span class="line"># 查看 npm 的配置</span><br><span class="line">$ npm config list -l</span><br><span class="line"></span><br><span class="line">$ npm list</span><br><span class="line"></span><br><span class="line"># 加上 global 参数，会列出全局安装的模块</span><br><span class="line">$ npm list -global</span><br><span class="line"></span><br><span class="line"># 搜索模块</span><br><span class="line">$ npm search &lt;关键字&gt;</span><br><span class="line"></span><br><span class="line"># 本地安装</span><br><span class="line">$ npm install &lt;package name&gt;</span><br><span class="line"></span><br><span class="line"># 全局安装</span><br><span class="line">$ sudo npm install -global &lt;package name&gt;</span><br><span class="line">$ sudo npm install -g &lt;package name&gt;</span><br></pre></td></tr></table></figure>
 
 <h5 id="实例一-眼见为实"><a href="#实例一-眼见为实" class="headerlink" title="实例一 眼见为实"></a>实例一 眼见为实</h5><p>下载一个常用的框架—ExpressJs，借此展示一下效果，并熟悉一个 ExpressJs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
 
 <p><img data-src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
 <h5 id="实例二-初识-package-json-文件"><a href="#实例二-初识-package-json-文件" class="headerlink" title="实例二 初识 package.json 文件"></a>实例二 初识 package.json 文件</h5><p>简单说就是，记录文件，记录项目依赖的模块。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
 
 <p>实例说明</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 名称</span><br><span class="line">  &quot;name&quot;: &quot;npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 版本</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &#x2F;&#x2F; 描述</span><br><span class="line">  &quot;description&quot;: &quot;study npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 入口文件</span><br><span class="line">  &quot;main&quot;: &quot;app.js&quot;,</span><br><span class="line">  &#x2F;&#x2F; 模块依赖</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;express&quot;: &quot;^4.16.4&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;&#125;,</span><br><span class="line">  &#x2F;&#x2F; 执行脚本</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; 关键词</span><br><span class="line">  &quot;keywords&quot;: [</span><br><span class="line">    &quot;npm&quot;</span><br><span class="line">  ],</span><br><span class="line">  &#x2F;&#x2F; 作者</span><br><span class="line">  &quot;author&quot;: &quot;howard&quot;,</span><br><span class="line">  &#x2F;&#x2F; 协议</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 名称</span><br><span class="line">  &quot;name&quot;: &quot;npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 版本</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &#x2F;&#x2F; 描述</span><br><span class="line">  &quot;description&quot;: &quot;study npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 入口文件</span><br><span class="line">  &quot;main&quot;: &quot;app.js&quot;,</span><br><span class="line">  &#x2F;&#x2F; 模块依赖</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;express&quot;: &quot;^4.16.4&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;&#125;,</span><br><span class="line">  &#x2F;&#x2F; 执行脚本</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; 关键词</span><br><span class="line">  &quot;keywords&quot;: [</span><br><span class="line">    &quot;npm&quot;</span><br><span class="line">  ],</span><br><span class="line">  &#x2F;&#x2F; 作者</span><br><span class="line">  &quot;author&quot;: &quot;howard&quot;,</span><br><span class="line">  &#x2F;&#x2F; 协议</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如我们需要下载ExpressJs,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 一下命令即可将Express依赖加入到上边的文件中，偷个懒，不在重负写了</span><br><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一下命令即可将Express依赖加入到上边的文件中，偷个懒，不在重负写了</span><br><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure>
 
 <p>实例三 更改npm源</p>
 <p>可能你发现下载东西简直如龟速，这个你得感谢<a href="https://baike.baidu.com/item/%E6%96%B9%E6%BB%A8%E5%85%B4/9525950?fr=aladdin" target="_blank" rel="noopener">防火墙之父</a></p>
 <p>为了更快更好的完成工作，我们可以用国内的<a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝</a>、清华等源；</p>
 <p><strong>淘宝镜像说明：这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>使用方法类似，用cnpm即可</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm install [name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cnpm install [name]</span><br></pre></td></tr></table></figure>
 
 
 <h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><blockquote>
@@ -432,7 +432,7 @@
 <blockquote>
 <p>举个通俗的例子：<br><a href="https://www.zhihu.com/question/19732473/answer/20851256" target="_blank" rel="noopener">例子来自知乎网友</a></p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">你打电话问书店老板有没有《分布式系统》这本书，如果是&#96;同步通信机制&#96;，书店老板会说，你稍等，”我查一下&quot;，</span><br><span class="line">然后开始查啊查，等查好了（可能是5秒，也可能是一天）告诉你结果（返回结果）。</span><br><span class="line"></span><br><span class="line">而&#96;异步通信机制&#96;，书店老板直接告诉你我查一下啊，查好了打电话给你，然后直接挂电话了（不返回结果）。</span><br><span class="line">然后查好了，他会主动打电话给你。在这里老板通过“回电”这种方式来回调。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">你打电话问书店老板有没有《分布式系统》这本书，如果是&#96;同步通信机制&#96;，书店老板会说，你稍等，”我查一下&quot;，</span><br><span class="line">然后开始查啊查，等查好了（可能是5秒，也可能是一天）告诉你结果（返回结果）。</span><br><span class="line"></span><br><span class="line">而&#96;异步通信机制&#96;，书店老板直接告诉你我查一下啊，查好了打电话给你，然后直接挂电话了（不返回结果）。</span><br><span class="line">然后查好了，他会主动打电话给你。在这里老板通过“回电”这种方式来回调。</span><br></pre></td></tr></table></figure>
 
 
 <h5 id="2-阻塞I-O与非阻塞I-O特点"><a href="#2-阻塞I-O与非阻塞I-O特点" class="headerlink" title="2.阻塞I/O与非阻塞I/O特点"></a>2.阻塞I/O与非阻塞I/O特点</h5><table>
@@ -466,16 +466,16 @@
 <p><img data-src="/2019/05/03/index/3.jpg" alt="对比"></p>
 <h4 id="第二部分-异步式编程-函数式编程"><a href="#第二部分-异步式编程-函数式编程" class="headerlink" title="第二部分 异步式编程(函数式编程)"></a>第二部分 异步式编程(函数式编程)</h4><p>有异步I/O，就必然有异步编程。<br>首先以同步式编程的语法读取一个文件:</p>
 <p><em>创建readfilesync.js, 并执行</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
 <p>打印的结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfilesync.js </span><br><span class="line">你好呀</span><br><span class="line">end.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfilesync.js </span><br><span class="line">你好呀</span><br><span class="line">end.</span><br></pre></td></tr></table></figure>
 
 <p>以上代码很容易理解, 自上而下的执行, 那么异步编程的做法呢?</p>
 <p><em>创建readfileasync.js, 并执行</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">fs.readFile(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;, function(err, data) &#123;</span><br><span class="line">if (err)&#123; </span><br><span class="line">    console.error(err);</span><br><span class="line">&#125; else &#123; </span><br><span class="line">    console.log(data);</span><br><span class="line">&#125; </span><br><span class="line">&#125;);</span><br><span class="line">    console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">fs.readFile(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;, function(err, data) &#123;</span><br><span class="line">if (err)&#123; </span><br><span class="line">    console.error(err);</span><br><span class="line">&#125; else &#123; </span><br><span class="line">    console.log(data);</span><br><span class="line">&#125; </span><br><span class="line">&#125;);</span><br><span class="line">    console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
 
 <p>打印的结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
 
 <p>fs.readFile 调用时所做的工作只是<code>将异步式 I/O 请求发给了操作系统</code>， 然后<code>立即返回</code>并执行后面的语句，执行完以后进入事件循环监听事件。  fs 接到I/O 请求完成的事件时，<code>事件循环会主动调用</code>回调函数以完成后续工作。<code>因此我们会先看到 end.然后看到 file.txt 文件的内容。</code></p>
 <h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img data-src="/2019/05/03/index/4.jpg" alt="循环"></p>
@@ -486,7 +486,7 @@
 <p>所有的逻辑都是事件的回调函数，所以 Node.js 始终在事件循环中，程序入口就是 事件循环第一个事件的回调函数。事件的回调函数在执行的过程中，可能会发出 I/O 请求或直接发射  (emit)事件，执行完成后再返回事件 循环，事件循环会会检查循环中有没有  处理的事件,直到到程序结束。</p>
 <h4 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h4><p>Node 版本区别:</p>
 <p>从对 ES6 的支持来简单的区分是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0.x 完全不支持ES6</span><br><span class="line">4.x 部分支持ES6特性，并处在LTS阶段</span><br><span class="line">5.x 部分支持ES6特性（比4.x多些），属于过渡产品，现在来说应该没有什么理由去用这个了</span><br><span class="line">6.x 支持98%的ES6特性</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0.x 完全不支持ES6</span><br><span class="line">4.x 部分支持ES6特性，并处在LTS阶段</span><br><span class="line">5.x 部分支持ES6特性（比4.x多些），属于过渡产品，现在来说应该没有什么理由去用这个了</span><br><span class="line">6.x 支持98%的ES6特性</span><br></pre></td></tr></table></figure>
 
 <p><strong>参考链接</strong></p>
 <p><a href="https://www.byvoid.com/zhs/project/node" target="_blank" rel="noopener">Node.js开发指南</a><br><a href="http://www.infoq.com/cn/master-nodejs" target="_blank" rel="noopener">深入浅出Node.js</a></p>
@@ -590,13 +590,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">223k</span>
+    <span title="站点总字数">218k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:23</span>
+    <span title="站点阅读时长">3:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
