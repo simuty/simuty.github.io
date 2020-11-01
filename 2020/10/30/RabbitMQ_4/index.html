@@ -25,14 +25,15 @@
 
   <meta name="description" content="学不可以已。（《荀子·劝学》）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Node&amp;RabbitMQ系列四 保证投递">
+<meta property="og:title" content="Node&amp;RabbitMQ系列四 X场景解构">
 <meta property="og:url" content="https://simuty.com/2020/10/30/RabbitMQ_4/index.html">
 <meta property="og:site_name" content="简单即是美">
 <meta property="og:description" content="学不可以已。（《荀子·劝学》）">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://simuty.com/images/photos/2020/044.png">
+<meta property="og:image" content="https://simuty.com/2020/10/30/RabbitMQ_4/005.png">
 <meta property="article:published_time" content="2020-10-30T14:14:14.000Z">
-<meta property="article:modified_time" content="2020-10-29T10:00:43.469Z">
+<meta property="article:modified_time" content="2020-11-01T07:23:36.228Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="RabbitMQ">
 <meta name="twitter:card" content="summary">
@@ -51,7 +52,7 @@
   };
 </script>
 
-  <title>Node&RabbitMQ系列四 保证投递 | 简单即是美</title>
+  <title>Node&RabbitMQ系列四 X场景解构 | 简单即是美</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
     <script>
@@ -225,7 +226,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">1.1.</span> <span class="nav-text">思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">2.</span> <span class="nav-text">案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码部分"><span class="nav-number">2.1.</span> <span class="nav-text">代码部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-rabbitmq-订单相关的交换机、队列等的名称"><span class="nav-number">2.1.1.</span> <span class="nav-text">1. rabbitmq 订单相关的交换机、队列等的名称</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-生产端"><span class="nav-number">2.1.2.</span> <span class="nav-text">2. 生产端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-消费端"><span class="nav-number">2.1.3.</span> <span class="nav-text">3. 消费端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-github"><span class="nav-number">2.1.4.</span> <span class="nav-text">4. github</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -311,7 +312,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Node&RabbitMQ系列四 保证投递
+          Node&RabbitMQ系列四 X场景解构
         </h1>
 
         <div class="post-meta">
@@ -328,7 +329,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-29 18:00:43" itemprop="dateModified" datetime="2020-10-29T18:00:43+08:00">2020-10-29</time>
+                <time title="修改时间：2020-11-01 15:23:36" itemprop="dateModified" datetime="2020-11-01T15:23:36+08:00">2020-11-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -353,7 +354,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>318</span>
+              <span>6k</span>
             </span>
 
         </div>
@@ -372,9 +373,83 @@
 </span>
 <a id="more"></a>
 
-<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>如何保证消息100%投递成功？</p>
-<p>同一配置mq<br><a href="https://github.com/MFrank2016/delayed-queue-demo/blob/master/src/main/java/com/mfrank/delayqueuedemo/config/RabbitMQConfig.java" target="_blank" rel="noopener">https://github.com/MFrank2016/delayed-queue-demo/blob/master/src/main/java/com/mfrank/delayqueuedemo/config/RabbitMQConfig.java</a></p>
-<p>参考链接<br><a href="https://github.com/squaremo/amqp.node/issues/153" target="_blank" rel="noopener">How to reestablish connection after a failure? #153</a><br><a href="https://github.com/qufei1993/Nodejs-Roadmap/blob/master/docs/microservice/rabbitmq-reconnecting.md" target="_blank" rel="noopener">一次 RabbitMQ 生产故障引发的服务重连限流思考</a><br><a href="https://juejin.im/post/6844904069618925581" target="_blank" rel="noopener">Node + MQ 限流小计</a><br><a href="https://my.oschina.net/steadyjack/blog/3096794" target="_blank" rel="noopener">Java秒杀系统实战系列~秒杀逻辑优化之RabbitMQ接口限流二</a><br><a href="https://www.cnblogs.com/mfrank/p/11260355.html" target="_blank" rel="noopener">【RabbitMQ】一文带你搞定RabbitMQ延迟队列</a><br><a href="https://www.squaremobius.net/amqp.node/channel_api.html#model_events" target="_blank" rel="noopener">amqp wiki</a></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><div class="note danger">
+
+<p>先设想购票的场景：用户<code>注册</code>成功后，三天内<code>未登陆</code>，则<code>短信提醒</code>。</p>
+<p>三段式场景: A-B-C<br>可以延伸至：</p>
+<ol>
+<li>发起购票—&gt;时间+未付款—&gt;短信提醒⏰、取消订单</li>
+<li>发起退款—&gt;时间+未处理—&gt;通知相关人员⏰</li>
+</ol>
+<div class="note default">
+总的来说，满足A，到期时间后进一步处理。
+</div>
+
+</div>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><img data-src="005.png" width=80% />
+
+
+
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p><a href="https://www.cnblogs.com/davenkin/p/rabbitmq-best-practices.html" target="_blank" rel="noopener">该案例来自–RabbitMQ最佳实践</a></p>
+<div class="note danger">
+
+<p>假设有个订单(Order)系统，用户下单后需要向用户<code>发送短信</code>通知，而所有对订单的数据显示采用了<code>CQRS架构</code>，即将订单的读模型和写模型分离，即所有订单的更新都<code>通过事件发到rabbitmq</code>，然后专门有个<code>consumer接收这些消息用于更新订单的读模型</code>。</p>
+<div class="note primary">
+
+<p>在次基础上，做了少许更改： <strong>创建订单，5分钟后如果没有支付，则发短信通知。</strong>, 整个流程：</p>
+<ol>
+<li>触发订单，统一放进 order.exchange 交换机，并且采用 <code>rabbitmq delay</code> 插件、采用<code>topic</code>规则；</li>
+<li>一个订单消息，同时发到两个队列<ol>
+<li>处理订单： order.# 【后期update可以沿用该路由】</li>
+<li>处理短信：order.create</li>
+</ol>
+</li>
+<li>发布消息<ol>
+<li>采用手工ack的方式，记录日志，进一步保证可靠性；</li>
+<li>采用延迟插件<ol>
+<li>order.#： 直接发送</li>
+<li>order.create： 延迟N分钟，</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>队列<ol>
+<li>order.notification 绑定 order.create, 处理短信</li>
+<li>order.summary： 绑定order.#， 处理订单业务相关</li>
+</ol>
+</li>
+<li>死信队列<ol>
+<li>模拟，短信服务、订单业务异常，扔到死信队列，以供之后相关操作。</li>
+</ol>
+</li>
+</ol>
+</div>
+
+<div class="note success">
+
+<blockquote>
+<p>待完善</p>
+</blockquote>
+<ol>
+<li>可靠投递；注：先把流程走通，实现了再完善；</li>
+<li>重试投递；requeue问题</li>
+<li>当然还有更多问题待发掘。</li>
+</ol>
+</div>
+
+</div>
+
+
+<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><h4 id="1-rabbitmq-订单相关的交换机、队列等的名称"><a href="#1-rabbitmq-订单相关的交换机、队列等的名称" class="headerlink" title="1. rabbitmq 订单相关的交换机、队列等的名称"></a>1. rabbitmq 订单相关的交换机、队列等的名称</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 订单相关mq</span></span><br><span class="line"><span class="keyword">export</span> enum ORDER &#123;</span><br><span class="line">    <span class="comment">// 相关业务一个交换机</span></span><br><span class="line">    EXCHANE = <span class="string">'order.exchange'</span>,</span><br><span class="line">    <span class="comment">// 路由key</span></span><br><span class="line">    ROUTERKEY_CREATE = <span class="string">'order.create'</span>,</span><br><span class="line">    ROUTERKEY_SUMMARY = <span class="string">'order.#'</span>,</span><br><span class="line">    <span class="comment">// 两个队列</span></span><br><span class="line">    QUEUE_NOTIFICATION = <span class="string">'order.notification'</span>,</span><br><span class="line">    QUEUE_SUMMARY = <span class="string">'order.summary'</span>,</span><br><span class="line">    <span class="comment">// 死信</span></span><br><span class="line">    ELX_EXCHANGE = <span class="string">'order.dlx.exchange'</span>,</span><br><span class="line">    ELK_QUEUE = <span class="string">'order.dlq.queue'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-生产端"><a href="#2-生产端" class="headerlink" title="2. 生产端"></a>2. 生产端</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> rabbimq <span class="keyword">from</span> <span class="string">"./rabbitmq"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ORDER, EX_TYPE &#125; <span class="keyword">from</span> <span class="string">'./rbEnum'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> mock <span class="keyword">from</span> <span class="string">'mockjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> connct = rabbimq.connection();</span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connct.createConfirmChannel();</span><br><span class="line">    <span class="comment">// @ts-ignore</span></span><br><span class="line">    <span class="comment">// 统一业务，用一个交换机： 延迟+topic</span></span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(ORDER.EXCHANE, EX_TYPE.DELAY, &#123;</span><br><span class="line">        durable: <span class="literal">true</span>,</span><br><span class="line">        <span class="built_in">arguments</span>: &#123;<span class="string">'x-delayed-type'</span>: EX_TYPE.TOPIC &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 模拟一些假的数据</span></span><br><span class="line">    <span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt; <span class="number">3</span>)&#123;</span><br><span class="line">        i++;</span><br><span class="line">        <span class="comment">// N分钟后，对没支付的进行通知</span></span><br><span class="line">        <span class="keyword">const</span> time = mock.Random.integer(<span class="number">500</span>, <span class="number">2000</span>);</span><br><span class="line">        <span class="keyword">const</span> expiration = <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span>;</span><br><span class="line">        <span class="keyword">const</span> content = &#123; <span class="attr">id</span>: mock.Random.integer(<span class="number">1000</span>), <span class="attr">number</span>: mock.Random.integer(<span class="number">1</span>, <span class="number">3</span>), time &#125;;</span><br><span class="line">        <span class="keyword">const</span> msg =  <span class="built_in">JSON</span>.stringify(content);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// !场景1：创建订单，如果三分钟不付款，则发短信通知</span></span><br><span class="line">        channel.publish(ORDER.EXCHANE, ORDER.ROUTERKEY_CREATE, Buffer.from(msg), &#123;</span><br><span class="line">            expiration,</span><br><span class="line">            contentType: <span class="string">'application/json'</span>,</span><br><span class="line">            headers: &#123;</span><br><span class="line">                <span class="string">'x-delay'</span>: time, <span class="comment">// 一定要设置，否则按一般的交换机</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="comment">// 消息持久化</span></span><br><span class="line">            deliveryMode: <span class="number">2</span></span><br><span class="line">        &#125;, (err, ok) =&gt; &#123;</span><br><span class="line">            <span class="comment">// 生产端监听消息是否被ack；比如，记录日志啥的</span></span><br><span class="line">            <span class="comment">// 如果消费端，nack, 则不会再次到这里</span></span><br><span class="line">            <span class="comment">// console.log("是否被ack----ok: ", err, ok);</span></span><br><span class="line">            <span class="keyword">if</span> (err !== <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="built_in">console</span>.warn(<span class="string">'【SMS】Message nacked!'</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'【SMS】Message acked'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// !场景2, 发送后，供消费端消费</span></span><br><span class="line">        channel.publish(ORDER.EXCHANE, ORDER.QUEUE_SUMMARY, Buffer.from(msg), &#123;&#125;, (err, ok) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (err !== <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="built_in">console</span>.warn(<span class="string">'【summary】Message nacked!'</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'【summary】Message acked'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果创建需要确认的channel，需要等待</span></span><br><span class="line">    <span class="comment">// 生产者消息确认，一旦消息被投递到指定交换机，broker就会ack</span></span><br><span class="line">    <span class="keyword">await</span> channel.waitForConfirms()</span><br><span class="line">    <span class="keyword">await</span> channel.close();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-消费端"><a href="#3-消费端" class="headerlink" title="3. 消费端"></a>3. 消费端</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> rabbimq <span class="keyword">from</span> <span class="string">"./rabbitmq"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Channel, Message &#125; <span class="keyword">from</span> <span class="string">"amqplib"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ORDER, EX_TYPE &#125; <span class="keyword">from</span> <span class="string">'./rbEnum'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> mock <span class="keyword">from</span> <span class="string">'mockjs'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 死信队列，针对无效信息的归属地</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">orderDlq</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> connect = rabbimq.connection();</span><br><span class="line">    <span class="keyword">const</span> channel: Channel = <span class="keyword">await</span> connect.createChannel();</span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(ORDER.ELX_EXCHANGE, EX_TYPE.TOPIC, &#123; <span class="attr">durable</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">    <span class="keyword">const</span> queueConsumer = <span class="keyword">await</span> channel.assertQueue(ORDER.ELK_QUEUE, &#123;</span><br><span class="line">        exclusive: <span class="literal">true</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">await</span> channel.prefetch(<span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueConsumer.queue, ORDER.ELX_EXCHANGE, <span class="string">'order.#'</span>);</span><br><span class="line"></span><br><span class="line">    channel.consume(queueConsumer.queue, <span class="keyword">async</span> msg =&gt; &#123;</span><br><span class="line">        <span class="comment">// console.info('【死信队列】收到的消息', msg.content.toString());</span></span><br><span class="line">        channel.ack(msg, <span class="literal">false</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 针对没有支付的，发送短信，</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">orderSms</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> args = &#123;</span><br><span class="line">        exchange: ORDER.EXCHANE, <span class="attr">exchangeType</span>: EX_TYPE.DELAY,</span><br><span class="line">        routerKey: ORDER.ROUTERKEY_CREATE, <span class="attr">queueName</span>: ORDER.QUEUE_NOTIFICATION,</span><br><span class="line">        elx: ORDER.ELX_EXCHANGE, <span class="attr">elk</span>: ORDER.ELK_QUEUE</span><br><span class="line">    &#125;;</span><br><span class="line">    consumer(args, <span class="keyword">async</span> (msg, channel) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; content &#125; = msg;</span><br><span class="line">        <span class="comment">// console.log(`【短信】获取消息: $&#123;content&#125;`);</span></span><br><span class="line">        <span class="comment">// 根据消息ID，查询对应用户是否支付，如果支付ack, 否则发送短信&amp;扔到死信队列，之后再说</span></span><br><span class="line">        <span class="keyword">const</span> success = mock.Random.boolean();</span><br><span class="line">        <span class="keyword">if</span> (success) &#123;</span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">`【短信】无需发送短信 <span class="subst">$&#123;content&#125;</span>`</span>, )</span><br><span class="line">            channel.ack(msg, <span class="literal">false</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// !可以扔到短信队列</span></span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">`【短信】该用户尚未支付，发送短信中----- <span class="subst">$&#123;content&#125;</span>`</span>);</span><br><span class="line">            channel.nack(msg, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建订单，针对订单相关信息进行处理</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">orderSummery</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> args = &#123;</span><br><span class="line">        exchange: ORDER.EXCHANE, <span class="attr">exchangeType</span>: EX_TYPE.DELAY,</span><br><span class="line">        routerKey: ORDER.ROUTERKEY_SUMMARY, <span class="attr">queueName</span>: ORDER.QUEUE_SUMMARY,</span><br><span class="line">        elx: ORDER.ELX_EXCHANGE, <span class="attr">elk</span>: ORDER.ELK_QUEUE</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    consumer(args, <span class="keyword">async</span> (msg, channel) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; content, <span class="attr">fields</span>: &#123; deliveryTag &#125;, <span class="attr">properties</span>: &#123; <span class="attr">headers</span>: &#123; retry &#125; &#125; &#125; = msg;</span><br><span class="line">        <span class="comment">// console.log(`【订单-消费】获取消息: $&#123;content&#125;`);</span></span><br><span class="line">        <span class="comment">// 模拟业务</span></span><br><span class="line">        <span class="keyword">const</span> success = <span class="keyword">await</span> mock.Random.boolean();</span><br><span class="line">        <span class="keyword">if</span> (success) &#123;</span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">'【订单-消费】消费成功'</span>, content.toString());</span><br><span class="line">            <span class="comment">// broker 从内存磁盘中删除</span></span><br><span class="line">            channel.ack(msg, <span class="literal">false</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 仍旧保留</span></span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">`【订单-消费】放入死信队列`</span>);</span><br><span class="line">            channel.nack(msg, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line">            <span class="comment">// 最大重试次数 [加入redis 或 其他队列]</span></span><br><span class="line">            <span class="comment">//     if () &#123;</span></span><br><span class="line">            <span class="comment">//         console.info(`【订单-消费】第 $&#123;retry&#125; 次消费 $&#123;deliveryTag&#125; 失败，尝试重试`);</span></span><br><span class="line">            <span class="comment">//         const requeue = true;</span></span><br><span class="line">            <span class="comment">//         channel.nack(msg, false, requeue);</span></span><br><span class="line">            <span class="comment">//     &#125; else &#123;</span></span><br><span class="line">            <span class="comment">//         console.info(`【订单-消费】第 $&#123;retry&#125; 次消费 $&#123;deliveryTag&#125; 失败，放入死信队列`);</span></span><br><span class="line">            <span class="comment">//         const requeue = false;</span></span><br><span class="line">            <span class="comment">//         channel.nack(msg, false, requeue);</span></span><br><span class="line">            <span class="comment">//     &#125;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 公用消费端</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>exchange </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>exchangeType </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>routerKey </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>elx 死信交换机</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>elk 死信队列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">consumer</span>(<span class="params">args: &#123; exchange: string, exchangeType: any, routerKey: string, queueName: string, elx: string, elk: string &#125;,</span></span></span><br><span class="line"><span class="function"><span class="params">    callback: (msg: Message, channel: Channel</span>) =&gt; </span>&#123;&#125;) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; exchange, exchangeType, routerKey, queueName, elx, elk &#125; = args;</span><br><span class="line">    <span class="keyword">const</span> connect = rabbimq.connection();</span><br><span class="line">    <span class="keyword">const</span> channel: Channel = <span class="keyword">await</span> connect.createConfirmChannel();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ! topic + delay</span></span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, exchangeType, &#123; <span class="attr">durable</span>: <span class="literal">true</span>, <span class="attr">arguments</span>: &#123; <span class="string">'x-delayed-type'</span>: EX_TYPE.TOPIC &#125; &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> queueConsumer = <span class="keyword">await</span> channel.assertQueue(queueName, &#123;</span><br><span class="line">        exclusive: <span class="literal">true</span>,</span><br><span class="line">        deadLetterExchange: elx,</span><br><span class="line">        deadLetterRoutingKey: elk,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">await</span> channel.prefetch(<span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueConsumer.queue, exchange, routerKey);</span><br><span class="line">    channel.consume(queueConsumer.queue, <span class="keyword">async</span> msg =&gt; &#123;</span><br><span class="line">        <span class="comment">// console.info('统一收到的消息', msg);</span></span><br><span class="line">        callback(msg, channel);</span><br><span class="line">    &#125;, &#123; <span class="attr">noAck</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="4-github"><a href="#4-github" class="headerlink" title="4. github"></a>4. github</h4><p><a href="https://github.com/simuty/Node_Demo/tree/main/rabbitmq" target="_blank" rel="noopener">github—https://github.com/simuty/Node_Demo/tree/main/rabbitmq</a></p>
+<p>参考链接<br><a href="https://juejin.im/post/6844904069618925581" target="_blank" rel="noopener">Node + MQ 限流小计</a><br><a href="https://my.oschina.net/steadyjack/blog/3096794" target="_blank" rel="noopener">Java秒杀系统实战系列~秒杀逻辑优化之RabbitMQ接口限流二</a><br><a href="https://www.cnblogs.com/mfrank/p/11260355.html" target="_blank" rel="noopener">【RabbitMQ】一文带你搞定RabbitMQ延迟队列</a><br><a href="https://www.squaremobius.net/amqp.node/channel_api.html#model_events" target="_blank" rel="noopener">amqp wiki</a><br><a href="https://cloud.tencent.com/developer/article/1478662" target="_blank" rel="noopener">RabbitMQ 高级篇八 消费端ACK与重回队列</a><br><a href="https://cloud.tencent.com/developer/article/1466789" target="_blank" rel="noopener">RabbitMQ高级篇一 本章导航及BAT大厂如何保障生产端可靠性投递</a><br><a href="https://www.cnblogs.com/davenkin/p/rabbitmq-best-practices.html" target="_blank" rel="noopener">RabbitMQ最佳实践</a><br><a href="https://blog.forma-pro.com/rabbitmq-retries-on-node-js-1f82c6afc1a1" target="_blank" rel="noopener">RabbitMQ retries on Node.JS</a><br><a href="https://segmentfault.com/a/1190000019227064" target="_blank" rel="noopener">Rabbitmq</a></p>
 
     </div>
 
@@ -390,7 +465,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://simuty.com/2020/10/30/RabbitMQ_4/" title="Node&amp;RabbitMQ系列四 保证投递">https://simuty.com/2020/10/30/RabbitMQ_4/</a>
+    <a href="https://simuty.com/2020/10/30/RabbitMQ_4/" title="Node&amp;RabbitMQ系列四 X场景解构">https://simuty.com/2020/10/30/RabbitMQ_4/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -472,13 +547,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">222k</span>
+    <span title="站点总字数">227k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:21</span>
+    <span title="站点阅读时长">3:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
