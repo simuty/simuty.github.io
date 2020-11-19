@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://simuty.com/2020/11/03/kafka_2/007.png">
 <meta property="og:image" content="https://simuty.com/2020/11/03/kafka_2/008.png">
 <meta property="article:published_time" content="2020-11-03T06:14:14.000Z">
-<meta property="article:modified_time" content="2020-11-06T07:01:28.815Z">
+<meta property="article:modified_time" content="2020-11-19T10:41:06.310Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="Kafka">
 <meta name="twitter:card" content="summary">
@@ -230,7 +230,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分区"><span class="nav-number">1.</span> <span class="nav-text">分区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产者-分区策略"><span class="nav-number">1.1.</span> <span class="nav-text">生产者 分区策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#轮询策略"><span class="nav-number">1.1.1.</span> <span class="nav-text">轮询策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#随机策略"><span class="nav-number">1.1.2.</span> <span class="nav-text">随机策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按消息键保序策略"><span class="nav-number">1.1.3.</span> <span class="nav-text">按消息键保序策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产者-压缩"><span class="nav-number">1.2.</span> <span class="nav-text">生产者 压缩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题一：Producer、Broker压缩算法不一致"><span class="nav-number">1.2.1.</span> <span class="nav-text">问题一：Producer、Broker压缩算法不一致</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题二：版本不同，Broker端发生消息格式转化"><span class="nav-number">1.2.2.</span> <span class="nav-text">问题二：版本不同，Broker端发生消息格式转化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩算法"><span class="nav-number">1.3.</span> <span class="nav-text">压缩算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践"><span class="nav-number">1.3.1.</span> <span class="nav-text">最佳实践</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免消息丢失"><span class="nav-number">2.</span> <span class="nav-text">避免消息丢失</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生产者"><span class="nav-number">2.0.1.</span> <span class="nav-text">生产者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消费者"><span class="nav-number">2.0.2.</span> <span class="nav-text">消费者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践-1"><span class="nav-number">2.0.3.</span> <span class="nav-text">最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Producer参数"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">Producer参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Broker-端的参数"><span class="nav-number">2.0.3.2.</span> <span class="nav-text">Broker 端的参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分区"><span class="nav-number">1.</span> <span class="nav-text">分区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生产者-分区策略"><span class="nav-number">1.1.</span> <span class="nav-text">生产者 分区策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#轮询策略"><span class="nav-number">1.1.1.</span> <span class="nav-text">轮询策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#随机策略"><span class="nav-number">1.1.2.</span> <span class="nav-text">随机策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按消息键保序策略"><span class="nav-number">1.1.3.</span> <span class="nav-text">按消息键保序策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生产者-压缩"><span class="nav-number">1.2.</span> <span class="nav-text">生产者 压缩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题一：Producer、Broker压缩算法不一致"><span class="nav-number">1.2.1.</span> <span class="nav-text">问题一：Producer、Broker压缩算法不一致</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题二：版本不同，Broker端发生消息格式转化"><span class="nav-number">1.2.2.</span> <span class="nav-text">问题二：版本不同，Broker端发生消息格式转化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩算法"><span class="nav-number">1.3.</span> <span class="nav-text">压缩算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践"><span class="nav-number">1.3.1.</span> <span class="nav-text">最佳实践</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免消息丢失"><span class="nav-number">2.</span> <span class="nav-text">避免消息丢失</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生产者"><span class="nav-number">2.0.1.</span> <span class="nav-text">生产者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消费者"><span class="nav-number">2.0.2.</span> <span class="nav-text">消费者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践-1"><span class="nav-number">2.0.3.</span> <span class="nav-text">最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Producer参数"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">Producer参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Broker-端的参数"><span class="nav-number">2.0.3.2.</span> <span class="nav-text">Broker 端的参数</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#幂等与事务"><span class="nav-number">3.</span> <span class="nav-text">幂等与事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#幂等性-Producer"><span class="nav-number">3.1.</span> <span class="nav-text">幂等性 Producer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#作用范围"><span class="nav-number">3.1.1.</span> <span class="nav-text">作用范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">3.1.2.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">3.1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.2.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -244,20 +244,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -333,7 +333,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-06 15:01:28" itemprop="dateModified" datetime="2020-11-06T15:01:28+08:00">2020-11-06</time>
+                <time title="修改时间：2020-11-19 18:41:06" itemprop="dateModified" datetime="2020-11-19T18:41:06+08:00">2020-11-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -358,7 +358,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>3.4k</span>
             </span>
 
         </div>
@@ -509,6 +509,30 @@ Zero Copy”就是“零拷贝
 </div>
 
 
+<h2 id="幂等与事务"><a href="#幂等与事务" class="headerlink" title="幂等与事务"></a>幂等与事务</h2><p><strong>消息交付可靠性保障：</strong> 是指 Kafka 对 Producer 和 Consumer 要处理的消息提供什么样的承诺</p>
+<ol>
+<li>最多一次（at most once）：消息可能会丢失，但绝不会 被重复发送。</li>
+<li>至少一次（at least once）<strong>【默认】</strong>：消息不会丢失，但有可能被 重复发送。</li>
+<li>精确一次（exactly once）：消息不会丢失，也不会被重 复发送。</li>
+</ol>
+<p>Kafka 是怎么做到精确一次的呢？简单来说，这是通过两种机制：<strong>幂等性（Idempotence）和事务 （Transaction）</strong></p>
+<h3 id="幂等性-Producer"><a href="#幂等性-Producer" class="headerlink" title="幂等性 Producer"></a>幂等性 Producer</h3><blockquote>
+<p>幂等性有很多好处，其最大的优势在于我们可以安全地重试 任何幂等性操作，反正它们也不会破坏我们的系统状态。</p>
+</blockquote>
+<p>在 Kafka 中，Producer <strong>默认不是幂等性</strong>的,仅需要设置一个 参数即可，即 <strong>props.put(“enable.idempotence”, ture)，</strong>或 <strong>props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CO NFIG， true)。</strong></p>
+<h4 id="作用范围"><a href="#作用范围" class="headerlink" title="作用范围"></a>作用范围</h4><ol>
+<li>只能保证单分区上的幂等性，即一个幂等性 Producer 能够保证某个主题的一个分区上不出现重复消 息，它无法实现多个分区的幂等性。</li>
+<li>它只能实现单会 话上的幂等性，不能实现跨会话的幂等性。这里的会话，你 可以理解为 Producer 进程的一次运行。当你重启了 Producer 进程之后，这种幂等性保证就丧失了</li>
+</ol>
+<h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><p><strong>实现多分区以及多会话上的消息无重复</strong>，应该怎么做呢？答案就是<strong>事务（transaction）或 者依赖事务型 Producer。</strong></p>
+<p>事务提供的安全性保障是经典的 <strong>ACID，即原 子性（Atomicity）、一致性 (Consistency)、隔离性 (Isolation) 和持久性 (Durability)。</strong></p>
+<p>事务型 Producer 能够保证将消息原子性地写入到多个分区 中。这批消息要么全部写入成功，要么全部失败。和幂等性 Producer 一样，开启 <strong>enable.idempotence = true。</strong></p>
+<p>Consumer 端，读取事务型 Producer 发送的消息也是需要一些变更的。修改起来也很简单，设置 isolation.level 参数的值即可。当前这个参数有两个取值：</p>
+<ol>
+<li>read_uncommitted：这是默认值，表明 Consumer 能 够读取到 Kafka 写入的任何消息,</li>
+<li>read_committed：表明 Consumer 只会读取事务型 Producer 成功提交事务写入的消息。当然了，它也能看 到非事务型 Producer 写入的所有消息。</li>
+</ol>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p><strong>天下没有免费的午餐</strong>。比起幂等性 Producer， 事务型 Producer 的性能要更差，在实际使用过程中，我们 需要仔细评估引入事务的开销，</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://time.geekbang.org/column/intro/100029201" target="_blank" rel="noopener">极客时间—Kafka核心技术与实战</a><br><a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/huxi2b/">胡夕 - 博客园 –《Apache Kafka实战》</a></p>
 
     </div>
@@ -549,7 +573,7 @@ Zero Copy”就是“零拷贝
       <i class="fa fa-chevron-left"></i> Kafka系列一
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/11/09/kafka_3/" rel="next" title="Kafka系列三">
+    <a href="/2020/11/07/kafka_3/" rel="next" title="Kafka系列三">
       Kafka系列三 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -610,13 +634,13 @@ Zero Copy”就是“零拷贝
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">242k</span>
+    <span title="站点总字数">255k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:40</span>
+    <span title="站点阅读时长">3:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
