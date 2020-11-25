@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="纸上得来终觉浅，绝知此事要躬行——出自《冬夜读书示子聿》，作者陆游">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis系列四 锁">
+<meta property="og:url" content="https://simuty.com/2020/11/25/redis_5/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="纸上得来终觉浅，绝知此事要躬行——出自《冬夜读书示子聿》，作者陆游">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/052.jpg">
+<meta property="og:image" content="https://simuty.com/2020/11/25/redis_5/004.png">
+<meta property="og:image" content="https://simuty.com/2020/11/25/redis_5/006.png">
+<meta property="og:image" content="https://simuty.com/2020/11/25/redis_5/005.png">
+<meta property="og:image" content="https://simuty.com/2020/11/25/redis_5/007.png">
+<meta property="article:published_time" content="2020-11-25T06:14:14.000Z">
+<meta property="article:modified_time" content="2020-11-25T07:56:48.639Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/052.jpg">
+
+<link rel="canonical" href="https://simuty.com/2020/11/25/redis_5/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Redis系列四 锁 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#乐观锁"><span class="nav-number">1.</span> <span class="nav-text">乐观锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAS-原理概述"><span class="nav-number">1.1.</span> <span class="nav-text">CAS 原理概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ABA-问题"><span class="nav-number">1.2.</span> <span class="nav-text">ABA 问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis-事务"><span class="nav-number">2.</span> <span class="nav-text">redis 事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流程"><span class="nav-number">2.1.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watch"><span class="nav-number">2.2.</span> <span class="nav-text">watch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式锁"><span class="nav-number">3.</span> <span class="nav-text">分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码部分"><span class="nav-number">3.1.</span> <span class="nav-text">代码部分</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/11/25/redis_5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis系列四 锁
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-25 14:14:14 / 修改时间：15:56:48" itemprop="dateCreated datePublished" datetime="2020-11-25T14:14:14+08:00">2020-11-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/052.jpg" width=80% />
+
+<span class='geyan'>
+纸上得来终觉浅，绝知此事要躬行——出自《冬夜读书示子聿》，作者陆游
+</span>
+<a id="more"></a>
+
+
+<h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p>乐观锁是一种不会阻塞其他线程并发的机制，它不会使用数据库的锁进行实现，它的设计里面由于不阻塞其他线程，所以并不会引发线程频繁挂起和恢复，这样便能够提高并发能力，所以也有人把它称为非阻塞锁，那么它的机制是怎么样的呢？</p>
+<h3 id="CAS-原理概述"><a href="#CAS-原理概述" class="headerlink" title="CAS 原理概述"></a>CAS 原理概述</h3><p>在 CAS 原理中，对于多个线程共同的资源，先保存一个旧值（Old Value），比如进入线程后，查询当前存量为 100 个红包，那么先把旧值保存为 100，然后经过一定的逻辑处理。</p>
+<p>当需要扣减红包的时候，先比较数据库当前的值和旧值是否一致，如果一致则进行扣减红包的操作，否则就认为它已经被其他线程修改过了，不再进行操作，CAS 原理流程如图 1 所示。</p>
+<img data-src="004.png" width=80% />
+
+<p>CAS 原理并不排斥并发，也不独占资源，<strong>只是在线程开始阶段就读入线程共享数据，保存为旧值</strong>。当处理完逻辑，<strong>需要更新数据的时候，会进行一次比较</strong>，即比较各个线程当前共享的数据是否和旧值保持一致。</p>
+<p>如果一致，就开始更新数据；如果不一致，则认为该数据已经被其他线程修改了，那么就不再更新数据，可以考虑重试或者放弃。有时候可以重试，这样就是一个可重入锁，但是 CAS 原理会有一个问题，那就是 <strong>ABA 问题</strong>，下面先来讨论一下 ABA 问题。</p>
+<h3 id="ABA-问题"><a href="#ABA-问题" class="headerlink" title="ABA 问题"></a>ABA 问题</h3><p>对于乐观锁而言，我们之前讨论了存在 ABA 的问题，那么什么是 ABA 问题呢？下面看看表 1 的两个线程发生的场景。</p>
+<table>
+<thead>
+<tr>
+<th>时 刻</th>
+<th>线程1</th>
+<th>线程2</th>
+<th>备 注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T0</td>
+<td>——</td>
+<td>——</td>
+<td>初始化 X=A</td>
+</tr>
+<tr>
+<td>T1</td>
+<td>读入X=A</td>
+<td>——</td>
+<td>——</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>——</td>
+<td>读入X=A</td>
+<td>——</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>处理线程 1 的业务逻辑</td>
+<td>X=B</td>
+<td>修改共享变量为 B</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>处理线程 1 的业务逻辑</td>
+<td>处理线程 2 业务逻辑第一段</td>
+<td>此时线程1在 X=B 的情况下运行逻辑</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>处理线程 1 的业务逻辑</td>
+<td>X=A</td>
+<td>还原变量为 A</td>
+</tr>
+<tr>
+<td>T6</td>
+<td>因为判断 X=A，所以更新数据</td>
+<td>处理线程 2 业务逻辑第二段</td>
+<td>此时线程 1 无法知道线程 2 是否修改过 X，引发业务逻辑错误</td>
+</tr>
+<tr>
+<td>T7</td>
+<td>——</td>
+<td>更新数据</td>
+<td>——</td>
+</tr>
+</tbody></table>
+<p>在 T3 时刻，由于线程 2 修改了 X=B，此时线程 1 的业务逻辑依旧执行，但是到了 T5 时刻，线程 2 又把 X 还原为 A，那么到了 T6 时刻，使用 CAS 原理的旧值判断，线程 1 就会认为 X 值没有被修改过，于是执行了更新。</p>
+<p>我们<strong>难以判定的是在 T4 时刻，线程 1 在 X=B 的时候，对于线程 1 的业务逻辑是否正确的问题</strong>。</p>
+<div class="note danger">
+由于 X 在线程 2 中的值改变的过程为 A->B->A，才引发这样的问题，因此人们形象地把这类问题称为 ABA 问题。
+</div>
+
+<p>ABA 问题的发生，是因为业务逻辑存在回退的可能性。如果加入一个非业务逻辑的属性，比如在一个数据中加入版本号（version），对于版本号有一个约定，就是只要修改 X 变量的数据，<strong>强制版本号（version）只能递增，而不会回退</strong>，即使是其他业务数据回退，它也会递增，<strong>那么 ABA 问题就解决了</strong>，如表 2 所示。</p>
+<blockquote>
+<p>表 2 用版本号消除 ABA 问题</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>时刻</th>
+<th>线程1</th>
+<th>线程2</th>
+<th>备 注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T0</td>
+<td>——</td>
+<td>——</td>
+<td>初始化 X=A，version=0</td>
+</tr>
+<tr>
+<td>T1</td>
+<td>读入X=A</td>
+<td>——</td>
+<td>线程1旧值：version=0</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>——</td>
+<td>读入X=A</td>
+<td>线程2旧值：version=0</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>处理线程1的业务逻辑</td>
+<td>X=B</td>
+<td>修改共享变量为 B，version=1</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>处理线程1的业务逻辑</td>
+<td>处理线程 2 业务逻辑第一段</td>
+<td>——</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>——</td>
+<td>X=A</td>
+<td>还原变量为A，version=2</td>
+</tr>
+<tr>
+<td>T6</td>
+<td>判断 version == 0，由于线程 2 两次更新数据，导致数据 version=2，所以不再更新数据</td>
+<td>处理线程 2 业务逻辑第二段</td>
+<td>此时线程 1 知道旧值 version 和当前 version 不一致，将不更新数据</td>
+</tr>
+<tr>
+<td>T7</td>
+<td>——</td>
+<td>更新数据</td>
+<td>——</td>
+</tr>
+</tbody></table>
+<p>只是这个 <strong>version 变量</strong>并不存在什么业务逻辑，只是为了记录更新次数，只能递增，帮助我们<strong>克服 ABA 问题</strong>罢了，有了这些理论，我们就可以开始使用乐观锁来完成抢红包业务了。</p>
+<h2 id="redis-事务"><a href="#redis-事务" class="headerlink" title="redis 事务"></a>redis 事务</h2><p>在 Redis 中，存在多个客户端同时向 Redis 系统发送命令的<strong>并发可能性</strong>，因此同一个数据，可能在不同的时刻被不同的线程所操纵，这样就出现了<strong>并发下的数据一致的问题</strong>。为了保证异性数据的安全性，Redis 为提供了事务方案。而 Redis 的事务是使用 MULTI-EXEC 的命令组合，使用它可以提供两个重要的保证：</p>
+<ol>
+<li>事务是一个被隔离的操作，事务中的方法都会被 Redis 进行序列化并按顺序执行，事务在执行的过程中不会被其他客户端发生的命令所打断。</li>
+<li>事务是一个原子性的操作，它要么全部执行，要么就什么都不执行。</li>
+</ol>
+<p>Redis 通过<code>MULTI 、EXEC、WATCH</code>等命令来实现<strong>事务功能</strong>。事物提供了一种将<strong>多个命令请求打包</strong>，然后<strong>一次性、按顺序的执行多个命令的机制</strong>，并且在事物执行期间，服务器<strong>不会中断</strong>事务而去执行其他客户端的命令请求，它会将事物中所有的命令都执行完毕。</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ol>
+<li>开启事务</li>
+<li>命令进入队列</li>
+<li>执行事务。</li>
+</ol>
+<p><strong>Redis事物不支持回滚操作</strong>，所以事物队列中<code>某个命令执行错误，整个事物也会继续执行下去。</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 开启事务</span></span><br><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"><span class="comment"># 入队</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> key1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; INCR key1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> key2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> key1 v3</span><br><span class="line">QUEUED</span><br><span class="line"><span class="comment"># 执行</span></span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line"><span class="comment"># INCR 失败</span></span><br><span class="line">2) (error) ERR value is not an <span class="built_in">integer</span> or out of range</span><br><span class="line">3) OK</span><br><span class="line">4) OK</span><br><span class="line"><span class="comment"># key1 变为最后的v3</span></span><br><span class="line">127.0.0.1:6379&gt; GET key1</span><br><span class="line"><span class="string">"v3"</span></span><br><span class="line"><span class="comment"># key2 set 成功</span></span><br><span class="line">127.0.0.1:6379&gt; GET key2</span><br><span class="line"><span class="string">"v2"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h3><p>watch 命令可以决定事务是<strong>执行还是回滚</strong>，可以在 multi 命令之前使用 watch 命令监控某些键值对，然后使用 multi 命令开启事务，执行各类对数据结构进行操作的命令，这个时候这些命令就会进入队列。</p>
+<img data-src="006.png" width=80% />
+
+<p>如下图，在<strong>执行</strong>之前，更改了version的值，导致事务回滚,<br><img data-src="005.png" width=80% /></p>
+<p>是否可以避免 <strong>ABA</strong> 问题呢？如下图：</p>
+<img data-src="007.png" width=80% />
+
+<div class="note danger">
+Redis 的机制是不会产生 ABA 问题的，这样就有利于在保证数据一致的基础上，提高高并发系统的数据读/写性能。
+</div>
+
+
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>分布式锁的实现，目前常用的方案有以下三类：</p>
+<ol>
+<li>数据库乐观锁；</li>
+<li>基于分布式缓存实现的锁服务，典型代表有 Redis 和基于 Redis 的 RedLock；</li>
+<li>基于分布式一致性算法实现的锁服务，典型代表有 ZooKeeper、Chubby 和 ETCD。</li>
+</ol>
+<blockquote>
+<p>为了确保锁服务可用，通常，分布式锁需同时满足以下四个约束条件。</p>
+</blockquote>
+<ol>
+<li>互斥性：在任意时刻，只有一个客户端能持有锁；</li>
+<li>安全性：即不会形成死锁，当一个客户端在持有锁的期间崩溃而没有主动解锁的情况下，其持有的锁也能够被正确释放，并保证后续其它客户端能加锁；</li>
+<li>可用性：就 Redis 而言，当提供锁服务的 Redis Master 节点发生宕机等不可恢复性故障时，Slave 节点能够升主并继续提供服务，支持客户端加锁和解锁；对基于分布式一致性算法实现的锁服务（如 ETCD）而言，当 Leader 节点宕机时，Follow 节点能够选举出新的 Leader 继续提供锁服务；</li>
+<li>对称性：对于任意一个锁，其<strong>加锁和解锁必须是同一个客户端</strong>，即客户端 A 不能把客户端 B 加的锁给解了。</li>
+</ol>
+<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><div class="note danger">
+
+<p>上锁部分，</p>
+</div>
+
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 上锁🔒</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>lockName 锁名字</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>randomVale 随机值， 为解锁是校验持有者</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>expireTime 过期时间，单位秒, 过期后自动删除</span></span><br><span class="line"><span class="comment">     * !保证上锁的安全--一条命令保证安全性</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public <span class="keyword">async</span> lock(lockName: string, <span class="attr">randomVale</span>: string, <span class="attr">expire</span>: number) &#123;</span><br><span class="line">        <span class="keyword">const</span> start = <span class="built_in">Date</span>.now();</span><br><span class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">intranetLock</span>(<span class="params">this: any</span>): <span class="title">Promise</span>&lt;<span class="title">any</span>&gt; </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 核心代码</span></span><br><span class="line">                <span class="comment">//* 1. 如果key不存在，则设置key-value, 且value的唯一性，保证删除的时候同样可以校验</span></span><br><span class="line">                <span class="comment">// * 2. 如果key存在，NX 保证不做任何操作</span></span><br><span class="line">                <span class="keyword">const</span> result = <span class="keyword">await</span> self.redis.set(lockName, randomVale, self.expiryMode, expire | self.lockLeaseTime, self.setMode);</span><br><span class="line">                <span class="comment">// 上锁成功</span></span><br><span class="line">                <span class="keyword">if</span> (result === <span class="string">'OK'</span>) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;lockName&#125;</span> <span class="subst">$&#123;randomVale&#125;</span> 上锁成功`</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 锁超时</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">Math</span>.floor((<span class="built_in">Date</span>.now() - start) / <span class="number">1000</span>) &gt; self.lockTimeout) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;lockName&#125;</span> <span class="subst">$&#123;randomVale&#125;</span> 上锁重试超时结束`</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 循环等待重试</span></span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;lockName&#125;</span> <span class="subst">$&#123;randomVale&#125;</span> 等待重试`</span>);</span><br><span class="line">                <span class="keyword">await</span> sleep(<span class="number">3</span>);</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;lockName&#125;</span> <span class="subst">$&#123;randomVale&#125;</span> 开始重试`</span>);</span><br><span class="line">                <span class="keyword">return</span> intranetLock();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(err);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<div class="note danger">
+
+<p>解锁部分</p>
+</div>
+
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解锁</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public <span class="keyword">async</span> unLock(lockName: string, <span class="attr">randomValue</span>: string) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// Watch 命令监控锁。监控锁对应的 key(lockName)，事务开启后，如果其它的客户端对这个 Key 进行了更改，</span></span><br><span class="line">            <span class="comment">// 那么本次事务会被取消而不会执行 redis.watch(lockName)。</span></span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.redis.watch(lockName);</span><br><span class="line">            <span class="keyword">const</span> value = <span class="keyword">await</span> <span class="keyword">this</span>.redis.get(lockName);</span><br><span class="line">            <span class="comment">// 如果获取到🔒对应的值，与 randomValue 相等</span></span><br><span class="line">            <span class="keyword">if</span> (randomValue === value) &#123;</span><br><span class="line">                <span class="comment">// 开启事务，删除锁🔒</span></span><br><span class="line">                <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="keyword">this</span>.redis.multi().del(lockName).exec();</span><br><span class="line">                <span class="keyword">if</span> (DistributedLock.RELEASE_SUCCESS === result.length) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">'解锁成功'</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'value 不相等，解锁失败'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'解锁error'</span>, error);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>返回值</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">➜  5锁 git:(main) ✗ ts-node index.ts</span><br><span class="line">name1 b9ccabe0-2ec7-11eb-b965-933ad584a1de 上锁成功</span><br><span class="line">name1 b9cdbd50-2ec7-11eb-b965-933ad584a1de 等待重试</span><br><span class="line">name1 b9cdbd50-2ec7-11eb-b965-933ad584a1de 开始重试</span><br><span class="line">name1 b9cdbd50-2ec7-11eb-b965-933ad584a1de 等待重试</span><br><span class="line">解锁成功</span><br><span class="line">unLock:  name1 b9ccabe0-2ec7-11eb-b965-933ad584a1de <span class="literal">true</span></span><br><span class="line">name1 b9cdbd50-2ec7-11eb-b965-933ad584a1de 开始重试</span><br><span class="line">name1 b9cdbd50-2ec7-11eb-b965-933ad584a1de 上锁成功</span><br><span class="line">解锁成功</span><br><span class="line">unLock:  name1 b9cdbd50-2ec7-11eb-b965-933ad584a1de <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+<p>具体的实例代码：<a href="https://github.com/simuty/Integration/blob/main/Redis/" target="_blank" rel="noopener">https://github.com/simuty/Integration/blob/main/Redis/</a></p>
+<p>参考链接</p>
+<p><a href="http://c.biancheng.net/view/4603.html" target="_blank" rel="noopener">Redis乐观锁解决高并发抢红包的问题</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2020/11/25/redis_5/" title="Redis系列四 锁">https://simuty.com/2020/11/25/redis_5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/23/redis_4/" rel="prev" title="Redis系列四 GEO附近的人">
+      <i class="fa fa-chevron-left"></i> Redis系列四 GEO附近的人
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">267k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:03</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : 'ce0cd5ef944541c3388c17c0a59095f9',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

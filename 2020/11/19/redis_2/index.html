@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="纸上得来终觉浅，绝知此事要躬行——出自《冬夜读书示子聿》，作者陆游">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis系列二 位图">
+<meta property="og:url" content="https://simuty.com/2020/11/19/redis_2/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="纸上得来终觉浅，绝知此事要躬行——出自《冬夜读书示子聿》，作者陆游">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/049.jpg">
+<meta property="article:published_time" content="2020-11-19T06:14:14.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:02:45.426Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/049.jpg">
+
+<link rel="canonical" href="https://simuty.com/2020/11/19/redis_2/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Redis系列二 位图 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BITFIELD"><span class="nav-number">1.1.</span> <span class="nav-text">BITFIELD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITOP-operation-destkey-key-key-…"><span class="nav-number">1.2.</span> <span class="nav-text">BITOP operation destkey key [key …]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战前奏"><span class="nav-number">2.</span> <span class="nav-text">实战前奏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#位图实战"><span class="nav-number">3.</span> <span class="nav-text">位图实战</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#目标"><span class="nav-number">3.1.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#总的调用"><span class="nav-number">3.1.1.</span> <span class="nav-text">总的调用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#具体实现"><span class="nav-number">3.1.2.</span> <span class="nav-text">具体实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考链接"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/11/19/redis_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis系列二 位图
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-19 14:14:14" itemprop="dateCreated datePublished" datetime="2020-11-19T14:14:14+08:00">2020-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-20 14:02:45" itemprop="dateModified" datetime="2020-11-20T14:02:45+08:00">2020-11-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/049.jpg" width=80% />
+
+<span class='geyan'>
+纸上得来终觉浅，绝知此事要躬行——出自《冬夜读书示子聿》，作者陆游
+</span>
+<a id="more"></a>
+
+
+
+<div class="note danger">
+直接上代码----实战在最后
+</div>
+
+
+<ol>
+<li>如果要统计一篇文章的阅读量，可以直接使用 Redis 的 incr 指令来完成。</li>
+<li>如果要求阅读量必须按用户去重，那就可以使用 set 来记录阅读了这篇文章的所有用户 id，获取 set 集合的长度就是去重阅读量。</li>
+<li>但是如果爆款文章阅读量太大，set 会浪费太多存储空间。这时候我们就要使用 Redis 提供的 HyperLogLog 数据结构 来代替 set，它只会占用最多 12k 的存储空间就可以完成海量的去重统计。但是它牺牲了准确度，它是模糊计数，误差率约为 0.81%。</li>
+</ol>
+<p>按照官网的说法，Redis位图Bitmaps不是实际的数据类型，而是在字符串类型上定义的一组<strong>面向位的操作</strong>。在Redis中<strong>字符串限制最大为512MB</strong>， 所以位图中最大可以设置<strong>2^32个不同的位（42.9亿个）</strong>。图位的最小单位是比特(bit)，每个bit的值只能是0或1。<br>位图适合存bool数据，当某个业务只有两种结果的时候，位图是不二之选<br>位图的存储大小计算： （maxOffset / 8 / 1024 / 1024）MB。其中maxOffset为位图的最大位数</p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bit 基本操作</span></span><br><span class="line"><span class="function">async function <span class="title">baseBitFun</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// hello =&gt; 二进制  【01101000 01100101 01101100 01101100 01101111】</span></span><br><span class="line">    <span class="keyword">const</span> [bitKey, bitValue] = [<span class="string">'bitKey'</span>, <span class="string">'hello'</span>]</span><br><span class="line">    client.set(bitKey, bitValue, redis.print);</span><br><span class="line">    client.get(bitKey, redis.print);</span><br><span class="line">    <span class="comment">// 1. 根据偏移量获取bit上的值 0=》0；1-》1</span></span><br><span class="line">    client.getbit(bitKey, <span class="number">1</span>, redis.print);</span><br><span class="line">    <span class="comment">// 2. bitcount 获取全部的 1 的总数</span></span><br><span class="line">    client.bitcount(bitKey, redis.print);</span><br><span class="line">    <span class="comment">// 3. setbit 设置指定偏移量的值，0 || 1</span></span><br><span class="line">    <span class="comment">// !offset 参数必须0到 2^32 (bit 映射被限制在 512 MB 之内)。</span></span><br><span class="line">    <span class="comment">// !注意，这里的star和end不是指bit的下标，而是字节(byte)的下标。比如start为1，则实际对应的bit下标为8（1byte = 8 bit）</span></span><br><span class="line">    client.setbit(bitKey, <span class="number">0</span>, <span class="string">'1'</span>);</span><br><span class="line">    client.bitcount(bitKey, redis.print);</span><br><span class="line">    <span class="function">await <span class="title">sleep</span><span class="params">(<span class="number">0.2</span>)</span></span>;</span><br><span class="line">    console.log(<span class="string">'----获取位置----'</span>);</span><br><span class="line">    <span class="comment">// 4. 获取第一次出现0或1的位置，获取某个偏移量之后第一次出现0或1的位置</span></span><br><span class="line">    client.bitpos(bitKey, <span class="number">0</span>, redis.print)</span><br><span class="line">    client.bitpos(bitKey, <span class="number">1</span>, redis.print)</span><br><span class="line">    <span class="comment">// 1=&gt;8 2=&gt;16 == [8, 16]</span></span><br><span class="line">    client.bitpos(bitKey, <span class="number">1</span>, <span class="number">2</span>, redis.print)</span><br><span class="line">    <span class="function">await <span class="title">sleep</span><span class="params">(<span class="number">0.2</span>)</span></span>;</span><br><span class="line">    console.log(<span class="string">'----BITFIELD----'</span>);</span><br><span class="line">    <span class="comment">// 设置value=hello</span></span><br><span class="line">    client.setbit(bitKey, <span class="number">0</span>, <span class="string">'0'</span>);</span><br><span class="line">    client.get(bitKey, redis.print);</span><br><span class="line">    <span class="comment">// get i4 0 从0开始取4位即0110,有符号/无符号转十进制为6, 1*2^2+1*2^1 = 6, 结果一致</span></span><br><span class="line">    <span class="keyword">const</span> get1Arg = [<span class="string">'get'</span>, <span class="string">'i4'</span>, <span class="number">0</span>];</span><br><span class="line">    <span class="comment">// !get i4 4 从4开始取4位即 1000 , 有符号转十进制为 -8, 1000 =&gt;  </span></span><br><span class="line">    <span class="keyword">const</span> get2Arg = [<span class="string">'get'</span>, <span class="string">'i4'</span>, <span class="number">4</span>];</span><br><span class="line">    <span class="comment">// 5. bitfield</span></span><br><span class="line">    client.bitfield(bitKey, get1Arg, redis.print);</span><br><span class="line">    client.bitfield(bitKey, get2Arg, redis.print);</span><br><span class="line">    <span class="comment">// 6. incrby</span></span><br><span class="line">    <span class="comment">// 2位开始连续4位无符号自增</span></span><br><span class="line">    <span class="keyword">const</span> incrby1Arg = [<span class="string">'incrby'</span>, <span class="string">'u4'</span>, <span class="number">2</span>, <span class="number">1</span>];</span><br><span class="line">    client.bitfield(bitKey, incrby1Arg, redis.print);</span><br><span class="line">    <span class="comment">/** </span></span><br><span class="line"><span class="comment">     * 它用来对指定范围的位进行自增操作。既然提到自增，就有可能出现溢出。如果增加了正数，会出现上溢，如果增加的是负数，就会出现下溢出。</span></span><br><span class="line"><span class="comment">     * 【Redis 默认的处理是折返】。如果出现了溢出，就将溢出的符号位丢掉。如果是 8 位无符号数 255，加 1 后就会溢出，会全部变零。如果是 8 位有符号数 127，加 1 后就会溢出变成 -128。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="function">await <span class="title">sleep</span><span class="params">(<span class="number">0.2</span>)</span></span>;</span><br><span class="line">    console.log(<span class="string">'----BITOP----'</span>);</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>返回值</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment">Reply: OK</span></span><br><span class="line"><span class="comment">Reply: hello</span></span><br><span class="line"><span class="comment">Reply: 1</span></span><br><span class="line"><span class="comment">Reply: 21</span></span><br><span class="line"><span class="comment">Reply: 22</span></span><br><span class="line"><span class="comment">----获取位置----</span></span><br><span class="line"><span class="comment">Reply: 3</span></span><br><span class="line"><span class="comment">Reply: 0</span></span><br><span class="line"><span class="comment">Reply: 17</span></span><br><span class="line"><span class="comment">----BITFIELD----</span></span><br><span class="line"><span class="comment">Reply: hello</span></span><br><span class="line"><span class="comment">Reply: 6</span></span><br><span class="line"><span class="comment">Reply: -8</span></span><br><span class="line"><span class="comment">Reply: 11</span></span><br><span class="line"><span class="comment">----BITOP----</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="BITFIELD"><a href="#BITFIELD" class="headerlink" title="BITFIELD"></a>BITFIELD</h4><table>
+<thead>
+<tr>
+<th>字母</th>
+<th>数值</th>
+<th>二进制(高位&lt;-低位)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h</td>
+<td>104</td>
+<td>0110 1000</td>
+</tr>
+<tr>
+<td>e</td>
+<td>101</td>
+<td>0110 0101</td>
+</tr>
+<tr>
+<td>l</td>
+<td>108</td>
+<td>0110 1100</td>
+</tr>
+<tr>
+<td>l</td>
+<td>108</td>
+<td>0110 1100</td>
+</tr>
+<tr>
+<td>o</td>
+<td>111</td>
+<td>0110 1111</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> w hello</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; bitfield w get u4 0    <span class="comment">#从w的第0个位开始取4个位(0110)，结果为无符号数(u)</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379&gt; bitfield w get u3 2    <span class="comment">#从w的第2个位开始取3个位(101)，结果为无符号数(u)</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 5</span><br><span class="line">127.0.0.1:6379&gt; bitfield w get i4 0   <span class="comment">#从w的第0个位开始取4个位(0110)，结果为有符号数(i)</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379&gt; bitfield w get i3 2   <span class="comment">#从w的第2个位开始取3个位(101)，结果为有符号数(i)</span></span><br><span class="line">1) (<span class="built_in">integer</span>) -3</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; bitfield w <span class="built_in">set</span> u8 8 97  <span class="comment">#从第9个位开始，将接下来8个位用无符号数97 ( 字母a) 替换</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 101</span><br><span class="line">127.0.0.1:6379&gt; get w</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="BITOP-operation-destkey-key-key-…"><a href="#BITOP-operation-destkey-key-key-…" class="headerlink" title="BITOP operation destkey key [key …]"></a>BITOP operation destkey key [key …]</h4><div class="note danger">
+
+<p>基本操作其实还是用终端比较好，直接贴命令</p>
+</div>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> a a                  <span class="comment"># 二进制  01100001    </span></span><br><span class="line">OK    </span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> c c                  <span class="comment"># 二进制  01100011    </span></span><br><span class="line">OK    </span><br><span class="line">127.0.0.1:6379&gt; bitop and destkey a c    <span class="comment"># 与操作  01100001 -&gt; a    </span></span><br><span class="line">(<span class="built_in">integer</span>) 1    </span><br><span class="line">127.0.0.1:6379&gt; get destkey    <span class="string">"a"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> a a                 <span class="comment"># 二进制  01100001    </span></span><br><span class="line">OK    127.0.0.1:6379&gt; <span class="built_in">set</span> b b           <span class="comment"># 二进制  01100010    </span></span><br><span class="line">OK    127.0.0.1:6379&gt; bitop or destkey a b    <span class="comment"># 或操作  01100011 -&gt; c    </span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; get destkey    </span><br><span class="line"><span class="string">"c"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> a a                 <span class="comment"># 二进制  01100001    </span></span><br><span class="line">OK    </span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> z Z                 <span class="comment"># 二进制  01011010 (大写的Z)    </span></span><br><span class="line">OK    </span><br><span class="line">127.0.0.1:6379&gt; bitop xor destkey a z   <span class="comment"># 异或    00111011 -&gt; ; 分号    </span></span><br><span class="line">(<span class="built_in">integer</span>) 1    </span><br><span class="line">127.0.0.1:6379&gt; get destkey</span><br><span class="line"><span class="string">";"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实战前奏"><a href="#实战前奏" class="headerlink" title="实战前奏"></a>实战前奏</h3><blockquote>
+<p>如果对位运算不熟悉的同学，可以先复习一下。</p>
+</blockquote>
+<p>链接放这里了：</p>
+<p><a href="https://www.cnblogs.com/lazycoding/archive/2011/03/21/unsigned-signed.html" target="_blank" rel="noopener">理解有符号数和无符号数</a><br><a href="https://juejin.im/post/6844903846947323918#heading-19" target="_blank" rel="noopener">位运算世界畅游指南</a></p>
+<h3 id="位图实战"><a href="#位图实战" class="headerlink" title="位图实战"></a>位图实战</h3><p>如果要统计一篇文章的<code>阅读量</code>，可以直接使用 Redis 的 <strong>incr 指令来完成</strong>。<br>如果要求阅读量必须按<code>用户去重</code>，那就可以使用 set 来记录阅读了这篇文章的所有用户 id，获取 <strong>set 集合</strong>的长度就是去重阅读量。<br>但是如果爆款文章<code>阅读量太大</code>，set 会<code>浪费太多存储空间</code>。这时候我们就要使用 Redis 提供的 <strong>HyperLogLog 数据结构</strong> 来代替 set，它只会占用<strong>最多 12k</strong> 的存储空间就可以完成海量的去重统计。<br>但是它牺牲了准确度，它是模糊计数，<strong>误差率约为 0.81%</strong>。</p>
+<div class="note danger">
+
+<p>按照官网的说法，Redis位图Bitmaps不是实际的数据类型，而是在字符串类型上定义的一组<strong>面向位的操作</strong>。在Redis中<strong>字符串限制最大为512MB</strong>，<br>所以位图中最大可以设置<strong>2^32个不同的位（42.9亿个）</strong>。图位的最小单位是比特(bit)，每个bit的值只能是0或1。</p>
+<div class="note primary">
+位图适合存bool数据，当某个业务只有两种结果的时候，位图是不二之选
+</div>
+
+
+<div class="note success">
+位图的存储大小计算： （maxOffset / 8 / 1024 / 1024）MB。其中maxOffset为位图的最大位数
+
+</div>
+
+</div>
+
+
+<h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><ol>
+<li>打卡</li>
+<li>判断某天是否打卡</li>
+<li>统计某月打卡总次数</li>
+<li>获取某用户在某月的打卡信息<ol>
+<li>连续打卡的起止时间</li>
+<li>最长连续天数</li>
+</ol>
+</li>
+<li>统计指定区间的打卡次数</li>
+</ol>
+<h5 id="总的调用"><a href="#总的调用" class="headerlink" title="总的调用"></a>总的调用</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">(<span class="function">async <span class="title">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> bitmap = <span class="keyword">new</span> BitMap();</span><br><span class="line">    <span class="comment">// 初始化数据</span></span><br><span class="line">    await bitmap.initData([<span class="string">'2020-10'</span>]);</span><br><span class="line">    <span class="comment">// 展示10月份全部签到数据</span></span><br><span class="line">    await bitmap.getAllData([<span class="string">'2020-10'</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> [uid1, uid2] = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用户X 签到</span></span><br><span class="line">    await bitmap.userSign(uid2, <span class="string">'2020-11-18'</span>);</span><br><span class="line">    <span class="comment">// 用户X在XX日期 是否签到</span></span><br><span class="line">    await bitmap.judgeUserSign(uid2, <span class="string">'2020-11-18'</span>);</span><br><span class="line">    <span class="comment">// 用户X在XX月 总的签到次数</span></span><br><span class="line">    await bitmap.getUserSignCount(uid2, <span class="string">'2020-10'</span>);</span><br><span class="line">    <span class="comment">// 用户X在XX月 第一次签到的日期</span></span><br><span class="line">    await bitmap.getFirstSignDate(uid2, <span class="string">'2020-11'</span>);</span><br><span class="line">    <span class="comment">// 用户XX在XX月 签到的情况</span></span><br><span class="line">    await bitmap.getSignInfo(uid2, <span class="string">'2020-10'</span>);</span><br><span class="line">    <span class="comment">// 某个区间内，连续签到的人数总和</span></span><br><span class="line">    await bitmap.signAllWeek();</span><br><span class="line"></span><br><span class="line">    await common.sleep(<span class="number">1</span>);</span><br><span class="line">    process.exit(<span class="number">1</span>);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>返回值</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">➜  2位图 git:(main) ✗ ts-node sign.ts</span><br><span class="line"></span><br><span class="line">用户1在 2020-10月 签到数据: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</span><br><span class="line">用户2在 2020-10月 签到数据: 0,0,1,1,1,1,0,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,1,1</span><br><span class="line">用户3在 2020-10月 签到数据: 1,0,1,0,0,1,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1</span><br><span class="line">用户4在 2020-10月 签到数据: 1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,1,0,0,1,1,1,1,1,1,0,1,1,0,1,1,0</span><br><span class="line">用户5在 2020-10月 签到数据: 1,0,1,1,0,1,1,1,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,0,1</span><br><span class="line">用户6在 2020-10月 签到数据: 0,0,0,1,0,0,1,0,0,0,1,1,1,1,0,1,1,0,1,1,0,0,0,1,1,0,0,1,1,1,0</span><br><span class="line">用户2在 2020-11-18签到为1</span><br><span class="line">用户1在 2020-11月 签到数据: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</span><br><span class="line">用户2在 2020-11月 签到数据: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0</span><br><span class="line">用户3在 2020-11月 签到数据: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</span><br><span class="line">用户4在 2020-11月 签到数据: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</span><br><span class="line">用户5在 2020-11月 签到数据: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</span><br><span class="line">用户6在 2020-11月 签到数据: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</span><br><span class="line">用户2在 2020-11-18签到状态为1</span><br><span class="line">用户2在 2020-10 月份 签到总次数为15</span><br><span class="line">用户2在 2020-11 月份 首次签到 日期为2020-11-18</span><br><span class="line">------用户2在2020-10签到情况-------</span><br><span class="line">当月签到连续情况为：</span><br><span class="line"> [ &#123; signCount: 4, days: [ 3, 4, 5, 6 ] &#125;,</span><br><span class="line">  &#123; signCount: 3, days: [ 29, 30, 31 ] &#125;,</span><br><span class="line">  &#123; signCount: 2, days: [ 26, 27 ] &#125;,</span><br><span class="line">  &#123; signCount: 2, days: [ 23, 24 ] &#125;,</span><br><span class="line">  &#123; signCount: 1, days: [ 19 ] &#125;,</span><br><span class="line">  &#123; signCount: 1, days: [ 17 ] &#125;,</span><br><span class="line">  &#123; signCount: 1, days: [ 13 ] &#125;,</span><br><span class="line">  &#123; signCount: 1, days: [ 11 ] &#125; ]</span><br><span class="line">最长的连续签到次数：4</span><br><span class="line">最长的连续签到次数日期为：3,4,5,6</span><br><span class="line">----------本月某七天-----------</span><br><span class="line">本月第4到10天 中所有的签到次数: 1</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h5><p>实现部分涉及:</p>
+<ol>
+<li>位操作</li>
+<li>多种实现方法</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取某些月份总的签到数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> totalMonth 如: ['2020-10']</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> async <span class="title">getAllData</span><span class="params">(totalMonth: string[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (let uid = <span class="number">1</span>; uid &lt;= <span class="keyword">this</span>.allUser; uid++) &#123;</span><br><span class="line">            <span class="keyword">const</span> total = [];</span><br><span class="line">            <span class="comment">// 获取上月份的起止时间</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">const</span> month of totalMonth) &#123;</span><br><span class="line">                <span class="comment">// month对应的天数</span></span><br><span class="line">                <span class="keyword">const</span> &#123; days &#125; = UtilDate.daysInMonth(month);</span><br><span class="line">                <span class="comment">// allUser 用户ID作为key中的标示</span></span><br><span class="line">                <span class="comment">// 【偏移量+1】就是某月对应的几号</span></span><br><span class="line">                let offset = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span> (offset &lt; days) &#123;</span><br><span class="line">                    <span class="keyword">const</span> bit = await <span class="keyword">this</span>.client.getbit(<span class="keyword">this</span>.genKey(&#123; date: month, uid &#125;), offset);</span><br><span class="line">                    total.push(bit);</span><br><span class="line">                    offset++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">const</span> result = `用户$&#123;uid&#125;在 $&#123;month&#125;月 签到数据: $&#123;total&#125;`;</span><br><span class="line">                console.log(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户在某天 签到</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> uid 用户ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date YYYY-MM—DD</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> async <span class="title">userSign</span><span class="params">(uid: number, date: string)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> offset = UtilDate.dayOfNumInMonth(date);</span><br><span class="line">        <span class="keyword">const</span> status = SIGN.YES;</span><br><span class="line">        await <span class="keyword">this</span>.client.setbit(<span class="keyword">this</span>.genKey(&#123; date, uid &#125;), offset - <span class="number">1</span>, status);</span><br><span class="line">        console.log(`用户$&#123;uid&#125;在 $&#123;date&#125;签到为$&#123;status&#125;`);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断用户在某天是否签到</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> uid 用户ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date YYYY-MM—DD</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> async <span class="title">judgeUserSign</span><span class="params">(uid: number, date: string)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> offset = UtilDate.dayOfNumInMonth(date);</span><br><span class="line">        <span class="keyword">const</span> status = await <span class="keyword">this</span>.client.getbit(<span class="keyword">this</span>.genKey(&#123; date, uid &#125;), offset - <span class="number">1</span>);</span><br><span class="line">        await <span class="keyword">this</span>.getAllData([<span class="string">'2020-11'</span>]);</span><br><span class="line">        console.log(`用户$&#123;uid&#125;在 $&#123;date&#125;签到状态为$&#123;status&#125;`);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户X在XX月总的签到次数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> uid 用户ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date YYYY-MM—DD</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> async <span class="title">getUserSignCount</span><span class="params">(uid: number, date: string)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> count = await <span class="keyword">this</span>.client.bitcount(<span class="keyword">this</span>.genKey(&#123; date, uid &#125;));</span><br><span class="line">        console.log(`用户$&#123;uid&#125;在 $&#123;date&#125; 月份 签到总次数为$&#123;count&#125;`);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取当月签到情况</span></span><br><span class="line"><span class="comment">     * 1. 当月最长的签到天数</span></span><br><span class="line"><span class="comment">     * 2. </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> uid </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> date </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> async <span class="title">getSignInfo</span><span class="params">(uid: number, date: string)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; days, dayList &#125; = UtilDate.daysInMonth(date);</span><br><span class="line">        <span class="keyword">const</span> key = <span class="keyword">this</span>.genKey(&#123; date, uid &#125;);</span><br><span class="line">        <span class="comment">// days 该月总天数</span></span><br><span class="line">        <span class="keyword">const</span> bitValue = await <span class="keyword">this</span>.genBitIntervalValue(&#123; key, start: <span class="number">0</span>, length: days &#125;);</span><br><span class="line">        <span class="keyword">if</span> (bitValue === -<span class="number">1</span>) &#123;</span><br><span class="line">            console.log(<span class="string">'相关信息不存在'</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        let signCount = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">const</span> signInfo = [];</span><br><span class="line">        let signValue = bitValue;</span><br><span class="line">        <span class="comment">// 从后往前算</span></span><br><span class="line">        <span class="keyword">for</span> (let index = dayList.length; index &gt; <span class="number">0</span>; index--) &#123;</span><br><span class="line">            <span class="comment">// 位运算</span></span><br><span class="line">            <span class="comment">// 先左后右，如果和原数据相等，则标示最低位是0，即，没有签到</span></span><br><span class="line">            <span class="comment">// 从该月最后一天往前算。</span></span><br><span class="line">            <span class="keyword">if</span> (signValue &gt;&gt; <span class="number">1</span> &lt;&lt; <span class="number">1</span> === signValue) &#123;</span><br><span class="line">                <span class="keyword">if</span> (signCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// 记录连续的长度&amp;位置</span></span><br><span class="line">                    signInfo.push(&#123; signCount, index &#125;);</span><br><span class="line">                    <span class="comment">// 重置连续次数</span></span><br><span class="line">                    signCount = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                signCount++;</span><br><span class="line">            &#125;</span><br><span class="line">            signValue &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 记录最后的一次连续【高位】</span></span><br><span class="line">        <span class="keyword">if</span> (signCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            signInfo.push(&#123; signCount, index: <span class="number">0</span> &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 统计连续的天数、连续的日期</span></span><br><span class="line">        <span class="keyword">const</span> result = [];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> item of signInfo) &#123;</span><br><span class="line">            <span class="keyword">const</span> &#123; signCount, index &#125; = item;</span><br><span class="line">            <span class="keyword">const</span> days = [];</span><br><span class="line">            let i = <span class="number">1</span>;</span><br><span class="line">            let _index = index + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> (i &lt;= signCount) &#123;</span><br><span class="line">                days.push(_index++);</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">const</span> arg = &#123;</span><br><span class="line">                signCount,</span><br><span class="line">                days,</span><br><span class="line">            &#125;</span><br><span class="line">            result.push(arg);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 排序函数 逆序排列</span></span><br><span class="line">        <span class="keyword">const</span> compare = (p: any) =&gt; (m: any, n: any) =&gt; -(m[p] - n[p]);</span><br><span class="line">        result.sort(compare(<span class="string">'signCount'</span>));</span><br><span class="line">        console.log(`------用户$&#123;uid&#125;在$&#123;date&#125;签到情况-------`)</span><br><span class="line">        console.log(<span class="string">"当月签到连续情况为："</span>, <span class="string">'\n'</span>, result);</span><br><span class="line">        console.log(`最长的连续签到次数：$&#123;result[<span class="number">0</span>].signCount&#125;`);</span><br><span class="line">        console.log(`最长的连续签到次数日期为：$&#123;result[<span class="number">0</span>].days&#125;`);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体的实例代码：<a href="https://github.com/simuty/Integration/blob/main/Redis/" target="_blank" rel="noopener">https://github.com/simuty/Integration/blob/main/Redis/</a></p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://www.javazhiyin.com/53322.html" target="_blank" rel="noopener">Redis -位图为何能存亿级数据</a><br><a href="http://researchlab.github.io/2018/01/19/redis-04-bitmap/" target="_blank" rel="noopener">redis专题04 数据结构之redis位图系列问题</a><br><a href="https://segmentfault.com/a/1190000008188655" target="_blank" rel="noopener">Redis中bitmap的妙用</a><br><a href="https://segmentfault.com/a/1190000020594802" target="_blank" rel="noopener">使用redis位图bitMap 实现签到功能（PHP版本）</a><br><a href="https://juejin.im/post/6844904049909694477" target="_blank" rel="noopener">Redis修行 — 位图实战</a><br><a href="https://www.debugger.wiki/article/html/1550476800410833" target="_blank" rel="noopener">基于Redis位图实现用户签到功能</a><br><a href="https://developer.aliyun.com/article/757841" target="_blank" rel="noopener">跬步千里 —— 阿里云Redis bitfield命令加速记</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2020/11/19/redis_2/" title="Redis系列二 位图">https://simuty.com/2020/11/19/redis_2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/18/base_signed_usigned/" rel="prev" title="理解有符号数和无符号数">
+      <i class="fa fa-chevron-left"></i> 理解有符号数和无符号数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/20/redis_3/" rel="next" title="Redis系列三 限流">
+      Redis系列三 限流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">267k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:03</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : '3597073b239c5803d808003423b042d3',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
