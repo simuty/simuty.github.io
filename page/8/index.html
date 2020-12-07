@@ -233,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -287,6 +287,429 @@
 
         <div class="content index posts-expand">
           
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/08/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/08/index/" class="post-title-link" itemprop="url">Python基础系列之--字典/集合类型【5】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-08 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-08T10:38:59+08:00">2019-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.1k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握字典的常用操作</li>
+<li>掌握集合的常用操作</li>
+</ol>
+<p><img data-src="type.png" alt="整体"></p>
+<h3 id="第一部分-字典"><a href="#第一部分-字典" class="headerlink" title="第一部分 字典"></a>第一部分 字典</h3><p>字典就是一个个的键值对 {key: value}，实现原理：根据key 计算 hash， 速度快。<br><strong>注意事项</strong></p>
+<ol>
+<li>key: 任意不可变对象，但不能是list；</li>
+<li>value: 可以是任意对象。</li>
+</ol>
+<blockquote>
+<p><strong>字典是有序的</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>思考：为何字典的key不可以是list类型？</strong></p>
+</blockquote>
+<h4 id="1-三种创建方式"><a href="#1-三种创建方式" class="headerlink" title="1. 三种创建方式"></a>1. 三种创建方式</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic1 = &#123;<span class="string">"sex"</span>: <span class="number">1</span>&#125;</span><br><span class="line">dic2 = dict([(<span class="string">'name'</span>, <span class="string">'simuty'</span>), (<span class="string">"age"</span>, <span class="number">1</span>)])</span><br><span class="line">dic3 = dict(age=<span class="number">2</span>, name=<span class="string">'python'</span>, sex=<span class="number">1</span>)</span><br><span class="line">print(dic1)</span><br><span class="line">print(dic2)</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&#123;'sex': 1&#125;</span></span><br><span class="line"><span class="string">&#123;'name': 'simuty'&#125;</span></span><br><span class="line"><span class="string">&#123;'age': 2&#125;</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-删除指定元素"><a href="#2-删除指定元素" class="headerlink" title="2. 删除指定元素"></a>2. 删除指定元素</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">del</span> dic3[<span class="string">'age'</span>]</span><br><span class="line">dic3.pop(<span class="string">'name'</span>)</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空字典</span></span><br><span class="line">dic3.clear()</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> dic3</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&#123;'age': 2, 'name': 'python', 'sex': 1&#125;</span></span><br><span class="line"><span class="string">&#123;'sex': 1&#125;</span></span><br><span class="line"><span class="string">&#123;&#125;</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "dic.py", line 28, in &lt;module&gt;</span></span><br><span class="line"><span class="string">    print(dic3)</span></span><br><span class="line"><span class="string">NameError: name 'dic3' is not defined</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-合并"><a href="#3-合并" class="headerlink" title="3. 合并"></a>3. 合并</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 合并</span></span><br><span class="line">a_dic = &#123;<span class="string">"k"</span>: <span class="number">1</span>&#125;</span><br><span class="line">b_dic = &#123;<span class="string">'k'</span>: <span class="number">2</span>, <span class="string">"x"</span>: <span class="number">3</span>&#125;</span><br><span class="line">a_dic.update(b_dic)</span><br><span class="line">print(a_dic)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除最后一个并返回</span></span><br><span class="line">print(b_dic.popitem())</span><br><span class="line">print(b_dic)</span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="string">'k'</span>: <span class="number">2</span>, <span class="string">"x"</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="comment"># 接遍历字典获取键，根据键取值</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> dic:</span><br><span class="line">    print(key, dic[key])</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="Dictionary.png" alt="字典"></p>
+<h3 id="第二部分-集合"><a href="#第二部分-集合" class="headerlink" title="第二部分 集合"></a>第二部分 集合</h3><p><strong>set集合是一个无序不重复元素的集，基本功能包括关系测试和消除重复元素。</strong></p>
+<blockquote>
+<p>集合使用大括号({})框定元素，并以逗号进行分隔。<br>创建一个空集合，必须用 set() 而不是 {} ，因为后者创建的是一个空字典。</p>
+</blockquote>
+<h4 id="1-集合操作"><a href="#1-集合操作" class="headerlink" title="1. 集合操作"></a>1. 集合操作</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">set1 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line">print(set1 ^ set2)</span><br><span class="line">print(set1 - set2)</span><br><span class="line">print(set2 - set1)</span><br><span class="line">print(set1 &amp; set2)</span><br><span class="line">print(set1 | set2)</span><br><span class="line"></span><br><span class="line">a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">print(a)</span><br><span class="line">b = a.add(<span class="number">5</span>)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="handleSet.png" alt="实例"></p>
+<p><img data-src="Set.png" alt="set"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/06/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/06/index/" class="post-title-link" itemprop="url">Python基础系列之--序列类型【4】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-06 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-06T10:38:59+08:00">2019-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>对<strong>序列对象</strong>有整体的认识；</li>
+<li>掌握list的常用操作</li>
+<li>掌握tuple的常用操作</li>
+<li>理解深浅拷贝问题</li>
+</ol>
+<h3 id="第一部分-序列对象"><a href="#第一部分-序列对象" class="headerlink" title="第一部分 序列对象"></a>第一部分 序列对象</h3><h4 id="1-了解序列对象"><a href="#1-了解序列对象" class="headerlink" title="1. 了解序列对象"></a>1. 了解序列对象</h4><p>Python一切皆对象。</p>
+<ol>
+<li>序列对象包含<strong>str、list、tuple</strong>；</li>
+<li>序列成员属性：<strong>有序，可通过下标访问</strong></li>
+</ol>
+<blockquote>
+<p>先大致预览下列表(list)、元组(tuple)的异同点,后续详细梳理</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>差异点</th>
+<th>列表</th>
+<th>元组</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表示方法</td>
+<td>空列表：[] <br>单元素列表：[1]<br>多元素列表[1, ‘a’]</td>
+<td>空元组：()<br>单元素元组：(1,)<br>多元素元组：(1, ‘a’)</td>
+</tr>
+<tr>
+<td>可变性</td>
+<td>可变</td>
+<td>不可变</td>
+</tr>
+<tr>
+<td>可操作性</td>
+<td>支持丰富的操作</td>
+<td>仅支持序列操作</td>
+</tr>
+<tr>
+<td>可哈希性</td>
+<td>不可哈希，不能作为字典的关键字</td>
+<td>可哈希，可以作为字典的关键字</td>
+</tr>
+</tbody></table>
+<p><img data-src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="整体图"></p>
+<h3 id="第二部分-List"><a href="#第二部分-List" class="headerlink" title="第二部分 List"></a>第二部分 List</h3><blockquote>
+<p>Python的列表是一个<strong>有序可重复</strong>的元素集合，可嵌套、迭代、修改、分片、追加、删除，成员判断。<br>从数据结构角度看，Python的列表是一个可变长度的顺序存储结构，每一个位置存放的都是<strong>对象的指针</strong>。</p>
+</blockquote>
+<p>比如，对于这个列表 alist = [1, “a”, [11,22], {“k1”:”v1”}]，其在内存内的存储方式是这样的：</p>
+<p><img data-src="mem.png" alt="内存地址"></p>
+<h4 id="1-什么是list"><a href="#1-什么是list" class="headerlink" title="1. 什么是list?"></a>1. 什么是list?</h4><p>概念： 逗号分隔的不同的数据项使用方括号括起来即是list;<br>性质： list元素可变,改变的是原对象</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; tmpList &#x3D; []  # 创建一个空列表</span><br><span class="line">&gt;&gt;&gt; numList &#x3D; [1, 2, 3, 4]</span><br><span class="line">&gt;&gt;&gt; allList &#x3D; [1, &#39;a&#39;, [11,22], &#123;&#39;k1&#39;:&#39;v1&#39;&#125;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-增删改"><a href="#2-增删改" class="headerlink" title="2. 增删改"></a>2. 增删改</h3><p><strong>以xmind的方式呈现</strong></p>
+<p><img data-src="List.png" alt=""></p>
+<h3 id="第三部分-Tuple"><a href="#第三部分-Tuple" class="headerlink" title="第三部分 Tuple"></a>第三部分 Tuple</h3><blockquote>
+<p>类似于list的对象，</p>
+<blockquote>
+<p>类似于list, 相对不可更改</p>
+</blockquote>
+</blockquote>
+<p><strong>重要的实例</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alist &#x3D; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br><span class="line"># stop_index 逻辑上要大于 start_index</span><br><span class="line"># 正整数stop_index&gt;start_index</span><br><span class="line"># 负数：stop_index&lt;start_index &amp; step&lt;0</span><br><span class="line"></span><br><span class="line">print(alist[1:8:3])</span><br><span class="line"># 全部，正向取值</span><br><span class="line">print(alist[:])</span><br><span class="line"># 全部，反向取值</span><br><span class="line">print(alist[-1:-11:-1])</span><br><span class="line"># stop_index &gt; len(list), 不报错</span><br><span class="line">print(alist[-1:-12:-1])</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>类似于list, 相对不可更改</strong></p>
+</blockquote>
+<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017092876846880" target="_blank" rel="noopener">参考：廖雪峰老师博客–使用list和tuple</a>的最后来看一个“可变的”tuple：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; t &#x3D; (&#39;a&#39;, &#39;b&#39;, [&#39;A&#39;, &#39;B&#39;])</span><br><span class="line">&gt;&gt;&gt; t[2][0] &#x3D; &#39;X&#39;</span><br><span class="line">&gt;&gt;&gt; t[2][1] &#x3D; &#39;Y&#39;</span><br><span class="line">&gt;&gt;&gt; t</span><br><span class="line">(&#39;a&#39;, &#39;b&#39;, [&#39;X&#39;, &#39;Y&#39;])</span><br></pre></td></tr></table></figure>
+
+<p>这个tuple定义的时候有3个元素，分别是’a’，’b’和一个list。不是说tuple一旦定义后就不可变了吗？怎么后来又变了？</p>
+<p>别急，我们先看看定义的时候tuple包含的3个元素：</p>
+<p><img data-src="0.png" alt="初始化"></p>
+<p>当我们把list的元素’A’和’B’修改为’X’和’Y’后，tuple变为：</p>
+<p><img data-src="1.png" alt="改变"></p>
+<p>表面上看，tuple的元素确实变了，但其实变的不是tuple的元素，<strong>而是list的元素</strong>。tuple一开始指向的list并没有改成别的list，所以，tuple所谓的“不变”是说，tuple的每个元素，指向永远不变。即指向’a’，就不能改成指向’b’，指向一个list，就不能改成指向其他对象，但指向的这个list本身是可变的！</p>
+<blockquote>
+<p>绝对不变的元组：必须保证tuple的每一个元素本身也不能变。</p>
+</blockquote>
+<p><img data-src="tuple.png" alt=""></p>
+<h3 id="第三部分-深浅拷贝"><a href="#第三部分-深浅拷贝" class="headerlink" title="第三部分 深浅拷贝"></a>第三部分 深浅拷贝</h3><p>对列表和元组进行拷贝时，默认进行的是 <strong>浅拷贝</strong>：<em>只拷贝成员对象的引用</em>，而不会拷贝引用指向的成员对象本身。借助于 <a href="http://docs.python.org/2/library/copy.html" target="_blank" rel="noopener">copy模块</a> 的deepcopy方法，可以实现深拷贝</p>
+<blockquote>
+<p>深拷贝：既拷贝成员对象的引用，又会拷贝引用指向的成员对象本身。<br>浅拷贝：只拷贝成员对象的引用，而不会拷贝引用指向的成员对象本身</p>
+</blockquote>
+<p>值得注意的是，上述说法并<strong>不完全正确</strong>：<strong>如果成员对象本身是原子类型的（数值、字符串，或者只包含数值或字符串的元组），那么对该成员不会发生真正的深拷贝，即便执行深拷贝动作，内部也只会进行浅拷贝。</strong></p>
+<blockquote>
+<p>浅拷贝和深拷贝的示意图如下：</p>
+</blockquote>
+<p><img data-src="copy.png" alt=""></p>
+<p>关于浅拷贝和深拷贝的实际案例，可以参考 <a href="http://book.douban.com/subject/3112503/" target="_blank" rel="noopener">《Python核心编程（第二版）》</a> 中的 『6.20』 一节：『*拷贝Python对象、浅拷贝和深拷贝』。</p>
+<p>参考链接</p>
+<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017092876846880" target="_blank" rel="noopener">使用list和tuple</a></p>
+<p><a href="http://www.liujiangblog.com/course/python/19" target="_blank" rel="noopener">列表</a></p>
+<p><a href="https://www.cnblogs.com/russellluo/p/3297041.html" target="_blank" rel="noopener">Python基础：序列（列表、元组）</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/05/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/05/index/" class="post-title-link" itemprop="url">Python基础系列之--字符串类型【3】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-05 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-05T10:38:59+08:00">2019-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>字符串是编程必然面临的类型，常用指数之高，不得不先了解下Python中字符串的概念与常用方法</p>
+</blockquote>
+<p><img data-src="string.png" alt=""></p>
+<h3 id="第一部分-基础"><a href="#第一部分-基础" class="headerlink" title="第一部分 基础"></a>第一部分 基础</h3><h4 id="1-不可变类型"><a href="#1-不可变类型" class="headerlink" title="1. 不可变类型"></a>1. 不可变类型</h4><p>作为不可变类型，主要涉及两个概念<strong>赋值、引用</strong>，先看三种定义字符串的方法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 第一种</span><br><span class="line">var1 &#x3D; &#39;Hello world&#39;</span><br><span class="line">&#x2F;&#x2F; 第二种</span><br><span class="line">var1 &#x3D; &quot;Pyhoth&quot;</span><br><span class="line">&#x2F;&#x2F; 第三种</span><br><span class="line">var2 &#x3D; &quot;&quot;&quot;  </span><br><span class="line">&gt;&gt;&gt; a &#x3D; &quot;asd&quot;</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4431000496</span><br><span class="line">&gt;&gt;&gt; a &#x3D; &quot;122&quot;</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4431000552</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>上边的代码涉及个问题:</p>
+<blockquote>
+<p>1.1 为何说是不可变类型，怎么var1还可以<strong>等于</strong>Python？</p>
+</blockquote>
+<p><img data-src="1.jpg" alt=""></p>
+<p>Python 没有赋值，只有引用。可以从代码中第三种可以看出，同样的字符串<code>a</code>, 内存地址是不一样的。原因在于，第二次的<code>所谓赋值</code>，其实<strong>是重新创建一块内存，然后将a指向新内存地址</strong></p>
+<h3 id="第二部分-内建函数"><a href="#第二部分-内建函数" class="headerlink" title="第二部分 内建函数"></a>第二部分 内建函数</h3><h4 id="1-填充"><a href="#1-填充" class="headerlink" title="1 填充"></a>1 填充</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var3 &#x3D; &quot;1234&quot;</span><br><span class="line"># 填充字符串</span><br><span class="line">print(var3.center(10, &quot;*&quot;))</span><br><span class="line">print(var3.ljust(10, &#39;^&#39;))</span><br><span class="line">print(var3.rjust(10, &quot;^&quot;))</span><br><span class="line">print(var3.zfill(10))</span><br><span class="line"></span><br><span class="line"># 返回值</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">***1234***</span><br><span class="line">1234^^^^^^</span><br><span class="line">^^^^^^1234</span><br><span class="line">0000001234</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-删减"><a href="#2-删减" class="headerlink" title="2 删减"></a>2 删减</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var4 &#x3D; &quot;55785&quot;</span><br><span class="line">print(var4.strip(&quot;5&quot;))</span><br><span class="line">print(var4.lstrip(&quot;5&quot;))</span><br><span class="line">print(var4.rstrip(&quot;5&quot;))</span><br></pre></td></tr></table></figure>
+
+<p><strong>返回值</strong></p>
+<p>‘’’<br>78<br>785<br>5578<br>‘’’</p>
+<h4 id="3-变形"><a href="#3-变形" class="headerlink" title="3 变形"></a>3 变形</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var5 &#x3D; &quot;thank yoU&quot;</span><br><span class="line">print(var5.lower())</span><br><span class="line">print(var5.upper())</span><br><span class="line">print(var5.capitalize())</span><br><span class="line">print(var5.swapcase())</span><br><span class="line">print(var5.title())</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">thank you</span><br><span class="line">THANK YOU</span><br><span class="line">Thank you</span><br><span class="line">THANK YOu</span><br><span class="line">Thank You</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-切分"><a href="#4-切分" class="headerlink" title="4 切分"></a>4 切分</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var6 &#x3D; &quot;7890&quot;</span><br><span class="line"># 有点像 find()和 split()的结合体,从 str 出现的第一个位置起,把 字 符 串 string 分 成 一 个 3 元 素 的 元 组 (string_pre_str,str,string_post_str),如果 string 中不包含str 则 string_pre_str &#x3D;&#x3D; string.</span><br><span class="line">print(var6.partition(&#39;9&#39;))</span><br><span class="line">print(var6.partition(&#39;2&#39;))</span><br><span class="line">print(var6.rpartition(&quot;0&quot;))</span><br><span class="line">var7 &#x3D; &quot;abz\nzxy&quot;</span><br><span class="line">print(var7.splitlines())</span><br><span class="line">print(var7.split(&quot;z&quot;))</span><br><span class="line">print(var7.rsplit(&quot;z&quot;))</span><br></pre></td></tr></table></figure>
+<p><strong>返回值</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(&#39;78&#39;, &#39;9&#39;, &#39;0&#39;)</span><br><span class="line">(&#39;7890&#39;, &#39;&#39;, &#39;&#39;)</span><br><span class="line">(&#39;789&#39;, &#39;0&#39;, &#39;&#39;)</span><br><span class="line">[&#39;abz&#39;, &#39;zxy&#39;]</span><br><span class="line">[&#39;ab&#39;, &#39;\n&#39;, &#39;xy&#39;]</span><br><span class="line">[&#39;ab&#39;, &#39;\n&#39;, &#39;xy&#39;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-连接"><a href="#5-连接" class="headerlink" title="5 连接"></a>5 连接</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var8 &#x3D; &quot;ikaf&quot;</span><br><span class="line">print(var8.join(&quot;0000&quot;))</span><br><span class="line"></span><br><span class="line"># 判定</span><br><span class="line">var9 &#x3D; &quot;kj45&quot;</span><br><span class="line"># 长度&gt;0 &amp;&amp; 都是字母或都是数字 true 否则false</span><br><span class="line">print(var9.isalnum())</span><br><span class="line"># 长度&gt;0 &amp;&amp;  都是字母 true 否则false</span><br><span class="line">print(var9.isalpha())</span><br><span class="line">print(var9.isdigit())</span><br><span class="line">print(var9.islower())</span><br><span class="line">print(var9.isupper())</span><br><span class="line">print(var9.isspace())</span><br><span class="line">print(var9.istitle())</span><br><span class="line">print(var9.startswith(&#39;k&#39;))</span><br><span class="line">print(var9.endswith(&#39;5&#39;))</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="6-查找"><a href="#6-查找" class="headerlink" title="6 查找"></a>6 查找</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var10 &#x3D; &quot;1234567890zxc123vbndfgh&quot;</span><br><span class="line">print(var10.count(&#39;123&#39;, 0, len(var10)))</span><br><span class="line"># 返回第一个满足条件的位置</span><br><span class="line">print(var10.find(&#39;3&#39;, 0, len(var10)))</span><br><span class="line">#</span><br><span class="line">print(var10.index(&#39;3&#39;, 0, len(var10)))</span><br><span class="line"># 找不到返回-1</span><br><span class="line">print(var10.rfind(&#39;mm&#39;, 0, len(var10)))</span><br><span class="line"># 找不到报错</span><br><span class="line"># print(var10.rindex(&#39;mm&#39;, 0, len(var10)))</span><br></pre></td></tr></table></figure>
+
+<p><strong>返回值</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2</span><br><span class="line">2</span><br><span class="line">2</span><br><span class="line">-1</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-替换"><a href="#7-替换" class="headerlink" title="7 替换"></a>7 替换</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var11 &#x3D; &quot;aaaa111222hhhjjjkkk&quot;</span><br><span class="line">print(var11.replace(&quot;a&quot;, &quot;b&quot;, 2))</span><br><span class="line"># print(var11.translate())</span><br><span class="line">#  translate(table[,deletechars])</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-编码解码"><a href="#8-编码解码" class="headerlink" title="8 编码解码"></a>8 编码解码</h4><blockquote>
+<p>编码就是将字符串转换成字节码，涉及到字符串的内部表示。<br>解码就是将字节码转换为字符串，将比特位显示成字符。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var12 &#x3D; &quot;什么鬼&quot;</span><br><span class="line">print(var12.encode())</span><br><span class="line">print(var12.encode().decode())</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">b&#39;\xe4\xbb\x80\xe4\xb9\x88\xe9\xac\xbc&#39;</span><br><span class="line">什么鬼</span><br><span class="line">&#39;&#39;&#39;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1244,97 +1667,6 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">迁移博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>183</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="gt-0001-为何要写博客？"><a href="#gt-0001-为何要写博客？" class="headerlink" title="&gt;0001 为何要写博客？"></a>&gt;0001 为何要写博客？</h2><h1 id="…记录点滴、分享所得。"><a href="#…记录点滴、分享所得。" class="headerlink" title="…记录点滴、分享所得。"></a>…记录点滴、分享所得。</h1><h2 id="gt-0010-为何要自建博客？"><a href="#gt-0010-为何要自建博客？" class="headerlink" title="&gt;0010 为何要自建博客？"></a>&gt;0010 为何要自建博客？</h2><h1 id="…一分为乐趣，一分为自由。"><a href="#…一分为乐趣，一分为自由。" class="headerlink" title="…一分为乐趣，一分为自由。"></a>…一分为乐趣，一分为自由。</h1><h2 id="gt-0011-类似的资源那么多，为何要重复？"><a href="#gt-0011-类似的资源那么多，为何要重复？" class="headerlink" title="&gt;0011 类似的资源那么多，为何要重复？"></a>&gt;0011 类似的资源那么多，为何要重复？</h2><h1 id="…存在不代表拥有，所得才可拥有"><a href="#…存在不代表拥有，所得才可拥有" class="headerlink" title="…存在不代表拥有，所得才可拥有"></a>…存在不代表拥有，所得才可拥有</h1><p><code>Hello World</code></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">System.out.<span class="built_in">println</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">console.<span class="built_in">log</span>(<span class="string">"Hello World"</span>);</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/2019/04/26/index/27-01_kiding.png" alt="asd"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
             <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">NexT使用</a>
         </h2>
 
@@ -1472,7 +1804,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/25/index/">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1486,7 +1818,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/04/25/index/" class="post-title-link" itemprop="url">一些美的东西</a>
+            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">迁移博客</a>
         </h2>
 
         <div class="post-meta">
@@ -1496,14 +1828,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-04-25 18:06:41" itemprop="dateCreated datePublished" datetime="2019-04-25T18:06:41+08:00">2019-04-25</time>
+              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-28 14:43:26" itemprop="dateModified" datetime="2020-05-28T14:43:26+08:00">2020-05-28</time>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1528,7 +1860,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>193</span>
+              <span>183</span>
             </span>
 
         </div>
@@ -1540,15 +1872,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          美好句子，值得给大家分享.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/25/index/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h2 id="gt-0001-为何要写博客？"><a href="#gt-0001-为何要写博客？" class="headerlink" title="&gt;0001 为何要写博客？"></a>&gt;0001 为何要写博客？</h2><h1 id="…记录点滴、分享所得。"><a href="#…记录点滴、分享所得。" class="headerlink" title="…记录点滴、分享所得。"></a>…记录点滴、分享所得。</h1><h2 id="gt-0010-为何要自建博客？"><a href="#gt-0010-为何要自建博客？" class="headerlink" title="&gt;0010 为何要自建博客？"></a>&gt;0010 为何要自建博客？</h2><h1 id="…一分为乐趣，一分为自由。"><a href="#…一分为乐趣，一分为自由。" class="headerlink" title="…一分为乐趣，一分为自由。"></a>…一分为乐趣，一分为自由。</h1><h2 id="gt-0011-类似的资源那么多，为何要重复？"><a href="#gt-0011-类似的资源那么多，为何要重复？" class="headerlink" title="&gt;0011 类似的资源那么多，为何要重复？"></a>&gt;0011 类似的资源那么多，为何要重复？</h2><h1 id="…存在不代表拥有，所得才可拥有"><a href="#…存在不代表拥有，所得才可拥有" class="headerlink" title="…存在不代表拥有，所得才可拥有"></a>…存在不代表拥有，所得才可拥有</h1><p><code>Hello World</code></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">System.out.<span class="built_in">println</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">console.<span class="built_in">log</span>(<span class="string">"Hello World"</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/2019/04/26/index/27-01_kiding.png" alt="asd"></p>
+
       
     </div>
 
@@ -1566,7 +1894,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1618,13 +1946,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">273k</span>
+    <span title="站点总字数">281k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:08</span>
+    <span title="站点阅读时长">4:16</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
