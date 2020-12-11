@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="形而上者谓之道；形而下者谓之器。（《周易·系辞上》）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis系列九 推荐系统-布隆过滤器">
+<meta property="og:url" content="https://simuty.com/2020/12/10/redis_9/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="形而上者谓之道；形而下者谓之器。（《周易·系辞上》）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/056.jpg">
+<meta property="og:image" content="https://simuty.com/2020/12/10/redis_9/008.png">
+<meta property="og:image" content="https://simuty.com/2020/12/10/redis_9/010.png">
+<meta property="og:image" content="https://simuty.com/2020/12/10/redis_9/013.png">
+<meta property="og:image" content="https://simuty.com/2020/12/10/redis_9/011.png">
+<meta property="og:image" content="https://simuty.com/2020/12/10/redis_9/012.png">
+<meta property="article:published_time" content="2020-12-10T14:22:22.000Z">
+<meta property="article:modified_time" content="2020-12-11T10:12:47.787Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/056.jpg">
+
+<link rel="canonical" href="https://simuty.com/2020/12/10/redis_9/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Redis系列九 推荐系统-布隆过滤器 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#布隆过滤器"><span class="nav-number">1.</span> <span class="nav-text">布隆过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mac-配置"><span class="nav-number">1.2.</span> <span class="nav-text">Mac 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步"><span class="nav-number">1.2.1.</span> <span class="nav-text">第一步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步"><span class="nav-number">1.2.2.</span> <span class="nav-text">第二步</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">1.3.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.4.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#工作方式"><span class="nav-number">1.4.1.</span> <span class="nav-text">工作方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空间占用估计"><span class="nav-number">1.4.2.</span> <span class="nav-text">空间占用估计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#场景"><span class="nav-number">1.5.</span> <span class="nav-text">场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">2.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存穿透"><span class="nav-number">2.1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个性推荐"><span class="nav-number">2.2.</span> <span class="nav-text">个性推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/12/10/redis_9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis系列九 推荐系统-布隆过滤器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-10 22:22:22" itemprop="dateCreated datePublished" datetime="2020-12-10T22:22:22+08:00">2020-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 18:12:47" itemprop="dateModified" datetime="2020-12-11T18:12:47+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DB/" itemprop="url" rel="index"><span itemprop="name">DB</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/056.jpg" width=80% />
+
+<span class='geyan'>
+形而上者谓之道；形而下者谓之器。（《周易·系辞上》）
+</span>
+<a id="more"></a>
+
+<h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>布隆过滤器是一种空间利用率较高的概率型数据结构，用来测试一个<strong>元素是否在集合</strong>中。但是存在一定可能，导致结果<strong>误判</strong>。<em>当布隆过滤器说某个值存在时，这个值可能不存在</em>；<code>当它说不存在时，那就肯定不存在</code>.</p>
+<p>特性：</p>
+<ol>
+<li>与哈希表不同，布隆过滤器是一个<strong>大小固定的过滤器</strong>；</li>
+<li>随着元素的增多，错误率逐渐上升；</li>
+<li>不能删除其中的元素。</li>
+</ol>
+<p>更多内容看–原理部分。</p>
+<h3 id="Mac-配置"><a href="#Mac-配置" class="headerlink" title="Mac 配置"></a>Mac 配置</h3><h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>下载布隆过滤器：<a href="https://github.com/RedisBloom/RedisBloom" target="_blank" rel="noopener"><a href="git@github.com:RedisBloom/RedisBloom.git">地址</a></a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># git clone</span></span><br><span class="line">➜  tmp git <span class="built_in">clone</span> git@github.com:RedisBloom/RedisBloom.git</span><br><span class="line">Cloning into <span class="string">'RedisBloom'</span>...</span><br><span class="line">remote: Enumerating objects: 16, <span class="keyword">done</span>.</span><br><span class="line">remote: Counting objects: 100% (16/16), <span class="keyword">done</span>.</span><br><span class="line">remote: Compressing objects: 100% (14/14), <span class="keyword">done</span>.</span><br><span class="line">remote: Total 2258 (delta 5), reused 5 (delta 2), pack-reused 2242</span><br><span class="line">Receiving objects: 100% (2258/2258), 627.74 KiB | 139.00 KiB/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (1480/1480), <span class="keyword">done</span>.</span><br><span class="line"><span class="comment">#</span></span><br><span class="line">➜  tmp <span class="built_in">cd</span> RedisBloom</span><br><span class="line">➜  RedisBloom git:(master) ls</span><br><span class="line">Dockerfile  Makefile    changelog   contrib     mkdocs.yml  ramp.yml    src</span><br><span class="line">LICENSE     README.md   codecov.yml docs        opt         rmutil      tests</span><br><span class="line"><span class="comment"># make</span></span><br><span class="line">➜  RedisBloom git:(master) make</span><br><span class="line"><span class="comment"># 将redisbloom.so文件放入指定目录</span></span><br><span class="line">➜  RedisBloom git:(master) ls</span><br><span class="line">Dockerfile    README.md     contrib       opt           rmutil</span><br><span class="line">LICENSE       changelog     docs          ramp.yml      src</span><br><span class="line">Makefile      codecov.yml   mkdocs.yml    redisbloom.so tests</span><br></pre></td></tr></table></figure>
+
+<h4 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h4><p>更改 redis 配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># brew 查看redis相关配置</span></span><br><span class="line">➜  redis brew info redis</span><br><span class="line">redis: stable 6.0.8 (bottled), HEAD</span><br><span class="line">Persistent key-value database, with built-in net interface</span><br><span class="line">https://redis.io/</span><br><span class="line">/usr/<span class="built_in">local</span>/Cellar/redis/5.0.5 (13 files, 3.1MB) *</span><br><span class="line">  Poured from bottle on 2019-09-20 at 13:21:23</span><br><span class="line">From: https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git/Formula/redis.rb</span><br><span class="line">License: BSD-3-Clause</span><br><span class="line">==&gt; Dependencies</span><br><span class="line">Required: openssl@1.1 ✔</span><br><span class="line">==&gt; Options</span><br><span class="line">--HEAD</span><br><span class="line">        Install HEAD version</span><br><span class="line">==&gt; Caveats</span><br><span class="line">To have launchd start redis now and restart at login:</span><br><span class="line">  brew services start redis</span><br><span class="line">Or, <span class="keyword">if</span> you don<span class="string">'t want/need a background service you can just run:</span></span><br><span class="line"><span class="string"># 配置文件</span></span><br><span class="line"><span class="string">  redis-server /usr/local/etc/redis.conf</span></span><br><span class="line"><span class="string">==&gt; Analytics</span></span><br><span class="line"><span class="string">install: 46,064 (30 days), 146,808 (90 days), 583,167 (365 days)</span></span><br><span class="line"><span class="string">install-on-request: 44,935 (30 days), 141,581 (90 days), 553,766 (365 days)</span></span><br><span class="line"><span class="string">build-error: 0 (30 days)</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件地址：<code>/usr/local/etc/redis.conf</code>;</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">################################## MODULES #####################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load modules at startup. If the server is not able to load modules</span></span><br><span class="line"><span class="comment"># it will abort. It is possible to use multiple loadmodule directives.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># loadmodule /path/to/my_module.so</span></span><br><span class="line"><span class="comment"># loadmodule /path/to/other_module.so</span></span><br><span class="line"></span><br><span class="line">loadmodule /usr/<span class="built_in">local</span>/Cellar/redis/redisbloom.so <span class="comment"># 加载module，写入对应的path</span></span><br><span class="line"></span><br><span class="line"><span class="comment">################################## NETWORK #####################################</span></span><br></pre></td></tr></table></figure>
+
+<p>重启 redis</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重启reis</span></span><br><span class="line">➜  Integration git:(main) brew services restart redis</span><br><span class="line">Stopping `redis`... (might take a <span class="keyword">while</span>)</span><br><span class="line">==&gt; Successfully stopped `redis` (label: homebrew.mxcl.</span><br><span class="line">==&gt; Successfully started `redis` (label: homebrew.mxcl.</span><br><span class="line"><span class="comment"># 连接服务</span></span><br><span class="line">➜  Integration git:(main) redis-cli</span><br><span class="line"><span class="comment"># nice work</span></span><br><span class="line">127.0.0.1:6379&gt; BF.ADD nice work</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>命令</td>
+<td>功能</td>
+<td>参数</td>
+</tr>
+<tr>
+<td>BF.RESERVE</td>
+<td>创建一个大小为 capacity，错误率为 error_rate 的空的 Bloom</td>
+<td>BF.RESERVE {key} {error_rate} {capacity} [EXPANSION expansion 满后默认扩容2倍] [NONSCALING 不扩容抛异常]</td>
+</tr>
+<tr>
+<td><strong>BF.ADD</strong></td>
+<td>向 key 指定的 Bloom 中添加一个元素 item</td>
+<td>BF.ADD {key} {item}</td>
+</tr>
+<tr>
+<td><strong>BF.MADD</strong></td>
+<td>向 key 指定的 Bloom 中添加多个元素</td>
+<td>BF.MADD {key} {item} [item…]</td>
+</tr>
+<tr>
+<td><strong>BF.INSERT</strong></td>
+<td>向 key 指定的 Bloom 中添加多个元素，添加时可以指定大小和错误率，且可以控制在 Bloom 不存在的时候是否自动创建</td>
+<td>BF.INSERT {key} [CAPACITY {cap}] [ERROR {error}] [EXPANSION expansion] [NOCREATE] [NONSCALING] ITEMS {item…}</td>
+</tr>
+<tr>
+<td>BF.EXISTS</td>
+<td>检查一个元素是否可能存在于 key 指定的 Bloom 中</td>
+<td>BF.EXISTS {key} {item}</td>
+</tr>
+<tr>
+<td>BF.MEXISTS</td>
+<td>同时检查多个元素是否可能存在于 key 指定的 Bloom 中</td>
+<td>BF.MEXISTS {key} {item} [item…]</td>
+</tr>
+<tr>
+<td>BF.SCANDUMP</td>
+<td>对 Bloom 进行增量持久化操作</td>
+<td>BF.SCANDUMP {key} {iter}</td>
+</tr>
+<tr>
+<td>BF.LOADCHUNK</td>
+<td>加载 SCANDUMP 持久化的 Bloom 数据</td>
+<td>BF.LOADCHUNK {key} {iter} {data}</td>
+</tr>
+<tr>
+<td>BF.INFO</td>
+<td>查询 key 指定的 Bloom 的信息</td>
+<td>BF.INFO {key}</td>
+</tr>
+<tr>
+<td>BF.DEBUG</td>
+<td>查看 BloomFilter 的内部详细信息（如每层的元素个数、错误率等） BF.DEBUG {key}</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化一个 错误率为 0.1 容量为 5 不自动扩容的</span></span><br><span class="line">127.0.0.1:6379&gt; BF.RESERVE bf:1 0.1 5 NONSCALING</span><br><span class="line">OK</span><br><span class="line"><span class="comment"># 批量添加</span></span><br><span class="line">127.0.0.1:6379&gt; BF.MADD bf:1 1 2 3 4 5</span><br><span class="line">1) (<span class="built_in">integer</span>) 1</span><br><span class="line">2) (<span class="built_in">integer</span>) 1</span><br><span class="line">3) (<span class="built_in">integer</span>) 1</span><br><span class="line">4) (<span class="built_in">integer</span>) 1</span><br><span class="line">5) (<span class="built_in">integer</span>) 1</span><br><span class="line"><span class="comment"># 溢出报错</span></span><br><span class="line">127.0.0.1:6379&gt; BF.MADD bf:1 6 7 </span><br><span class="line">1) (error) ERR non scaling filter is full</span><br><span class="line"><span class="comment"># 打印信息</span></span><br><span class="line">127.0.0.1:6379&gt; BF.INFO bf:1</span><br><span class="line"> 1) Capacity</span><br><span class="line"> 2) (<span class="built_in">integer</span>) 5</span><br><span class="line"> 3) Size</span><br><span class="line"> 4) (<span class="built_in">integer</span>) 160</span><br><span class="line"> 5) Number of filters</span><br><span class="line"> 6) (<span class="built_in">integer</span>) 1</span><br><span class="line"> 7) Number of items inserted</span><br><span class="line"> 8) (<span class="built_in">integer</span>) 5</span><br><span class="line"> 9) Expansion rate</span><br><span class="line">10) (nil)</span><br><span class="line"><span class="comment"># 是否存在某个字段</span></span><br><span class="line">127.0.0.1:6379&gt; BF.EXISTS bf:1 4</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h4 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h4><div class="note danger">
+
+<div class="note default">
+
+<p>布隆过滤器是由一个<code>长度为m</code>比特的<code>位数组</code>与<code>k个哈希函数</code>组成的数据结构。比特数组均初始化为0，所有哈希函数都可以分别把输入数据尽量均匀地散列。</p>
+</div>
+
+<ol>
+<li>当<strong>插入</strong>一个元素时，将其数据<code>通过k个哈希函</code>数转换成<code>k个哈希值</code>，这k个哈希值将作为比特数组的<strong>下标</strong>，并将数组中的对应下标的值<strong>置为1</strong>。</li>
+<li>当<strong>查询</strong>一个元素时，同样会将其数据通过k个哈希函数转换成k个哈希值（数组下标），查询数组中对应下标的值，如果有一个下标的值为<strong>0表明该元素一定不在集合中</strong>，如果全部下标的值都为1，表明该元素有可能在集合中。<code>至于为什么有可能在集合中？</code> 因为有可能某个或者多个下标的值为 1 是受到其他元素的影响，这就是所谓的<strong>假阳性</strong>，下文会详细讲述。</li>
+<li><strong>无法删除</strong>一个元素，为什么呢？因为你删除的元素的哈希值可能和集合中的某个元素的哈希值有相同的，一旦删除了这个元素会导致<code>其他的元素也被删除</code>。</li>
+</ol>
+<p>下图示出一个m=18, k=3的布隆过滤器示例。集合中的 x、y、z 三个元素通过 3 个不同的哈希函数散列到位数组中。当查询元素 w 时，因为有一个比特为 0，因此 w 不在该集合中。</p>
+<img data-src='008.png' width=80% />
+
+</div>
+
+<div class="note success">
+
+
+<p>假阳性相关更多参考： <a href="https://chenjiabing666.github.io/2020/04/26/%E5%A4%A7%E7%99%BD%E8%AF%9D%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%8C%E5%8F%88%E8%83%BD%E5%92%8C%E9%9D%A2%E8%AF%95%E5%AE%98%E6%89%AF%E7%9A%AE%E4%BA%86%EF%BC%81%EF%BC%81%EF%BC%81/" target="_blank" rel="noopener">大白话布隆过滤器，又能和面试官扯皮了！！！</a></p>
+<p>简单来说，当位数组中1的个数越多，也就是存的数据越多，最后查询的时候返回存在的概率越大。</p>
+</div>
+
+
+<div class="note warning">
+
+<p>注意⚠️：仅此标记hash过后的位置，而不是存真实的数据。所以才节省空间。</p>
+</div>
+
+
+<img data-src='010.png' width=80% />
+
+
+
+<h4 id="空间占用估计"><a href="#空间占用估计" class="headerlink" title="空间占用估计"></a>空间占用估计</h4><p><a href="https://krisives.github.io/bloom-calculator/" target="_blank" rel="noopener">布隆计算器在线版</a>。</p>
+<p>布隆过滤器有两个参数</p>
+<ol>
+<li>预计元素的数量 n</li>
+<li>错误率 f。</li>
+</ol>
+<p>公式根据这两个输入得到两个输出，第一个输出是位数组的长度 l，也就是需要的存储空间大小 (bit)，第二个输出是 hash 函数的最佳数量 k。hash 函数的数量也会直接影响到错误率，最佳的数量会有最低的错误率。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">k&#x3D;0.7*(l&#x2F;n)  # 约等于</span><br><span class="line">f&#x3D;0.6185^(l&#x2F;n)  # ^ 表示次方计算，也就是 math.pow</span><br></pre></td></tr></table></figure>
+
+<p>从公式中可以看出</p>
+<ol>
+<li>位数组相对越长 (l/n)，错误率 f 越低，这个和直观上理解是一致的</li>
+<li>位数组相对越长 (l/n)，hash 函数需要的最佳数量也越多，影响计算效率</li>
+<li>当一个元素平均需要 1 个字节 (8bit) 的指纹空间时 (l/n=8)，错误率大约为 2%</li>
+<li>错误率为 10%，一个元素需要的平均指纹空间为 4.792 个 bit，大约为 5bit</li>
+<li>错误率为 1%，一个元素需要的平均指纹空间为 9.585 个 bit，大约为 10bit</li>
+<li>错误率为 0.1%，一个元素需要的平均指纹空间为 14.377 个 bit，大约为 15bit</li>
+</ol>
+<div class="note success">
+
+<p>|||<br>|–|–|–|<br>|错误率{error_rate}|元素数量{capacity}|占用内存（单位M）|<br>| 0.001| 10万 | 0.19|<br>|0.001| 1百万| 1.89|<br>|0.001| 1千万| 18.9|<br>|0.001| 1亿| 188.6|<br>|0.0001| 10万| 0.25|<br>|0.0001|1百万|2.5|<br>|0.0001|1千万|24.6|<br>|0.0001|1亿|245.7|<br>|0.00001|10万|0.3|<br>|0.00001|1百万|3.01|<br>|0.00001|1千万3|0.1|<br>|0.00001|1亿|302.9|</p>
+<blockquote>
+<p>占用内存（单位M） = bytes值/1024/1024。</p>
+</blockquote>
+<p>从上述对比分析可以看出，<strong>错误率{error_rate}越小，所需的存储空间越大； 初始化设置的元素数量{capacity}越大，所需的存储空间越大</strong>，当然如果实际远多于预设时，准确率就会降低。</p>
+<p>在1千万数据场景下，error_rate为0.001、0.0001、0.00001实际占用内存都是<strong>30M以下</strong>，此时如果对准确性要求高，初始化时将错误率设置低一点是完全无伤大雅的。</p>
+<p>RedisBloom官方默认的error_rate是 0.01，默认的capacity是 100</p>
+</div>
+
+
+<p>在线计算相互关系—<a href="https://hur.st/bloomfilter/?n=10000000&p=1.0E-7&m=&k=" target="_blank" rel="noopener">https://hur.st/bloomfilter/?n=10000000&amp;p=1.0E-7&amp;m=&amp;k=</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一百万</span></span><br><span class="line">n = 10000000</span><br><span class="line"><span class="comment"># 错误率</span></span><br><span class="line">p = 0.0000001 (1 <span class="keyword">in</span> 9994080)</span><br><span class="line"><span class="comment"># 内存大小</span></span><br><span class="line">m = 335477044 (39.99MiB)</span><br><span class="line"><span class="comment"># hash函数个数</span></span><br><span class="line">k = 23</span><br></pre></td></tr></table></figure>
+
+<img data-src='013.png' width='50%'>
+
+<p><strong>公式</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">n = ceil(m / (-k / <span class="built_in">log</span>(1 - exp(<span class="built_in">log</span>(p) / k))))</span><br><span class="line">p = pow(1 - exp(-k / (m / n)), k)</span><br><span class="line">m = ceil((n * <span class="built_in">log</span>(p)) / <span class="built_in">log</span>(1 / pow(2, <span class="built_in">log</span>(2))));</span><br><span class="line">k = round((m / n) * <span class="built_in">log</span>(2));</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><blockquote>
+<p>主要特征：<code>某元素是否在集合中。</code></p>
+</blockquote>
+<ol>
+<li>校验用户名是否已经存在，</li>
+<li>推荐系统，如过滤已读新闻、抖音推荐；</li>
+<li>爬虫过滤URL是否重复</li>
+<li>缓存穿透，请求不存在的数据，redis中没有就每次从db中取</li>
+<li>缓存击穿：最通俗的例子：新浪微博热搜，某个热点 5 分钟后 Redis 里面数据过期，然后该新闻不属于热搜，所以缓存失效</li>
+</ol>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><div class="note success">
+
+<p>选择合适的工具🔧，才能事半功倍。</p>
+<div class="note success">
+
+<ol>
+<li>往容器插入数据；</li>
+<li>判断是否存在</li>
+</ol>
+<p>注意事项：bigkey问题，如何设计key</p>
+</div>
+
+</div>
+
+<h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><div class="note danger">
+
+<p>试想一下：</p>
+<ol>
+<li>某人通过抓包拿到页面详情参数，然后jmeter帮你线上测试；</li>
+<li>某人行为不存在鱼你的某个正常的集合里，频繁的帮你线上测试。</li>
+</ol>
+<blockquote>
+<p>你应该会感谢他八辈祖宗吧！</p>
+</blockquote>
+<ol>
+<li>平时是否只把redis当作kv缓存，甚至都么有考虑过缓存穿透？</li>
+<li>一图胜千言，看下图，图片来源<a href="https://chenjiabing666.github.io/2020/04/26/%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E6%96%87%E7%AB%A0%EF%BC%8C%E4%BF%9D%E8%AF%81%E4%BD%A0%E8%83%BD%E5%92%8C%E9%9D%A2%E8%AF%95%E5%AE%98%E4%BA%92%E6%89%AF%EF%BC%81%EF%BC%81%EF%BC%81/" target="_blank" rel="noopener">看完这篇缓存穿透的文章，保证你能和面试官互扯！！！</a></li>
+</ol>
+</div>
+
+<img data-src='011.png' width=80% />
+<img data-src='012.png' width=80% />
+
+
+
+<h3 id="个性推荐"><a href="#个性推荐" class="headerlink" title="个性推荐"></a>个性推荐</h3><p>参考<a href="https://zhuanlan.zhihu.com/p/89883126" target="_blank" rel="noopener">记一篇REDIS布隆过滤器的使用</a>。</p>
+<div class="note danger">
+
+<p>原文分析</p>
+<ol>
+<li>业务需求：针对新用户推广告，老用户不推。</li>
+<li>要求: 1. QPS至少要能撑住<code>30W</code>。2. 接口响应不能超过60ms</li>
+<li>现状：数量级：6亿，设备多样性【需考虑】，总数*3=18亿。注：博主以设备纬度判断；</li>
+<li>依据确认后，技术选型—REDIS 布隆过滤器<ol>
+<li>阿里云单机redis QPS <code>10w</code>, 需要选择集群版, &amp; <strong>将key打到不同的节点上</strong></li>
+<li>redis key 值的选择<ol>
+<li>如何存放这么多数据</li>
+<li>截取md5(设备ID)前4位相同的放一个key中.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">例:  deviceArray = [</span><br><span class="line">        <span class="string">"202cb962ac59075b964b07152d234b70"</span>,</span><br><span class="line">        <span class="string">"202cb35dac59075b964b07152d234b95"</span>,</span><br><span class="line">        <span class="string">"202cb35dac09875b964b07152d234b88"</span>,</span><br><span class="line">        ....</span><br><span class="line">    ]</span><br><span class="line">对应的写命令:</span><br><span class="line">     BF.ADD app:old_users:202c 202cb962ac59075b964b07152d234b70</span><br><span class="line">     BF.ADD app:old_users:202c 202cb35dac59075b964b07152d234b95</span><br><span class="line">     BF.ADD app:old_users:202c 202cb35dac09875b964b07152d234b88</span><br><span class="line">     ....</span><br></pre></td></tr></table></figure>
+
+<div class="note success">
+
+<p>注意&amp;总结</p>
+<ol>
+<li>业务转化为技术选型</li>
+<li>提前调研所租服务是否支持该技术</li>
+<li>多看别人的实战</li>
+</ol>
+</div>
+
+</div>
+
+
+
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="comment">--[[</span></span><br><span class="line"><span class="comment">KEYS[1]: bf.key</span></span><br><span class="line"><span class="comment">ARGV[1]: 模拟循环次数</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">生成随机32位置 十六进制字符串</span></span><br><span class="line"><span class="comment">1. 采用模版替换</span></span><br><span class="line"><span class="comment">2. 十六进制的用法</span></span><br><span class="line"><span class="comment">3. 三目运算</span></span><br><span class="line"><span class="comment">--]]</span></span><br><span class="line"><span class="keyword">local</span> <span class="built_in">random</span> = <span class="built_in">math</span>.<span class="built_in">random</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">uuid</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">local</span> template = <span class="string">"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">string</span>.<span class="built_in">gsub</span>(</span><br><span class="line">        template,</span><br><span class="line">        <span class="string">"[xy]"</span>,</span><br><span class="line">        <span class="function"><span class="keyword">function</span><span class="params">(c)</span></span></span><br><span class="line">            <span class="comment">-- 三目运算: local z = a&gt;b and x or y</span></span><br><span class="line">            <span class="comment">-- 0x: 十六进制</span></span><br><span class="line">            <span class="comment">-- 0xf: 15</span></span><br><span class="line">            <span class="comment">-- 0xb: 11</span></span><br><span class="line">            <span class="keyword">local</span> v = (c == <span class="string">"x"</span>) <span class="keyword">and</span> <span class="built_in">random</span>(<span class="number">0</span>, <span class="number">0xf</span>) <span class="keyword">or</span> <span class="built_in">random</span>(<span class="number">8</span>, <span class="number">0xb</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">string</span>.<span class="built_in">format</span>(<span class="string">"%x"</span>, v)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    )</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> index = <span class="number">0</span></span><br><span class="line"><span class="keyword">local</span> key = KEYS[<span class="number">1</span>] <span class="comment">-- bf key</span></span><br><span class="line"><span class="keyword">local</span> totalNum = ARGV[<span class="number">1</span>] <span class="comment">-- 循环次数</span></span><br><span class="line"><span class="keyword">while</span> index &lt; totalNum <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">local</span> value, _ = uuid()</span><br><span class="line">    redis.call(<span class="string">"BF.ADD"</span>, key, value)</span><br><span class="line">    index = index + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="comment">--[[</span></span><br><span class="line"><span class="comment">!是否存在</span></span><br><span class="line"><span class="comment">--]]</span></span><br><span class="line"><span class="keyword">local</span> exists = redis.call(<span class="string">"BF.EXISTS"</span>, key, value)</span><br><span class="line"><span class="keyword">return</span> exists</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://segmentfault.com/a/1190000017305460" target="_blank" rel="noopener">Redis 缓存穿透问题及解决方案</a></li>
+<li><a href="https://chenjiabing666.github.io/2020/04/26/%E7%9C%8B%E5%AE%8C%E8%BF%99%E7%AF%87%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E6%96%87%E7%AB%A0%EF%BC%8C%E4%BF%9D%E8%AF%81%E4%BD%A0%E8%83%BD%E5%92%8C%E9%9D%A2%E8%AF%95%E5%AE%98%E4%BA%92%E6%89%AF%EF%BC%81%EF%BC%81%EF%BC%81/" target="_blank" rel="noopener">看完这篇缓存穿透的文章，保证你能和面试官互扯！！！</a></li>
+<li><a href="https://github.com/sx89/seckill-practice#%E6%8A%A2%E7%BA%A2%E5%8C%85%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93" target="_blank" rel="noopener">seckill-practice</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/89883126" target="_blank" rel="noopener">记一篇 REDIS 布隆过滤器的使用</a></li>
+<li><a href="https://blog.csdn.net/u012150168/article/details/105756264" target="_blank" rel="noopener">Mac 系统 Redis 安装布隆过滤器</a></li>
+<li><a href="https://blog.csdn.net/Revivedsun/article/details/94992323" target="_blank" rel="noopener">Guava布隆过滤器(boomfilter)使用简介</a></li>
+<li><a href="https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/" target="_blank" rel="noopener">Bloom Filters – Introduction and Implementation</a></li>
+<li><a href="https://juejin.cn/post/6874792464285663240" target="_blank" rel="noopener">玩转Redis-Redis中布隆过滤器的使用及原理</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2020/12/10/redis_9/" title="Redis系列九 推荐系统-布隆过滤器">https://simuty.com/2020/12/10/redis_9/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/08/redis_8/" rel="prev" title="Redis系列八 抢红包">
+      <i class="fa fa-chevron-left"></i> Redis系列八 抢红包
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/11/redis_9/" rel="next" title="Redis系列十 抽奖">
+      Redis系列十 抽奖 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">294k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:28</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : 'dab20027a2b289af69b07b88ef11d17c',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
