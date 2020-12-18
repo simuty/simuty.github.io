@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="劳而不伐，有功而不德，厚之至也。（《周易·系辞上》）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building and publishing an NPM Typescript package">
+<meta property="og:url" content="https://simuty.com/2020/12/18/npm/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="劳而不伐，有功而不德，厚之至也。（《周易·系辞上》）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/059.jpg">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/004.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/005.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/006">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/008.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/009.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/010.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/011">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/012.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/013.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/014.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/015.png">
+<meta property="og:image" content="https://simuty.com/2020/12/18/npm/016.png">
+<meta property="article:published_time" content="2020-12-18T14:22:22.000Z">
+<meta property="article:modified_time" content="2020-12-18T07:54:09.675Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="npm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/059.jpg">
+
+<link rel="canonical" href="https://simuty.com/2020/12/18/npm/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Building and publishing an NPM Typescript package | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-NPM"><span class="nav-number">2.</span> <span class="nav-text">What is NPM?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-Typescript"><span class="nav-number">3.</span> <span class="nav-text">Why Typescript?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alright-Let’s-get-started"><span class="nav-number">4.</span> <span class="nav-text">Alright. Let’s get started!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pick-a-great-name"><span class="nav-number">5.</span> <span class="nav-text">Pick a great name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic-Setup"><span class="nav-number">6.</span> <span class="nav-text">Basic Setup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-git-repository"><span class="nav-number">7.</span> <span class="nav-text">Create a git repository</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Init-your-Package"><span class="nav-number">8.</span> <span class="nav-text">Init your Package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-Typescript-as-a-DevDependency"><span class="nav-number">9.</span> <span class="nav-text">Add Typescript as a DevDependency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Your-first-code"><span class="nav-number">10.</span> <span class="nav-text">Your first code!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ignore-compiled-code-in-git"><span class="nav-number">11.</span> <span class="nav-text">Ignore compiled code in git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Formatting-and-Linting"><span class="nav-number">12.</span> <span class="nav-text">Formatting and Linting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Don’t-include-more-than-you-need-in-your-package"><span class="nav-number">13.</span> <span class="nav-text">Don’t include more than you need in your package!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setup-Testing-with-Jest"><span class="nav-number">14.</span> <span class="nav-text">Setup Testing with Jest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Write-a-basic-test"><span class="nav-number">15.</span> <span class="nav-text">Write a basic test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-the-magic-scripts-in-NPM"><span class="nav-number">16.</span> <span class="nav-text">Use the magic scripts in NPM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Finishing-up-package-json"><span class="nav-number">17.</span> <span class="nav-text">Finishing up package.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Commit-and-push-your-code-to-git"><span class="nav-number">18.</span> <span class="nav-text">Commit and push your code to git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Publish-you-package-to-NPM"><span class="nav-number">19.</span> <span class="nav-text">Publish you package to NPM!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bumping-a-new-version"><span class="nav-number">20.</span> <span class="nav-text">Bumping a new version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What’s-next"><span class="nav-number">21.</span> <span class="nav-text">What’s next?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Good-luck-building-your-awesome-package-😃"><span class="nav-number"></span> <span class="nav-text">Good luck building your awesome package! 😃</span></a></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/12/18/npm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Building and publishing an NPM Typescript package
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-18 22:22:22 / 修改时间：15:54:09" itemprop="dateCreated datePublished" datetime="2020-12-18T22:22:22+08:00">2020-12-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/npm/" itemprop="url" rel="index"><span itemprop="name">npm</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/059.jpg" width=80% />
+
+<span class='geyan'>
+劳而不伐，有功而不德，厚之至也。（《周易·系辞上》）
+</span>
+<a id="more"></a>
+
+
+<p><a href="https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c" target="_blank" rel="noopener">原文链接–Step by step: Building and publishing an NPM Typescript package.</a></p>
+<h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>In this guide, we will build a reusable module in <code>Typescript</code> and publish it as a <strong>Node.js</strong> package. I’ve seen it being done in many different ways so I want to show you how you can use the best practices and tools out there to create your <code>own package</code>, step by step using <code>Typescript</code>, <code>Tslin</code>t, <code>Prettier</code> and <code>Jest</code>.<br>This is what we are going to build:</p>
+<p><a href="https://www.npmjs.com/package/my-awesome-greeter" target="_blank" rel="noopener">https://www.npmjs.com/package/my-awesome-greeter</a><br><a href="https://github.com/caki0915/my-awesome-greeter" target="_blank" rel="noopener">https://github.com/caki0915/my-awesome-greeter</a></p>
+<h3 id="What-is-NPM"><a href="#What-is-NPM" class="headerlink" title="What is NPM?"></a>What is NPM?</h3><p>Npm is the package manager for Javascript and the world biggest library of reusable software code. It’s also a great as build tool itself as I will show later on.</p>
+<h3 id="Why-Typescript"><a href="#Why-Typescript" class="headerlink" title="Why Typescript?"></a>Why Typescript?</h3><p>As a superset to Javascript, Typescript provides optional typing and deep intellisense [智能]. When it comes to package development, this is my personal opinion:</p>
+<blockquote>
+<p>I believe that all packages should be built in Typescript</p>
+</blockquote>
+<div class="note success">
+
+<p>Some of you might feel that strong typing decreases [减少-dɪˈkriːs] productivity[生产效率-prɒdʌkˈtɪvəti] and it’s not worth the effort [努力-ˈefət] to use. I can agree when it comes to small-scale projects, however, when it comes to package-development, Typescript has some serious advantages:</p>
+<ol>
+<li>More robust[强大的rəʊˈbʌst] code and easier to maintain[保持-维持meɪnˈteɪn].</li>
+<li>The package can be used both for Typescript and Javascript users! If your library becomes popular there will sooner or later be a demand for type-definitions, and to write those manually is time-consuming, error-prone and harder to update.</li>
+<li>With type-definitions in the package, the user doesn’t have to download the types from another package.</li>
+<li>Strong typings are more self-documenting and makes the code more understandable.</li>
+<li>Even if the one using your package doesn’t use Typescript, some editors, like Visual Studio Code will still use the type-definitions to give the user better intellisense.</li>
+</ol>
+</div>
+
+<h3 id="Alright-Let’s-get-started"><a href="#Alright-Let’s-get-started" class="headerlink" title="Alright. Let’s get started!"></a>Alright. Let’s get started!</h3><p>Make sure you have the latest version of node and npm.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span></span><br><span class="line">npm -v</span><br><span class="line"><span class="number">6.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Pick-a-great-name"><a href="#Pick-a-great-name" class="headerlink" title="Pick a great name"></a>Pick a great name</h3><p><strong>This might be harder than it sounds</strong>. Package names has to be in pascal-case and in lowercase. Since there are 700k+ packages, make a quick search on <a href="https://www.npmjs.com/" target="_blank" rel="noopener">https://www.npmjs.com/</a> to make sure your awesome name is not already taken. For the sake[目的、清酒-seɪk] of this guide, I will choose the name <code>my-awesome-greeter</code>, but use a unique name so you can publish your package to npm later on 😉.</p>
+<h3 id="Basic-Setup"><a href="#Basic-Setup" class="headerlink" title="Basic Setup"></a>Basic Setup</h3><p>Create your package folder with a suitable name</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; mkdir my-awesome-greeter &amp;&amp; <span class="built_in">cd</span> my-awesome-greeter</span><br></pre></td></tr></table></figure>
+
+<h3 id="Create-a-git-repository"><a href="#Create-a-git-repository" class="headerlink" title="Create a git repository"></a>Create a git repository</h3><p>First thing first. You need a remote git repository for your package so it can be downloaded. Creating a remote git repository is out of scope for this article but once you have done it you can use the following lines to initialize your local repository and set your remote origin.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">echo <span class="string">"# My Awesome Greeter"</span> &gt;&gt; README.md</span><br><span class="line">git add . &amp;&amp; git commit -m <span class="string">"Initial commit"</span></span><br><span class="line">Replace &lt;Git Repository Url&gt; with the URL to your remote repository.</span><br><span class="line">git remote add origin &lt;Git Repository Url&gt;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h3 id="Init-your-Package"><a href="#Init-your-Package" class="headerlink" title="Init your Package"></a>Init your Package</h3><p>Let’s create a <code>package.json</code> file with all default values.</p>
+<p>We’re going to modify this one later on.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>As the last step, we’re going to add a <code>.gitignore</code> file to the root. There’s a lot <code>.gitignore templates</code> out there but I like to keep it simple and <strong>don’t add more than you need</strong>. At the moment, we only need to ignore the <code>node_modules</code> folder.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">echo <span class="string">"node_modules"</span> &gt;&gt; .gitignore</span><br></pre></td></tr></table></figure>
+
+<p>Awesome! We got the basics 😃 This is how it looks like when I open the project in Visual Studio Code. From now on I will continue adding files from vscode from now on rather than using the console, but choose a style that suits you 😉<br>Image for post</p>
+<img data-src='004.png' width='80%' />
+
+<img data-src='005.png' width='80%' />
+
+<h3 id="Add-Typescript-as-a-DevDependency"><a href="#Add-Typescript-as-a-DevDependency" class="headerlink" title="Add Typescript as a DevDependency"></a>Add Typescript as a DevDependency</h3><p>Let’s start with typescript as a dependency</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm install --save-dev typescript</span><br></pre></td></tr></table></figure>
+
+<p>The flag <code>--save-dev</code> will tell NPM to install Typescript as a <code>devDependency</code>. The difference between a <strong>devDependency</strong> and a <strong>dependency</strong> is that <em>devDependencies will only be installed when you run npm install, but not when the end-user installs the package.</em></p>
+<p>For example, Typescript is only needed when developing the package, but it’s not needed while using the package.</p>
+<p>Good! Now you will see a <code>node_modules</code> folder and a <code>package-lock.json</code> in your root as well.</p>
+<p>In order to compile Typescript we also need a tsconfig.json file so let’s add it to the project root:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"compilerOptions"</span>: &#123;</span><br><span class="line">    <span class="string">"target"</span>: <span class="string">"es5"</span>,</span><br><span class="line">    <span class="string">"module"</span>: <span class="string">"commonjs"</span>,</span><br><span class="line">    <span class="string">"declaration"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"outDir"</span>: <span class="string">"./lib"</span>,</span><br><span class="line">    <span class="string">"strict"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"include"</span>: [<span class="string">"src"</span>],</span><br><span class="line">  <span class="string">"exclude"</span>: [<span class="string">"node_modules"</span>, <span class="string">"**/__tests__/*"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img data-src='006' width='80%' />
+
+
+
+<p>A lot of things is going on here, so let’s explain our config file:</p>
+<ul>
+<li><strong>target</strong>: We want to compile to es5 since we want to build a package with browser compatibility.</li>
+<li><strong>module</strong>: Use commonjs for compatibility[兼容性-kəmˌpætəˈbɪləti].</li>
+<li><strong>declaration</strong>: When you building packages, this should be true. Typescript will then also export type definitions together with the compiled javascript code so the package can be used with both Typescript and Javascript.</li>
+<li><strong>outDir</strong>: The javascript will be compiled to the lib folder.</li>
+<li><strong>include</strong>: All source files in the src folder</li>
+<li><strong>exclude</strong>: We don’t want to transpile node_modules, neither tests since these are only used during development.</li>
+</ul>
+<h3 id="Your-first-code"><a href="#Your-first-code" class="headerlink" title="Your first code!"></a>Your first code!</h3><p>Now when we have the compilation set up, we can add our first line of code.<br>Let’s create a src folder in the root and add an index.ts file:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Greeter = <span class="function">(<span class="params">name: string</span>) =&gt;</span> <span class="string">`Hello <span class="subst">$&#123;name&#125;</span>`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Ok, it’s a good start. Next step is to add a build script to package.json:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">"build"</span> : <span class="string">"tsc"</span></span><br></pre></td></tr></table></figure>
+
+<img data-src='008.png' width='80%' />
+
+
+<p>Now you can run the build command in the console:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+
+<p>And violá!<br>You will see a new <strong>lib</strong> folder in the root with your compiled code and type definitions!</p>
+<img data-src='009.png' width='80%' />
+
+
+<h3 id="Ignore-compiled-code-in-git"><a href="#Ignore-compiled-code-in-git" class="headerlink" title="Ignore compiled code in git"></a>Ignore compiled code in git</h3><p>Except for <strong>package-lock.json</strong>, you normally don’t want to have auto-generated files under source control. It can cause unnecessary conflicts, every time it’s is autogenerated. Let’s add the lib folder to <code>.gitignore</code>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">node_modules</span><br><span class="line">/lib</span><br></pre></td></tr></table></figure>
+
+<p>The slash before lib means “Ignore only the lib folder in the top of the root” This is what we want in this case.</p>
+<h3 id="Formatting-and-Linting"><a href="#Formatting-and-Linting" class="headerlink" title="Formatting and Linting"></a>Formatting and Linting</h3><p>An awesome package should include strict rules for linting and formatting. Especially if you want more collaborators later on. Let’s add <em>Prettier and TsLint</em>!</p>
+<p>Like Typescript, these are tools used only for the development of the package. They should be added as devDependencies:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm install --save-dev prettier tslint tslint-config-prettier</span><br></pre></td></tr></table></figure>
+
+<p><code>tslint-config-prettier</code> is a preset we need since it prevents conflicts between tslint and prettiers formatting rules.<br>In the root, add a <code>tslint.json</code>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="string">"extends"</span>: [<span class="string">"tslint:recommended"</span>, <span class="string">"tslint-config-prettier"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>And a <code>.prettierrc</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;printWidth&quot;: 120,</span><br><span class="line">  &quot;trailingComma&quot;: &quot;all&quot;,</span><br><span class="line">  &quot;singleQuote&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Finally, add the lint- and format scripts to package.json</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;format&quot;: &quot;prettier --write \&quot;src&#x2F;**&#x2F;*.ts\&quot; \&quot;src&#x2F;**&#x2F;*.js\&quot;&quot;,</span><br><span class="line">&quot;lint&quot;: &quot;tslint -p tsconfig.json&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Your package.json should now look something like this:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"w-toolkit"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.1"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"Node 工具包"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"lib/index.js"</span>,</span><br><span class="line">  <span class="string">"types"</span>: <span class="string">"lib/index.d.ts"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"tsc"</span>,</span><br><span class="line">    <span class="string">"format"</span>: <span class="string">"prettier --write \"src/**/*.ts\" \"src/**/*.js\""</span>,</span><br><span class="line">    <span class="string">"lint"</span>: <span class="string">"tslint -p tsconfig.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"repository"</span>: &#123;</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"git"</span>,</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"git+https://github.com/simuty/toolkit.git"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"keywords"</span>: [</span><br><span class="line">    <span class="string">"工具包"</span>,</span><br><span class="line">    <span class="string">"toolkit"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"simuty"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">  <span class="string">"bugs"</span>: &#123;</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"https://github.com/simuty/toolkit/issues"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"homepage"</span>: <span class="string">"https://github.com/simuty/toolkit#readme"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"@types/jest"</span>: <span class="string">"^24.9.1"</span>,</span><br><span class="line">    <span class="string">"jest"</span>: <span class="string">"^24.9.0"</span>,</span><br><span class="line">    <span class="string">"prettier"</span>: <span class="string">"^1.18.2"</span>,</span><br><span class="line">    <span class="string">"ts-jest"</span>: <span class="string">"^24.3.0"</span>,</span><br><span class="line">    <span class="string">"tslint"</span>: <span class="string">"^5.18.0"</span>,</span><br><span class="line">    <span class="string">"tslint-config-prettier"</span>: <span class="string">"^1.18.0"</span>,</span><br><span class="line">    <span class="string">"typescript"</span>: <span class="string">"^3.5.2"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"files"</span>: [</span><br><span class="line">    <span class="string">"lib/**/*"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now you can run npm run lint and npm run format in the console:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm run lint</span><br><span class="line">npm run format</span><br></pre></td></tr></table></figure>
+
+<img data-src='010.png' width='80%' />
+
+<h3 id="Don’t-include-more-than-you-need-in-your-package"><a href="#Don’t-include-more-than-you-need-in-your-package" class="headerlink" title="Don’t include more than you need in your package!"></a>Don’t include more than you need in your package!</h3><p>In our <code>.gitignore</code> file, we added /lib since we don’t want the build-files in our git repository. The opposite goes for a published package. <strong>We don’t want the source code, only the build-files</strong>!<br>This can be solved in <em>two</em> ways. One way is to blacklist files/folders in a <code>.npmignore</code> file. Should have looked something like this in our case:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">src</span><br><span class="line">tsconfig.json</span><br><span class="line">tslint.json</span><br><span class="line">.prettierrc</span><br></pre></td></tr></table></figure>
+
+<p>However, blacklisting files is <strong>not a good practice</strong>. Every new file/folder added to the root, needs to be added to the .npmignore file as well! Instead, you should whitelist the files /folders you want to publish. This can be done by adding the files property in package.json:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">"files"</span>: [<span class="string">"lib/**/*"</span>]</span><br></pre></td></tr></table></figure>
+
+<p>That’s it! Easy 😃 Only the lib folder will be included in the published package! (<code>README.md</code> and <code>package.json</code> are added by default).<br>For more information about whitelisting vs blacklisting in NPM packages see this <a href="https://blog.npmjs.org/post/165769683050/publishing-what-you-mean-to-publish" target="_blank" rel="noopener">post from the NPM blog</a>. (Thank you Tibor Blénessy for the reference)</p>
+<h3 id="Setup-Testing-with-Jest"><a href="#Setup-Testing-with-Jest" class="headerlink" title="Setup Testing with Jest"></a>Setup Testing with Jest</h3><p>An awesome package should include <code>unit tests</code>! Let’s add <strong>Jest</strong>: An awesome testing framework by Facebook.</p>
+<img data-src='011' width='80%' />
+
+<p>Since we will be writing tests against our typescript source-files, we also need to add ts-jest and @types/jest. The test suite is only used during development so let’s add them as devDependencies</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install --save-dev jest ts-jest @types&#x2F;jest</span><br></pre></td></tr></table></figure>
+
+<p>Cool! Now we need to configure Jest. You can choose to write a jest section to package.json or to create a separate config file. We are going to add it in a separate file, so it will not be included when we publish the package.<br>Create a new file in the root and name it <code>jestconfig.json</code>:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;transform&quot;: &#123;</span><br><span class="line">    &quot;^.+\\.(t|j)sx?$&quot;: &quot;ts-jest&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;testRegex&quot;: &quot;(&#x2F;__tests__&#x2F;.*|(\\.|&#x2F;)(test|spec))\\.(jsx?|tsx?)$&quot;,</span><br><span class="line">  &quot;moduleFileExtensions&quot;: [&quot;ts&quot;, &quot;tsx&quot;, &quot;js&quot;, &quot;jsx&quot;, &quot;json&quot;, &quot;node&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Remove the old test script in package.json and change it to:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">"test"</span>: <span class="string">"jest --config jestconfig.json"</span>,</span><br></pre></td></tr></table></figure>
+
+<p>The package.json should look something like this:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"w-toolkit"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.1"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"Node 工具包"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"lib/index.js"</span>,</span><br><span class="line">  <span class="string">"types"</span>: <span class="string">"lib/index.d.ts"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"jest --config jestconfig.json"</span>,</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"tsc"</span>,</span><br><span class="line">    <span class="string">"format"</span>: <span class="string">"prettier --write \"src/**/*.ts\" \"src/**/*.js\""</span>,</span><br><span class="line">    <span class="string">"lint"</span>: <span class="string">"tslint -p tsconfig.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"repository"</span>: &#123;</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"git"</span>,</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"git+https://github.com/simuty/toolkit.git"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"keywords"</span>: [</span><br><span class="line">    <span class="string">"工具包"</span>,</span><br><span class="line">    <span class="string">"toolkit"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"simuty"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">  <span class="string">"bugs"</span>: &#123;</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"https://github.com/simuty/toolkit/issues"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"homepage"</span>: <span class="string">"https://github.com/simuty/toolkit#readme"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"@types/jest"</span>: <span class="string">"^24.9.1"</span>,</span><br><span class="line">    <span class="string">"jest"</span>: <span class="string">"^24.9.0"</span>,</span><br><span class="line">    <span class="string">"prettier"</span>: <span class="string">"^1.18.2"</span>,</span><br><span class="line">    <span class="string">"ts-jest"</span>: <span class="string">"^24.3.0"</span>,</span><br><span class="line">    <span class="string">"tslint"</span>: <span class="string">"^5.18.0"</span>,</span><br><span class="line">    <span class="string">"tslint-config-prettier"</span>: <span class="string">"^1.18.0"</span>,</span><br><span class="line">    <span class="string">"typescript"</span>: <span class="string">"^3.5.2"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"files"</span>: [</span><br><span class="line">    <span class="string">"lib/**/*"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Write-a-basic-test"><a href="#Write-a-basic-test" class="headerlink" title="Write a basic test"></a>Write a basic test</h3><p>It’s time to write our first test! 😃<br>In the src folder, add a new folder called <code>__tests__</code> and inside, add a new file with a name you like, but it has to end with test.ts, for example Greeter.test.ts</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Greeter &#125; <span class="keyword">from</span> <span class="string">'../index'</span>;</span><br><span class="line">test(<span class="string">'My Greeter'</span>, () =&gt; &#123;</span><br><span class="line">  expect(Greeter(<span class="string">'Carl'</span>)).toBe(<span class="string">'Hello Carl'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Ok, so the only thing we are doing here is to verify that Our method Greeter will return Hello Carl if the input is Carl.<br>Now, Try to run</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<img data-src='012.png' width='80%'>
+
+<p>Cool it works! As you can see we passed one test.</p>
+<h3 id="Use-the-magic-scripts-in-NPM"><a href="#Use-the-magic-scripts-in-NPM" class="headerlink" title="Use the magic scripts in NPM"></a>Use the magic scripts in NPM</h3><p>For an awesome package, we should of course automate as much as possible. We’re about to dig into some scripts in npm: <strong>prepare, prepublishOnly, preversion, version and postversion</strong></p>
+<div class="note danger">]
+
+<ol>
+<li><strong>prepare</strong> will run both <strong>BEFORE</strong> the package is packed and published, and on local npm install. Perfect for running building the code. Add this script to package.json <code>&quot;prepare&quot; : &quot;npm run build&quot;</code></li>
+<li><strong>prepublishOnly</strong> will run <strong>BEFORE</strong> prepare and <strong>ONLY</strong> on npm publish. Here we will run our test and lint to make sure we don’t publish bad code: <code>&quot;prepublishOnly&quot; : &quot;npm test &amp;&amp; npm run lint&quot;</code></li>
+<li><strong>preversion</strong> will run before bumping a new package version. To be extra sure that we’re not bumping a version with bad code, why not run lint here as well? 😃 <code>&quot;preversion&quot; : &quot;npm run lint&quot;</code></li>
+<li><strong>Version</strong> will run after a new version has been bumped. If your package has a git repository, like in our case, a commit and a new version-tag will be made every time you bump a new version. This command will run BEFORE the commit is made. One idea is to run the formatter here and so no ugly code will pass into the new version: <code>&quot;version&quot; : &quot;npm run format &amp;&amp; git add -A src&quot;</code></li>
+<li><strong>postversion</strong> will run after the commit has been made. A perfect place for pushing the commit as well as the tag. <code>&quot;postversion&quot; : &quot;git push &amp;&amp; git push --tags&quot;</code></li>
+</ol>
+</div>
+
+<p>This is how my scripts section in <code>package.json</code> looks like:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">   <span class="string">"test"</span>: <span class="string">"jest --config jestconfig.json"</span>,</span><br><span class="line">   <span class="string">"build"</span>: <span class="string">"tsc"</span>,</span><br><span class="line">   <span class="string">"format"</span>: <span class="string">"prettier --write \"src/**/*.ts\" \"src/**/*.js\""</span>,</span><br><span class="line">   <span class="string">"lint"</span>: <span class="string">"tslint -p tsconfig.json"</span>,</span><br><span class="line">   <span class="string">"prepare"</span>: <span class="string">"npm run build"</span>,</span><br><span class="line">   <span class="string">"prepublishOnly"</span>: <span class="string">"npm test &amp;&amp; npm run lint"</span>,</span><br><span class="line">   <span class="string">"preversion"</span>: <span class="string">"npm run lint"</span>,</span><br><span class="line">   <span class="string">"version"</span>: <span class="string">"npm run format &amp;&amp; git add -A src"</span>,</span><br><span class="line">   <span class="string">"postversion"</span>: <span class="string">"git push &amp;&amp; git push --tags"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Finishing-up-package-json"><a href="#Finishing-up-package-json" class="headerlink" title="Finishing up package.json"></a>Finishing up package.json</h3><p>It’s finally time to finish up our awesome package! First, we need to make some changes to our package.json again:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"w-toolkit"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.1"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"Node 工具包"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"lib/index.js"</span>,</span><br><span class="line">  <span class="string">"types"</span>: <span class="string">"lib/index.d.ts"</span>,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"jest --config jestconfig.json"</span>,</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"tsc"</span>,</span><br><span class="line">    <span class="string">"format"</span>: <span class="string">"prettier --write \"src/**/*.ts\" \"src/**/*.js\""</span>,</span><br><span class="line">    <span class="string">"lint"</span>: <span class="string">"tslint -p tsconfig.json"</span>,</span><br><span class="line">    <span class="string">"prepare"</span>: <span class="string">"npm run build"</span>,</span><br><span class="line">    <span class="string">"prepublishOnly"</span>: <span class="string">"npm run test &amp;&amp; npm run lint"</span>,</span><br><span class="line">    <span class="string">"preversion"</span>: <span class="string">"npm run lint"</span>,</span><br><span class="line">    <span class="string">"version"</span>: <span class="string">"npm run format &amp;&amp; git add -A src"</span>,</span><br><span class="line">    <span class="string">"postversion"</span>: <span class="string">"git push &amp;&amp; git push --tags"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"repository"</span>: &#123;</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"git"</span>,</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"git+https://github.com/simuty/toolkit.git"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"keywords"</span>: [</span><br><span class="line">    <span class="string">"工具包"</span>,</span><br><span class="line">    <span class="string">"toolkit"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"simuty"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">  <span class="string">"bugs"</span>: &#123;</span><br><span class="line">    <span class="string">"url"</span>: <span class="string">"https://github.com/simuty/toolkit/issues"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"homepage"</span>: <span class="string">"https://github.com/simuty/toolkit#readme"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"@types/jest"</span>: <span class="string">"^24.9.1"</span>,</span><br><span class="line">    <span class="string">"jest"</span>: <span class="string">"^24.9.0"</span>,</span><br><span class="line">    <span class="string">"prettier"</span>: <span class="string">"^1.18.2"</span>,</span><br><span class="line">    <span class="string">"ts-jest"</span>: <span class="string">"^24.3.0"</span>,</span><br><span class="line">    <span class="string">"tslint"</span>: <span class="string">"^5.18.0"</span>,</span><br><span class="line">    <span class="string">"tslint-config-prettier"</span>: <span class="string">"^1.18.0"</span>,</span><br><span class="line">    <span class="string">"typescript"</span>: <span class="string">"^3.5.2"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"files"</span>: [</span><br><span class="line">    <span class="string">"lib/**/*"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Se here we are adding a nice description, an author and some relevant keywords. The key main is important here since it will tell npm where it can import the modules from.<br>The key <code>types</code> will tell Typescript and Code-editors where we can find the type definitions!</p>
+<h3 id="Commit-and-push-your-code-to-git"><a href="#Commit-and-push-your-code-to-git" class="headerlink" title="Commit and push your code to git"></a>Commit and push your code to git</h3><p>Time to push all your work to your remote repository! If you haven’t committed your latest code already, now it is the time to do it. 😉</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add -A &amp;&amp; git commit -m <span class="string">"Setup Package"</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<h3 id="Publish-you-package-to-NPM"><a href="#Publish-you-package-to-NPM" class="headerlink" title="Publish you package to NPM!"></a>Publish you package to NPM!</h3><p>In order to publish your package, you need to create an NPM account.<br>If you don’t have an account you can do so on <a href="https://www.npmjs.com/signup" target="_blank" rel="noopener">https://www.npmjs.com/signup</a>or run the command: <code>npm adduser</code></p>
+<p>If you already have an account, run npm login to login to you NPM account.</p>
+<p>Logging in to my existing NPM account<br>Alright! Now run publish.</p>
+<p>As you can see the package will first be built by the prepare script, then test and lint will run by the prepublishOnly script before the package is published.</p>
+<img data-src='013.png' width='80%'>
+
+
+<p>###View your package</p>
+<p>Now browse your package on npmjs. The url is <a href="https://npmjs.com/package/" target="_blank" rel="noopener">https://npmjs.com/package/</a><your-package-name> in my case it is<br><a href="https://npmjs.com/package/my-awesome-greeter" target="_blank" rel="noopener">https://npmjs.com/package/my-awesome-greeter</a></p>
+<img data-src='014.png' width='80%'>
+
+
+<p>Nice! We got a package 😎 📦 looking good so far!</p>
+<h3 id="Bumping-a-new-version"><a href="#Bumping-a-new-version" class="headerlink" title="Bumping a new version"></a>Bumping a new version</h3><p>Let’s bump a new patch version of the package:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm version patch</span><br></pre></td></tr></table></figure>
+
+<p>Our <code>preversion</code>, <code>version</code>, and <code>postversion</code> will run, create a new tag in git and push it to our remote repository. Now publish again:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">npm publish</span><br></pre></td></tr></table></figure>
+
+<p>And now you have a new version</p>
+<img data-src='015.png' width='80%'>
+<img data-src='016.png' width='80%'>
+
+
+<h3 id="What’s-next"><a href="#What’s-next" class="headerlink" title="What’s next?"></a>What’s next?</h3><p>For the scope of this tutorial, I would like to stop here for now on something I would call a “minimum setup for an NPM Package”. However, when your package grows I would recommend:</p>
+<ol>
+<li>Setup automated build with <a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis</a></li>
+<li>Analyze code-coverage with <a href="https://codecov.io/" target="_blank" rel="noopener">Codecov</a></li>
+<li>Add badges to your readme with <a href="http://shields.io/" target="_blank" rel="noopener">Shields</a>. Everyone loves badges 😎</li>
+</ol>
+<p>But let’s leave that for another tutorial.</p>
+<h2 id="Good-luck-building-your-awesome-package-😃"><a href="#Good-luck-building-your-awesome-package-😃" class="headerlink" title="Good luck building your awesome package! 😃"></a>Good luck building your awesome package! 😃</h2>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2020/12/18/npm/" title="Building and publishing an NPM Typescript package">https://simuty.com/2020/12/18/npm/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/npm/" rel="tag"># npm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/15/mq_5/" rel="prev" title="Node&RabbitMQ系列五 进阶">
+      <i class="fa fa-chevron-left"></i> Node&RabbitMQ系列五 进阶
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">328k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:58</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : 'c9f4084e6631b4a8b348d9f02fd42ff3',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

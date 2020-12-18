@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="夫大人者，与天地合其德，与日月合其明，与四时合其序，与鬼神合其吉凶。（《周易·䷀乾·文言》）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node&amp;RabbitMQ系列六 重试">
+<meta property="og:url" content="https://simuty.com/2020/12/15/mq_5/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="夫大人者，与天地合其德，与日月合其明，与四时合其序，与鬼神合其吉凶。（《周易·䷀乾·文言》）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/058.jpg">
+<meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/004.png">
+<meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/005.png">
+<meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/008.png">
+<meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/006.png">
+<meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/007.png">
+<meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/011.png">
+<meta property="article:published_time" content="2020-12-15T14:22:22.000Z">
+<meta property="article:modified_time" content="2020-12-17T09:20:30.658Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="rabbitmq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/058.jpg">
+
+<link rel="canonical" href="https://simuty.com/2020/12/15/mq_5/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Node&RabbitMQ系列六 重试 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息属性详解"><span class="nav-number">1.</span> <span class="nav-text">消息属性详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息持久化-VS-队列持久化"><span class="nav-number">1.1.</span> <span class="nav-text">消息持久化 VS 队列持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产端"><span class="nav-number">2.</span> <span class="nav-text">生产端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#投递速度-VS-可靠性"><span class="nav-number">2.1.</span> <span class="nav-text">投递速度 VS 可靠性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#确保投递成功–code"><span class="nav-number">2.1.1.</span> <span class="nav-text">确保投递成功–code</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mandatory"><span class="nav-number">2.2.</span> <span class="nav-text">mandatory</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2020/12/15/mq_5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Node&RabbitMQ系列六 重试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-15 22:22:22" itemprop="dateCreated datePublished" datetime="2020-12-15T22:22:22+08:00">2020-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-17 17:20:30" itemprop="dateModified" datetime="2020-12-17T17:20:30+08:00">2020-12-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MQ/" itemprop="url" rel="index"><span itemprop="name">MQ</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.3k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/058.jpg" width=80% />
+
+<span class='geyan'>
+夫大人者，与天地合其德，与日月合其明，与四时合其序，与鬼神合其吉凶。（《周易·䷀乾·文言》）
+</span>
+<a id="more"></a>
+
+
+<p>网上又很多确保消息100%投递相关的文章，但总的来说还是分为几种情况的</p>
+<ol>
+<li>发送端如何确保发送到了交换机</li>
+<li>消费端针对不同情况处理消息–后续再说</li>
+</ol>
+<p>本文围绕<strong>发布者</strong>相关内容，目标</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 发布者消息确认【100%】</li>
+<li><input checked="" disabled="" type="checkbox"> mandatory</li>
+</ul>
+<div class="note danger">
+
+<div class="note success">
+
+<p>用粗烂的英语问了个问题，<a href="https://github.com/squaremo/amqp.node/issues/597" target="_blank" rel="noopener">How to retry the message N times？ #597</a> 热心的网友列了三种方式，顿时活过来了！！</p>
+</div>
+
+<p>There are a few ways to do this…</p>
+<ol>
+<li>Use a quorum queue (requires RabbitMQ 3.8.0 or higher) and specify a <a href="https://www.rabbitmq.com/quorum-queues.html#poison-message-handling" target="_blank" rel="noopener">redelivery limit</a></li>
+<li>Count message redeliveries in an external store (you need a unique way to identify the message if you do this)</li>
+<li>Instead of nacking the message, re-publish it with a new header which counts the number of redeliveries, then acknowledge the original. This can lead to duplicate messages if you application crashes between the publish and the acknowledgment however</li>
+</ol>
+</div>
+
+
+
+<h2 id="消息属性详解"><a href="#消息属性详解" class="headerlink" title="消息属性详解"></a>消息属性详解</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&#123; fields:</span><br><span class="line">   &#123; consumerTag: <span class="string">'amq.ctag-_zo-n-crGPvrunQmICBoqA'</span>,</span><br><span class="line">     deliveryTag: <span class="number">1</span>,</span><br><span class="line">     redelivered: <span class="keyword">false</span>,</span><br><span class="line">     exchange: <span class="string">'delayed-exchange'</span>,</span><br><span class="line">     routingKey: <span class="string">'delayed-routingKey'</span> &#125;,</span><br><span class="line">  properties:</span><br><span class="line">   &#123; contentType: undefined,</span><br><span class="line">     contentEncoding: undefined,</span><br><span class="line">     headers: &#123; <span class="string">'x-delay'</span>: <span class="number">1000</span>, <span class="string">'x-death'</span>: [Array] &#125;,</span><br><span class="line">     deliveryMode: undefined,</span><br><span class="line">     priority: undefined,</span><br><span class="line">     correlationId: undefined,</span><br><span class="line">     replyTo: undefined,</span><br><span class="line">     expiration: undefined,</span><br><span class="line">     messageId: undefined,</span><br><span class="line">     timestamp: undefined,</span><br><span class="line">     type: undefined,</span><br><span class="line">     userId: undefined,</span><br><span class="line">     appId: undefined,</span><br><span class="line">     clusterId: undefined &#125;,</span><br><span class="line">  content:</span><br><span class="line">   &lt;Buffer <span class="number">7</span>b <span class="number">22</span> <span class="number">6</span>d <span class="number">73</span> <span class="number">67</span> <span class="number">22</span> <span class="number">3</span>a <span class="number">32</span> <span class="number">2</span>c <span class="number">22</span> <span class="number">74</span> <span class="number">74</span> <span class="number">6</span>c <span class="number">22</span> <span class="number">3</span>a <span class="number">31</span> <span class="number">30</span> <span class="number">30</span> <span class="number">30</span> <span class="number">7</span>d&gt; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img data-src='004.png' width='80%' />
+<img data-src='005.png' width='80%' />
+
+
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>content-type</td>
+<td>消息体类型HIMI类型</td>
+<td>如：application/ json</td>
+</tr>
+<tr>
+<td>content-encodeing</td>
+<td>压缩消息</td>
+<td>如：utf8</td>
+</tr>
+<tr>
+<td>message-id</td>
+<td><code>应用级别</code>，跟踪消息的流动情况</td>
+<td>如销售订单或支持类请; 允许255个字节的utf8</td>
+</tr>
+<tr>
+<td>correlation-id</td>
+<td><code>应用级别</code>，跟踪消息的流动情况</td>
+<td>如：传送关联消息的事务ID或其他类似数据；允许255个字节的utf8</td>
+</tr>
+<tr>
+<td><strong>timestamp</strong></td>
+<td><code>应用级别</code></td>
+<td>如：诊断消息发生意外、性能、是否处理-丢弃、监控报警等</td>
+</tr>
+<tr>
+<td><strong>expiration</strong></td>
+<td>消息自动过期, <code>整数或整数时间戳</code>的 <strong>字符串</strong></td>
+<td>注意<br/>过期的消息会被直接丢弃 <br/></td>
+</tr>
+<tr>
+<td><strong>delivery-mode</strong></td>
+<td>是否持久化</td>
+<td>1 表示非持久化消息， 2 表示持久化消息</td>
+</tr>
+<tr>
+<td>app-id</td>
+<td>收集统计数据，如校验版本、平台</td>
+<td>如<strong>追踪恶意消息</strong></td>
+</tr>
+<tr>
+<td>user-id</td>
+<td>识别用户，根据业务判断是否使用</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>消息类型名称</td>
+<td>如：不采用json,采用protobuf,就可以不必自行设置type，在次设置传输即可</td>
+</tr>
+<tr>
+<td>reply-to</td>
+<td>使用 reply-to 可以构建一个用来回复消息的私有响应队列</td>
+<td><strong>“在请 求消息中使用私有响应队列时 ， 它可以保存私有响应队 列的名称” 。 这个定义中 有太 多的不明确性，所以应该谨慎使用这个属性。</strong></td>
+</tr>
+<tr>
+<td>headers</td>
+<td>自定义头</td>
+<td>根据需要设置key-value即可</td>
+</tr>
+<tr>
+<td><strong>priority</strong></td>
+<td>优先级</td>
+<td>0-9之间的整数</td>
+</tr>
+</tbody></table>
+<img data-src='008.png' width='80%' />
+
+
+<h3 id="消息持久化-VS-队列持久化"><a href="#消息持久化-VS-队列持久化" class="headerlink" title="消息持久化 VS 队列持久化"></a>消息持久化 VS 队列持久化</h3><ol>
+<li>消息的 delivery-mode 才 会向 RabbitMQ 指定消息是否应该被持久化</li>
+<li>队列的持久性属性告诉 RabbitMQ 队列的定 义在 重新启 动 RabbitMQ 服务器或群集之后是否仍然有效</li>
+<li>队列可能包含<strong>持久化</strong>和<strong>未持久化</strong>的消息；</li>
+</ol>
+<p>delivery-mode 指定为 1 将会尽可能降低消息投递的延迟性。<strong>侧重：速度，即便丢失不影响业务</strong><br>delivery-mode 指定为 2 专注于保证消息的可靠投递而不是消息吞吐量。<strong>侧重：可靠，非速度</strong></p>
+<img data-src='006.png' width='80%' />
+<img data-src='007.png' width='80%' />
+
+<h2 id="生产端"><a href="#生产端" class="headerlink" title="生产端"></a>生产端</h2><h3 id="投递速度-VS-可靠性"><a href="#投递速度-VS-可靠性" class="headerlink" title="投递速度 VS 可靠性"></a>投递速度 VS 可靠性</h3><img data-src='011.png' width='80%' />
+
+<div class="note danger">
+
+
+<div class="note success">
+
+<p>说实在的，真的没有考虑这么多种情况。。。</p>
+<div class="note info">
+
+<p>主要元凶</p>
+<ol>
+<li>网络</li>
+<li>硬件</li>
+<li>系统</li>
+</ol>
+</div>
+
+</div>
+
+<ol>
+<li>消费发布时保证消息进入队列的<strong>重要性</strong>有多高？</li>
+<li>如果消息<code>无法路由</code>，是否应将消息<code>返回</code>给发布者？</li>
+<li>如果消息<code>无法路由</code>，是否应该将其发送到其他地方稍后进行<code>重新路由</code>？</li>
+<li>如果 RabbitMQ 服务器<strong>崩溃</strong>，可以接受信息<code>丢失</code>吗？</li>
+<li>RabbitMQ 在处理新消息时是否应该<strong>确认</strong>它已经为发布者执行了所有请求的路由和<code>持久化</code>任务？</li>
+<li>消息发布者是否可以批量投递消息，然后从 RabbitMQ <code>收到</code>一个<code>确认</code>用于表明所有请求的路由和持久化任务己经批量应用到所有的消息中？ </li>
+<li>如果你要批量发布消息，而这些消息需要确认路由和持久化，那么对每一条消息是否需要对目标队列实现真正意义上的<code>原子提交</code>？ </li>
+<li>在可靠投递方面是否有可接受的<code>平衡性</code>，你的发布者可以使用它来实现更高的性能和消息吞吐量吗 ？ </li>
+<li>消息发布还有哪些方面会<code>影响消息吞吐量和性能</code>？</li>
+</ol>
+</div>
+
+
+<h4 id="确保投递成功–code"><a href="#确保投递成功–code" class="headerlink" title="确保投递成功–code"></a>确保投递成功–code</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">testConfirmChannel</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">`amqp://localhost`</span>;</span><br><span class="line">    <span class="keyword">const</span> connect = <span class="keyword">await</span> amqp.connect(url)</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/** </span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * 1. 发布4条消息</span></span><br><span class="line"><span class="comment">     * 2. 如果成功则打印成功的消息</span></span><br><span class="line"><span class="comment">     * 3. 如果因为某种原因失败，则重试发布3次，最终记录失败消息</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * 失败原因</span></span><br><span class="line"><span class="comment">     * 1. 网络，connect.close、channel.close</span></span><br><span class="line"><span class="comment">     * 2. 其他故障</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">while</span> (index &lt; <span class="number">4</span>) &#123;</span><br><span class="line">        index++;</span><br><span class="line">        <span class="keyword">await</span> retryTest(index, <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送消息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>index 发送的消息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param </span>retryTime 单个消息的 重试次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">retryTest</span>(<span class="params">index: number, retryTime: number</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`发送消息<span class="subst">$&#123;index&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">await</span> publish(<span class="string">`发送消息<span class="subst">$&#123;index&#125;</span>`</span>, connect);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="keyword">if</span> (retryTime &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">await</span> sleep(<span class="number">3</span>);</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;index&#125;</span>重试, 次数为<span class="subst">$&#123;retryTime&#125;</span>`</span>)</span><br><span class="line">                <span class="keyword">await</span> retryTest(index, retryTime - <span class="number">1</span>)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// ! 如果单条消息重试后仍旧失败，则记录📝特殊处理</span></span><br><span class="line">                <span class="built_in">console</span>.error(<span class="string">`🚩🚩🚩 <span class="subst">$&#123;index&#125;</span> 需要特殊处理`</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 内容：发布【确认】</span></span><br><span class="line"><span class="comment"> * 1. 问题：如何确保消息发送到了交换机？</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 2. createConfirmChannel</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>msg 发布的消息</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>connect rabbitmq connect</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">publish</span>(<span class="params">msg: string, connect: amqp.Connection</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> exchange = <span class="string">'5.confirm.exchange'</span>;</span><br><span class="line">    <span class="keyword">const</span> exchangeType = <span class="string">'direct'</span>;</span><br><span class="line">    <span class="keyword">const</span> routingKey = <span class="string">'5.confirm.routingKey'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接受确认的channel</span></span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connect.createConfirmChannel();</span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, exchangeType, &#123; <span class="attr">durable</span>: <span class="literal">false</span> &#125;)</span><br><span class="line">    <span class="keyword">const</span> content = <span class="built_in">JSON</span>.stringify(&#123; msg &#125;);</span><br><span class="line">    <span class="keyword">const</span> random = <span class="built_in">Math</span>.random() &lt; <span class="number">0.4</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'随机出现❌'</span>, random);</span><br><span class="line">    <span class="keyword">if</span> (random) &#123;</span><br><span class="line">        <span class="comment">// 为了演示发送不到交换机</span></span><br><span class="line">        channel.close()</span><br><span class="line">        <span class="comment">// connect.close();</span></span><br><span class="line">    &#125;</span><br><span class="line">    channel.publish(exchange, routingKey, Buffer.from(content), &#123;&#125;, (err, ok) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'发布消息-交换机-失败'</span>, err);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'发布消息-交换机-确认'</span>, err, ok, content);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">await</span> channel.waitForConfirms()</span><br><span class="line">    <span class="keyword">await</span> channel.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#结果 全部成功</span></span><br><span class="line">➜  git:(main) ✗ ts-node send.ts</span><br><span class="line">发送消息1</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息1"</span>&#125;</span><br><span class="line">发送消息2</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息2"</span>&#125;</span><br><span class="line">发送消息3</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息3"</span>&#125;</span><br><span class="line">发送消息4</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息4"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">➜  6test git:(main) ✗ ts-node send.ts</span><br><span class="line">发送消息1</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息1"</span>&#125;</span><br><span class="line">发送消息2</span><br><span class="line">随机出现❌ <span class="literal">true</span></span><br><span class="line">发布消息-交换机-失败 Error: channel closed</span><br><span class="line">    at ConfirmChannel.&lt;anonymous&gt; (/Users/mw/Desktop/Github/Integration/Rabbitmq/node_modules/amqplib/lib/channel.js:39:18)</span><br><span class="line">    ...</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:63:19)</span><br><span class="line">2重试, 次数为3</span><br><span class="line">发送消息2</span><br><span class="line">随机出现❌ <span class="literal">true</span></span><br><span class="line">发布消息-交换机-失败 Error: channel closed</span><br><span class="line">    at ConfirmChannel.&lt;anonymous&gt; (/Users/mw/Desktop/Github/Integration/Rabbitmq/node_modules/amqplib/lib/channel.js:39:18)</span><br><span class="line">    ...</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:63:19)</span><br><span class="line">2重试, 次数为2</span><br><span class="line">发送消息2</span><br><span class="line">随机出现❌ <span class="literal">true</span></span><br><span class="line">发布消息-交换机-失败 Error: channel closed</span><br><span class="line">    at ConfirmChannel.&lt;anonymous&gt; (/Users/mw/Desktop/Github/Integration/Rabbitmq/node_modules/amqplib/lib/channel.js:39:18)</span><br><span class="line">    ...</span><br><span class="line">    at process._tickCallback (internal/process/next_tick.js:63:19)</span><br><span class="line">2重试, 次数为1</span><br><span class="line">发送消息2</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息2"</span>&#125;</span><br><span class="line">发送消息3</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息3"</span>&#125;</span><br><span class="line">发送消息4</span><br><span class="line">随机出现❌ <span class="literal">false</span></span><br><span class="line">发布消息-交换机-确认 null undefined &#123;<span class="string">"msg"</span>:<span class="string">"发送消息4"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="mandatory"><a href="#mandatory" class="headerlink" title="mandatory"></a>mandatory</h3><p>mandatory<br>当mandatory标志位设置为true时，如果exchange根据自身类型和消息routeKey无法找到一个符合条件的queue，那么会调用basic.return方法将消息返回给生产者（Basic.Return + Content-Header + Content-Body）；当mandatory设置为false时，出现上述情形broker会直接将消息扔掉。</p>
+<div class="note danger">
+
+<p>The immediate and mandatory fields are part of the AMQP specification, and are also covered in the RabbitMQ FAQ to clarify how its implementers interpreted their meaning:</p>
+<p><strong>Mandatory</strong></p>
+<blockquote>
+<p>This flag tells the server how to react if a message cannot be routed to a queue. Specifically, if mandatory is set and after running the bindings the message was placed on zero queues then the message is returned to the sender (with a basic.return). If mandatory had not been set under the same circumstances the server would silently drop the message.</p>
+</blockquote>
+<p><code>Or in my words, &quot;Put this message on at least one queue. If you can&#39;t, send it back to me.&quot;</code></p>
+</div>
+
+
+<p>immediate<br>当immediate标志位设置为true时，如果exchange在将消息路由到queue(s)时发现对于的queue上么有消费者，那么这条消息不会放入队列中。当与消息routeKey关联的所有queue（一个或者多个）都没有消费者时，该消息会通过basic.return方法返还给生产者。</p>
+<p>概括来说，mandatory标志告诉服务器至少将该消息route到一个队列中，否则将消息返还给生产者；immediate标志告诉服务器如果该消息关联的queue上有消费者，则马上将消息投递给它，如果所有queue都没有消费者，直接把消息返还给生产者，不用将消息入队列等待消费者了。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2020/12/15/mq_5/" title="Node&amp;RabbitMQ系列六 重试">https://simuty.com/2020/12/15/mq_5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/rabbitmq/" rel="tag"># rabbitmq</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/14/nvm_config/" rel="prev" title="nvm not fount">
+      <i class="fa fa-chevron-left"></i> nvm not fount
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/15/mq_5/" rel="next" title="Node&RabbitMQ系列五 进阶">
+      Node&RabbitMQ系列五 进阶 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">328k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:58</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : '418b15886b83688c248254b65af2d7c1',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
