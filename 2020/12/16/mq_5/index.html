@@ -32,7 +32,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://simuty.com/images/photos/2020/058.jpg">
 <meta property="article:published_time" content="2020-12-16T14:22:22.000Z">
-<meta property="article:modified_time" content="2020-12-18T08:07:16.840Z">
+<meta property="article:modified_time" content="2020-12-18T11:16:18.674Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="rabbitmq">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -327,7 +327,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-18 16:07:16" itemprop="dateModified" datetime="2020-12-18T16:07:16+08:00">2020-12-18</time>
+                <time title="修改时间：2020-12-18 19:16:18" itemprop="dateModified" datetime="2020-12-18T19:16:18+08:00">2020-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -352,7 +352,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>46</span>
+              <span>446</span>
             </span>
 
         </div>
@@ -370,6 +370,14 @@
 夫大人者，与天地合其德，与日月合其明，与四时合其序，与鬼神合其吉凶。（《周易·䷀乾·文言》）
 </span>
 <a id="more"></a>
+
+
+<p>There are a few ways to do this…</p>
+<ol>
+<li>Use a quorum queue (requires RabbitMQ 3.8.0 or higher) and specify a <a href="https://www.rabbitmq.com/quorum-queues.html#poison-message-handling" target="_blank" rel="noopener">redelivery limit</a></li>
+<li>Count message redeliveries in an external store (you need a unique way to identify the message if you do this)</li>
+<li>Instead of nacking the message, re-publish it with a new header which counts the number of redeliveries, then acknowledge the original. This can lead to duplicate messages if you application crashes between the publish and the acknowledgment however</li>
+</ol>
 
     </div>
 
@@ -409,8 +417,8 @@
       <i class="fa fa-chevron-left"></i> Node&RabbitMQ系列五 保证投递
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/12/18/npm/" rel="next" title="Building and publishing an NPM Typescript package">
-      Building and publishing an NPM Typescript package <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/16/mq_5/" rel="next" title="Node&RabbitMQ系列六 重试">
+      Node&RabbitMQ系列六 重试 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -470,13 +478,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">322k</span>
+    <span title="站点总字数">325k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:52</span>
+    <span title="站点阅读时长">4:55</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
