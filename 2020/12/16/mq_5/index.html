@@ -32,7 +32,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://simuty.com/images/photos/2020/058.jpg">
 <meta property="article:published_time" content="2020-12-16T14:22:22.000Z">
-<meta property="article:modified_time" content="2020-12-18T11:16:18.674Z">
+<meta property="article:modified_time" content="2020-12-18T11:34:31.530Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="rabbitmq">
 <meta name="twitter:card" content="summary">
@@ -327,7 +327,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-18 19:16:18" itemprop="dateModified" datetime="2020-12-18T19:16:18+08:00">2020-12-18</time>
+                <time title="修改时间：2020-12-18 19:34:31" itemprop="dateModified" datetime="2020-12-18T19:34:31+08:00">2020-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -352,7 +352,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>446</span>
+              <span>431</span>
             </span>
 
         </div>
@@ -371,14 +371,8 @@
 </span>
 <a id="more"></a>
 
-
-<p>There are a few ways to do this…</p>
-<ol>
-<li>Use a quorum queue (requires RabbitMQ 3.8.0 or higher) and specify a <a href="https://www.rabbitmq.com/quorum-queues.html#poison-message-handling" target="_blank" rel="noopener">redelivery limit</a></li>
-<li>Count message redeliveries in an external store (you need a unique way to identify the message if you do this)</li>
-<li>Instead of nacking the message, re-publish it with a new header which counts the number of redeliveries, then acknowledge the original. This can lead to duplicate messages if you application crashes between the publish and the acknowledgment however</li>
-</ol>
-
+<p><a href="https://blog.csdn.net/qq_38890137/article/details/104403234" target="_blank" rel="noopener">https://blog.csdn.net/qq_38890137/article/details/104403234</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  rabbitmq ll</span><br><span class="line">total 4136</span><br><span class="line">drwxr-xr-x  8 mw  admin   256B Dec 18 00:00 log</span><br><span class="line">-rw-r--r--@ 1 mw  admin   1.2M Dec 18 19:29 rabbit@localhost.log</span><br><span class="line">-rw-r--r--  1 mw  admin   858B Dec  7 14:26 rabbit@localhost_upgrade.log</span><br><span class="line">-rw-r--r--  1 mw  admin   229B Dec  2 14:46 std_error.log</span><br><span class="line">-rw-r--r--  1 mw  admin   4.8K Dec  7 14:26 std_out.log</span><br><span class="line">➜  rabbitmq pwd</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;var&#x2F;log&#x2F;rabbitmq</span><br><span class="line">➜  rabbitmq</span><br></pre></td></tr></table></figure>
     </div>
 
     
