@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/012.png">
 <meta property="og:image" content="https://simuty.com/2020/12/15/mq_5/013.png">
 <meta property="article:published_time" content="2020-12-15T14:22:22.000Z">
-<meta property="article:modified_time" content="2020-12-21T09:39:55.924Z">
+<meta property="article:modified_time" content="2020-12-22T11:00:02.244Z">
 <meta property="article:author" content="Howard">
 <meta property="article:tag" content="rabbitmq">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息属性详解"><span class="nav-number">1.</span> <span class="nav-text">消息属性详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息持久化-VS-队列持久化"><span class="nav-number">1.1.</span> <span class="nav-text">消息持久化 VS 队列持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产端"><span class="nav-number">2.</span> <span class="nav-text">生产端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#投递速度-VS-可靠性"><span class="nav-number">2.1.</span> <span class="nav-text">投递速度 VS 可靠性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConfirmChannel-回调"><span class="nav-number">2.2.</span> <span class="nav-text">ConfirmChannel 回调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mandatory"><span class="nav-number">2.3.</span> <span class="nav-text">Mandatory</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CODE-发布失败"><span class="nav-number">2.3.1.</span> <span class="nav-text">CODE-发布失败</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CODE-发布成功"><span class="nav-number">2.3.2.</span> <span class="nav-text">CODE-发布成功</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息属性详解"><span class="nav-number">1.</span> <span class="nav-text">消息属性详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息持久化-VS-队列持久化"><span class="nav-number">1.1.</span> <span class="nav-text">消息持久化 VS 队列持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产端"><span class="nav-number">2.</span> <span class="nav-text">生产端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#投递速度-VS-可靠性"><span class="nav-number">2.1.</span> <span class="nav-text">投递速度 VS 可靠性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConfirmChannel-回调"><span class="nav-number">2.2.</span> <span class="nav-text">ConfirmChannel 回调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mandatory"><span class="nav-number">2.3.</span> <span class="nav-text">Mandatory</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CODE-发布失败"><span class="nav-number">2.3.1.</span> <span class="nav-text">CODE-发布失败</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CODE-发布成功"><span class="nav-number">2.3.2.</span> <span class="nav-text">CODE-发布成功</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备份交换机"><span class="nav-number">2.4.</span> <span class="nav-text">备份交换机</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -336,7 +336,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-21 17:39:55" itemprop="dateModified" datetime="2020-12-21T17:39:55+08:00">2020-12-21</time>
+                <time title="修改时间：2020-12-22 19:00:02" itemprop="dateModified" datetime="2020-12-22T19:00:02+08:00">2020-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -361,7 +361,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.2k</span>
+              <span>9.6k</span>
             </span>
 
         </div>
@@ -390,7 +390,8 @@
 <ul>
 <li><input checked="" disabled="" type="checkbox"> 发布消息的附带信息-properties；</li>
 <li><input checked="" disabled="" type="checkbox"> ConfirmChannel： 监听publish回调函数；</li>
-<li><input checked="" disabled="" type="checkbox"> mandatory：监听channel回调函数；</li>
+<li><input checked="" disabled="" type="checkbox"> Mandatory：监听channel回调函数；</li>
+<li><input checked="" disabled="" type="checkbox"> 备份交换机：路由不到队列则发到备份交换机</li>
 </ul>
 <h2 id="消息属性详解"><a href="#消息属性详解" class="headerlink" title="消息属性详解"></a>消息属性详解</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&#123; fields:</span><br><span class="line">   &#123; consumerTag: <span class="string">'amq.ctag-_zo-n-crGPvrunQmICBoqA'</span>,</span><br><span class="line">     deliveryTag: <span class="number">1</span>,</span><br><span class="line">     redelivered: <span class="keyword">false</span>,</span><br><span class="line">     exchange: <span class="string">'delayed-exchange'</span>,</span><br><span class="line">     routingKey: <span class="string">'delayed-routingKey'</span> &#125;,</span><br><span class="line">  properties:</span><br><span class="line">   &#123; contentType: undefined,</span><br><span class="line">     contentEncoding: undefined,</span><br><span class="line">     headers: &#123; <span class="string">'x-delay'</span>: <span class="number">1000</span>, <span class="string">'x-death'</span>: [Array] &#125;,</span><br><span class="line">     deliveryMode: undefined,</span><br><span class="line">     priority: undefined,</span><br><span class="line">     correlationId: undefined,</span><br><span class="line">     replyTo: undefined,</span><br><span class="line">     expiration: undefined,</span><br><span class="line">     messageId: undefined,</span><br><span class="line">     timestamp: undefined,</span><br><span class="line">     type: undefined,</span><br><span class="line">     userId: undefined,</span><br><span class="line">     appId: undefined,</span><br><span class="line">     clusterId: undefined &#125;,</span><br><span class="line">  content:</span><br><span class="line">   &lt;Buffer <span class="number">7</span>b <span class="number">22</span> <span class="number">6</span>d <span class="number">73</span> <span class="number">67</span> <span class="number">22</span> <span class="number">3</span>a <span class="number">32</span> <span class="number">2</span>c <span class="number">22</span> <span class="number">74</span> <span class="number">74</span> <span class="number">6</span>c <span class="number">22</span> <span class="number">3</span>a <span class="number">31</span> <span class="number">30</span> <span class="number">30</span> <span class="number">30</span> <span class="number">7</span>d&gt; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -558,6 +559,8 @@
 
 <img data-src='013.png' width='80%' />
 
+
+<h3 id="备份交换机"><a href="#备份交换机" class="headerlink" title="备份交换机"></a>备份交换机</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 内容：发布【确认】</span></span><br><span class="line"><span class="comment"> * 备份交换机</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * !注：如果同时设置 alternateExchange &amp;&amp; mandatory 以备份交换机为主</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>msg 发布的消息</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>connect rabbitmq connect</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">publish</span>(<span class="params">msg: string, connect: amqp.Connection</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> exchange = <span class="string">'5.alternate.exchange'</span>;</span><br><span class="line">    <span class="keyword">const</span> exchangeType = <span class="string">'direct'</span>;</span><br><span class="line">    <span class="keyword">const</span> routingKey = <span class="string">'5.alternate.routingKey'</span>;</span><br><span class="line">    <span class="keyword">const</span> queueName = <span class="string">'5.alternate.queue'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 备份交换机</span></span><br><span class="line">    <span class="keyword">const</span> exchangeBak = <span class="string">'5.alternate.bak.exchange'</span>;</span><br><span class="line">    <span class="keyword">const</span> exchangeBakType = <span class="string">'fanout'</span>;</span><br><span class="line">    <span class="keyword">const</span> exchangeBakQueue = <span class="string">'5.alternate.bak.queue'</span>;</span><br><span class="line">    <span class="keyword">const</span> exchangeBakRouter = <span class="string">'5.bak'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接受确认的channel</span></span><br><span class="line">    <span class="keyword">const</span> channel = <span class="keyword">await</span> connect.createConfirmChannel();</span><br><span class="line">    <span class="comment">// 设置备份交换机</span></span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchange, exchangeType, &#123; <span class="attr">alternateExchange</span>: exchangeBak &#125;)</span><br><span class="line">    <span class="keyword">const</span> content = <span class="built_in">JSON</span>.stringify(&#123; msg &#125;);</span><br><span class="line">    channel.publish(exchange, routingKey, Buffer.from(content), &#123; <span class="attr">mandatory</span>: <span class="literal">true</span> &#125;, (err, ok) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'发布消息-交换机-失败'</span>, err);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'发布消息-交换机-确认'</span>, err, ok, content);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 备份交换机</span></span><br><span class="line">    <span class="keyword">await</span> channel.assertExchange(exchangeBak, exchangeBakType);</span><br><span class="line">    <span class="keyword">const</span> queueBak = <span class="keyword">await</span> channel.assertQueue(exchangeBakQueue)</span><br><span class="line">    <span class="keyword">await</span> channel.bindQueue(queueBak.queue, exchangeBak, exchangeBakRouter);</span><br><span class="line"></span><br><span class="line">    channel.on(<span class="string">'return'</span>, (args)=&gt;&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"return: "</span>, args);</span><br><span class="line">    &#125;)</span><br><span class="line">    channel.on(<span class="string">'error'</span>, (args)=&gt;&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"error: "</span>, args);</span><br><span class="line">    &#125;)</span><br><span class="line">    channel.on(<span class="string">'close'</span>, (args)=&gt;&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"close: "</span>, args);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">await</span> channel.waitForConfirms()</span><br><span class="line">    <span class="keyword">await</span> channel.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -657,13 +660,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">325k</span>
+    <span title="站点总字数">331k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:55</span>
+    <span title="站点阅读时长">5:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
