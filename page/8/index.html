@@ -233,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -246,7 +246,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -287,6 +287,192 @@
 
         <div class="content index posts-expand">
           
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/19/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/19/index/" class="post-title-link" itemprop="url">Python基础系列之装饰器【12】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-19 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-19T10:38:59+08:00">2019-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.1k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img data-src="cheap.png" alt=""></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>温故函数很多概念</li>
+<li>掌握 Python 装饰器</li>
+</ul>
+<blockquote>
+<p>如果能准确的表述下侧代码的结果</p>
+<p>就不用往下看啦，想必你已经掌握了 Python 装饰器</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"1"</span>)</span><br><span class="line">        print(<span class="string">"foo---%s"</span> % func)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"2"</span></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"3"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"4"</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"===foo===="</span>)</span><br><span class="line">print(foo)</span><br><span class="line">print(<span class="string">"===foo()===="</span>)</span><br><span class="line">print(foo())</span><br><span class="line">print(<span class="string">"===outer(foo)===="</span>)</span><br><span class="line">print(outer(foo))</span><br><span class="line">print(<span class="string">"===outer(foo())===="</span>)</span><br><span class="line">print(outer(foo()))</span><br><span class="line">print(<span class="string">"===outer(foo())()===="</span>)</span><br><span class="line">print(outer(foo())())</span><br></pre></td></tr></table></figure>
+
+<p>先认真回忆下之前函数的相关章节内容<br><strong>不难但可能有点绕</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">===foo====</span><br><span class="line">&lt;<span class="function"><span class="keyword">function</span> <span class="title">foo</span> <span class="title">at</span> 0<span class="title">x7fcae64dbea0</span>&gt;</span></span><br><span class="line"><span class="function">===<span class="title">foo</span>(<span class="params"></span>)====</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">4</span></span><br><span class="line"><span class="function">===<span class="title">outer</span>(<span class="params">foo</span>)====</span></span><br><span class="line"><span class="function">&lt;<span class="title">function</span> <span class="title">outer</span>.&lt;<span class="title">locals</span>&gt;.<span class="title">inner</span> <span class="title">at</span> 0<span class="title">x7fcae64dbe18</span>&gt;</span></span><br><span class="line"><span class="function">===<span class="title">outer</span>(<span class="params">foo(</span>))====</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">&lt;<span class="title">function</span> <span class="title">outer</span>.&lt;<span class="title">locals</span>&gt;.<span class="title">inner</span> <span class="title">at</span> 0<span class="title">x7fcae645d598</span>&gt;</span></span><br><span class="line"><span class="function">===<span class="title">outer</span>(<span class="params">foo(</span>))(<span class="params"></span>)====</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">1</span></span><br><span class="line"><span class="function"><span class="title">foo</span>---4</span></span><br><span class="line"><span class="function">2</span></span><br></pre></td></tr></table></figure>
+
+<p>没答出来，或对装饰器有疑惑，那就即可开始吧</p>
+<h3 id="第一部分-前奏"><a href="#第一部分-前奏" class="headerlink" title="第一部分 前奏"></a>第一部分 前奏</h3><p>针对于开头的那块代码逐步分析下，究竟再内存中是<code>如何运行的❓</code> <code>执行顺序是什么❓</code></p>
+<p><strong>强烈推荐网址：<a href="http://pythontutor.com/live.html#mode=edit" target="_blank" rel="noopener">代码可视化执行过程</a></strong></p>
+<p>这几行代码主要为了加深理解代码的<code>执行过程</code>、<code>函数名</code>、<code>函数调用</code>等等</p>
+<p><code>结合代码与下侧图示</code>，重温那些我们习以为常的东西。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"1"</span>)</span><br><span class="line">        print(<span class="string">"foo---%s"</span> % func)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"2"</span></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"3"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"4"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将函数 outer、foo 加载到内存中</span></span><br><span class="line"><span class="comment"># 以上代码到此行，未执行</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"===foo===="</span>)</span><br><span class="line"><span class="comment"># foo【函数名】；</span></span><br><span class="line"><span class="comment"># 执行：对应的【函数信息】；返回：🈚️</span></span><br><span class="line">print(foo)</span><br><span class="line">print(<span class="string">"===foo()===="</span>)</span><br><span class="line"><span class="comment"># 真正执行 foo函数</span></span><br><span class="line"><span class="comment"># 执行：打印 3； 返回 4</span></span><br><span class="line">print(foo())</span><br><span class="line">print(<span class="string">"===outer(foo)===="</span>)</span><br><span class="line"><span class="comment"># 将【foo函数名】传给【outer函数】，参数为 【函数名】</span></span><br><span class="line"><span class="comment"># 执行：将inner加载到内存，返回：🈚️</span></span><br><span class="line">print(outer(foo))</span><br><span class="line">print(<span class="string">"===outer(foo())===="</span>)</span><br><span class="line"><span class="comment"># 调用【foo函数】，将4作为参数传给传给【outer函数】</span></span><br><span class="line"><span class="comment"># 执行：打印3 返回4， 打印outer函数的返回值 inner内存信息</span></span><br><span class="line">print(outer(foo()))</span><br><span class="line">print(<span class="string">"===outer(foo())()===="</span>)</span><br><span class="line"><span class="comment"># 调用【foo函数】，将4作为参数传给传给【outer函数】，调用inner函数</span></span><br><span class="line"><span class="comment"># 执行：打印3 返回4，进而打印 1 、 4【func()]、2以及inner的返回值2</span></span><br><span class="line"><span class="comment"># over！！！</span></span><br><span class="line">print(outer(foo())())</span><br></pre></td></tr></table></figure>
+
+<p>我觉得，先把这些看似简单的东西理清楚，对接下来，装饰器的理解更容易些</p>
+<h3 id="第二部分-装饰器【基础】"><a href="#第二部分-装饰器【基础】" class="headerlink" title="第二部分 装饰器【基础】"></a>第二部分 装饰器【基础】</h3><h4 id="1-装饰器是什么"><a href="#1-装饰器是什么" class="headerlink" title="1 装饰器是什么"></a>1 装饰器是什么</h4><p>装饰器（Decorator）：可以在不修改原有代码的情况下，为被装饰的对象增加新的功能或者附加限制条件或者帮助输出。<strong>原则：开放封闭</strong></p>
+<p><strong>分类</strong></p>
+<ol>
+<li>函数装饰器；</li>
+<li>类的装饰器。</li>
+</ol>
+<p>最近公司也在用装饰器，不过是再 Nodejs 中用的；<br>举个别的例子。因为某种原因，需要对每个接口进行<strong>认证</strong>、<strong>记录日志</strong>，如何快速高效的实现这样的需求 ❓</p>
+<p><code>可能有几种思路</code></p>
+<ul>
+<li>在基类中写相应的方法，如果有的话；</li>
+<li>写两个函数【认证的、日志的】，在每个接口中添加；</li>
+<li>等等思路</li>
+</ul>
+<h4 id="2-简单的装饰器"><a href="#2-简单的装饰器" class="headerlink" title="2 简单的装饰器"></a>2 简单的装饰器</h4><p>但今天只能选<strong>装饰器</strong>，因为不能偏离主题啦，描述了需求就开始干吧！</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">"装饰器启动,自动执行"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"统一认证"</span>)</span><br><span class="line">        result = func()</span><br><span class="line">        print(<span class="string">"记录日志信息"</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@outer</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"接口1"</span>)</span><br><span class="line">f1()</span><br></pre></td></tr></table></figure>
+
+<p>返回值：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">装饰器启动,自动执行</span><br><span class="line">统一认证</span><br><span class="line">接口<span class="number">1</span></span><br><span class="line">记录日志信息</span><br></pre></td></tr></table></figure>
+
+<p>大致和第一部分的例子有点类似，不同的是</p>
+<ol>
+<li>inner 函数返回了个函数</li>
+<li>多个<code>@outer</code></li>
+</ol>
+<p>@outer 中的<code>@</code>是注解语法糖；<strong>把 f1 作为参数传给 outer</strong>,今儿满足我们的<code>开放封闭的原则</code>;</p>
+<p>其解释器会解释成下面这样的语句：<br><strong>*@outer &lt;=&gt; outer(f1)</strong></p>
+<p>翻译成函数调用, 我们用新的例子来对比一下，其实就是下侧这样的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"接口2"</span>)</span><br><span class="line">outer(f2)()</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">装饰器启动,自动执行</span></span><br><span class="line"><span class="string">统一认证</span></span><br><span class="line"><span class="string">接口1</span></span><br><span class="line"><span class="string">记录日志信息</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<p>了解了上述的调用含义， <strong>@outer &lt;=&gt; outer(f1)</strong></p>
+<blockquote>
+<p>注： 传的只是函数名</p>
+</blockquote>
+<p><img data-src="doc1.jpg" alt="自动执行"></p>
+<p>整体的流程</p>
+<ol>
+<li>自上而下执行，将函数<code>outer</code>在内存注册；</li>
+<li>执行到@outer 时，将<code>函数名f1</code>作为参数传给<code>@outer</code>;</li>
+<li>调用 outer 函数，执行打印【装饰器启动,自动执行】；</li>
+<li>函数 inner 在内存注册，内存地址：<strong>[xxxx]</strong>，返回【inner 函数名】，</li>
+<li>将函数<code>f1</code>在内存注册；其实是直接指向 <strong>[xxxx]</strong></li>
+<li>调用 f1(), 直接调用第五步的 <strong>[xxxx]</strong>， 也就是第四步的；</li>
+<li>打印【统一认证】；</li>
+<li>result = func()<strong>执行回调</strong>【f1】函数, 打印：接口 1，没有返回值，result = None</li>
+<li>回到<code>inner()</code>,打印<code>记录日志信息</code>;</li>
+<li>返回 None，OVER!</li>
+</ol>
+<p><code>注</code>：完整的有 17 步，动图还不会制作，可以前往–&gt;<a href="http://pythontutor.com/live.html#mode=edit" target="_blank" rel="noopener">代码可视化网址</a>**，查看完整的步骤。</p>
+<blockquote>
+<p>实在是想不出来，如何用图来表示装饰器，有相应的图示，请介绍。</p>
+</blockquote>
+<p>比较喜欢这段代码, 挺有意思的。O(∩_∩)O 哈哈~<br><a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">来源</a></p>
+<p>会自动打印结果，因为采用了装饰器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fuck</span><span class="params">(fn)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"fuck %s!"</span> % fn.__name__[::<span class="number">-1</span>].upper()</span><br><span class="line"></span><br><span class="line"><span class="meta">@fuck</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wfg</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三部分-装饰器【进阶】"><a href="#第三部分-装饰器【进阶】" class="headerlink" title="第三部分 装饰器【进阶】"></a>第三部分 装饰器【进阶】</h3><p>如果没有看明白第二部分，还是这回去，沉下心，专注的、认真的读下去，真的不难，好好分析下流程，一步一个脚印，踩实了！</p>
+<blockquote>
+<p>只介绍最基础的代码，就是耍流氓</p>
+</blockquote>
+<h4 id="1-多个装饰器"><a href="#1-多个装饰器" class="headerlink" title="1 多个装饰器"></a>1 多个装饰器</h4><p><a href="https://blog.csdn.net/u013411246/article/details/80571462" target="_blank" rel="noopener">下侧代码来源</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#当有多个装饰器装饰一个函数时，他们的执行顺序</span></span><br><span class="line"><span class="comment">#观察下方的代码就会发现</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_a</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'Get in decorator_a'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_a</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'Get in inner_a'</span>)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> inner_a</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_b</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'Get in decorator_b'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_b</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'Get in inner_b'</span>)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> inner_b</span><br><span class="line">  </span><br><span class="line"><span class="meta">@decorator_b</span></span><br><span class="line"><span class="meta">@decorator_a</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></span><br><span class="line">    print(<span class="string">'Get in f'</span>)</span><br><span class="line">    <span class="keyword">return</span> x * <span class="number">2</span></span><br><span class="line"></span><br><span class="line">f(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Get in decorator_a</span></span><br><span class="line"><span class="string">Get in decorator_b</span></span><br><span class="line"><span class="string">Get in inner_b</span></span><br><span class="line"><span class="string">Get in inner_a</span></span><br><span class="line"><span class="string">Get in f</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<p>调用时，函数的顺序</p>
+<ol>
+<li>顺序等同于==&gt; <strong>decorator_b(decorator_a(f))</strong>,返回的是inner_b,所以执行的时候是先执行inner_b</li>
+<li>然后在执行【decorator_a(f)】返回的inner_a  .最终在调用f(1)的时候，函数inner_b输出’Get in inner_b’</li>
+<li>执行inner_a输出Get in decorator_a，最后执行func(),即f</li>
+</ol>
+<h4 id="2-多参多装饰器"><a href="#2-多参多装饰器" class="headerlink" title="2 多参多装饰器"></a>2 多参多装饰器</h4><p>为了更加深入的了解，装饰器，摘录<a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">酷 壳 博客</a>上的一段代码，好像<a href="https://wiki.python.org/moin/PythonDecoratorLibrary" target="_blank" rel="noopener">官网实例代码</a>也不少;</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeHtmlTag</span><span class="params">(tag, *args, **kwds)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">real_decorator</span><span class="params">(fn)</span>:</span></span><br><span class="line">        css_class = <span class="string">" class='&#123;0&#125;'"</span>.format(kwds[<span class="string">"css_class"</span>]) \</span><br><span class="line">                                     <span class="keyword">if</span> <span class="string">"css_class"</span> <span class="keyword">in</span> kwds <span class="keyword">else</span> <span class="string">""</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span><span class="params">(*args, **kwds)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">"&lt;"</span>+tag+css_class+<span class="string">"&gt;"</span> + fn(*args, **kwds) + <span class="string">"&lt;/"</span>+tag+<span class="string">"&gt;"</span></span><br><span class="line">        <span class="keyword">return</span> wrapped</span><br><span class="line">    <span class="keyword">return</span> real_decorator</span><br><span class="line"> </span><br><span class="line"><span class="meta">@makeHtmlTag(tag="b", css_class="bold_css")</span></span><br><span class="line"><span class="meta">@makeHtmlTag(tag="i", css_class="italic_css")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello world"</span></span><br><span class="line"> </span><br><span class="line">print(hello())</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&lt;b class='bold_css'&gt;&lt;i class='italic_css'&gt;hello world&lt;/i&gt;&lt;/b&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="3-再深入一些"><a href="#3-再深入一些" class="headerlink" title="3 再深入一些"></a>3 再深入一些</h4><p>表示还没有研究这段代码，先分享出来<br>摘录<a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">酷 壳 博客</a>上的代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">memo</span><span class="params">(fn)</span>:</span></span><br><span class="line">    cache = &#123;&#125;</span><br><span class="line">    miss = object()</span><br><span class="line"> </span><br><span class="line"><span class="meta">    @wraps(fn)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        result = cache.get(args, miss)</span><br><span class="line">        <span class="keyword">if</span> result <span class="keyword">is</span> miss:</span><br><span class="line">            result = fn(*args)</span><br><span class="line">            cache[args] = result</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"> </span><br><span class="line"><span class="meta">@memo</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>Python函数告一段落了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1944,190 +2130,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/06/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/06/index/" class="post-title-link" itemprop="url">Python基础系列之--序列类型【4】</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-06 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-06T10:38:59+08:00">2019-05-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
-<li>对<strong>序列对象</strong>有整体的认识；</li>
-<li>掌握list的常用操作</li>
-<li>掌握tuple的常用操作</li>
-<li>理解深浅拷贝问题</li>
-</ol>
-<h3 id="第一部分-序列对象"><a href="#第一部分-序列对象" class="headerlink" title="第一部分 序列对象"></a>第一部分 序列对象</h3><h4 id="1-了解序列对象"><a href="#1-了解序列对象" class="headerlink" title="1. 了解序列对象"></a>1. 了解序列对象</h4><p>Python一切皆对象。</p>
-<ol>
-<li>序列对象包含<strong>str、list、tuple</strong>；</li>
-<li>序列成员属性：<strong>有序，可通过下标访问</strong></li>
-</ol>
-<blockquote>
-<p>先大致预览下列表(list)、元组(tuple)的异同点,后续详细梳理</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>差异点</th>
-<th>列表</th>
-<th>元组</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>表示方法</td>
-<td>空列表：[] <br>单元素列表：[1]<br>多元素列表[1, ‘a’]</td>
-<td>空元组：()<br>单元素元组：(1,)<br>多元素元组：(1, ‘a’)</td>
-</tr>
-<tr>
-<td>可变性</td>
-<td>可变</td>
-<td>不可变</td>
-</tr>
-<tr>
-<td>可操作性</td>
-<td>支持丰富的操作</td>
-<td>仅支持序列操作</td>
-</tr>
-<tr>
-<td>可哈希性</td>
-<td>不可哈希，不能作为字典的关键字</td>
-<td>可哈希，可以作为字典的关键字</td>
-</tr>
-</tbody></table>
-<p><img data-src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="整体图"></p>
-<h3 id="第二部分-List"><a href="#第二部分-List" class="headerlink" title="第二部分 List"></a>第二部分 List</h3><blockquote>
-<p>Python的列表是一个<strong>有序可重复</strong>的元素集合，可嵌套、迭代、修改、分片、追加、删除，成员判断。<br>从数据结构角度看，Python的列表是一个可变长度的顺序存储结构，每一个位置存放的都是<strong>对象的指针</strong>。</p>
-</blockquote>
-<p>比如，对于这个列表 alist = [1, “a”, [11,22], {“k1”:”v1”}]，其在内存内的存储方式是这样的：</p>
-<p><img data-src="mem.png" alt="内存地址"></p>
-<h4 id="1-什么是list"><a href="#1-什么是list" class="headerlink" title="1. 什么是list?"></a>1. 什么是list?</h4><p>概念： 逗号分隔的不同的数据项使用方括号括起来即是list;<br>性质： list元素可变,改变的是原对象</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; tmpList &#x3D; []  # 创建一个空列表</span><br><span class="line">&gt;&gt;&gt; numList &#x3D; [1, 2, 3, 4]</span><br><span class="line">&gt;&gt;&gt; allList &#x3D; [1, &#39;a&#39;, [11,22], &#123;&#39;k1&#39;:&#39;v1&#39;&#125;]</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-增删改"><a href="#2-增删改" class="headerlink" title="2. 增删改"></a>2. 增删改</h3><p><strong>以xmind的方式呈现</strong></p>
-<p><img data-src="List.png" alt=""></p>
-<h3 id="第三部分-Tuple"><a href="#第三部分-Tuple" class="headerlink" title="第三部分 Tuple"></a>第三部分 Tuple</h3><blockquote>
-<p>类似于list的对象，</p>
-<blockquote>
-<p>类似于list, 相对不可更改</p>
-</blockquote>
-</blockquote>
-<p><strong>重要的实例</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alist &#x3D; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br><span class="line"># stop_index 逻辑上要大于 start_index</span><br><span class="line"># 正整数stop_index&gt;start_index</span><br><span class="line"># 负数：stop_index&lt;start_index &amp; step&lt;0</span><br><span class="line"></span><br><span class="line">print(alist[1:8:3])</span><br><span class="line"># 全部，正向取值</span><br><span class="line">print(alist[:])</span><br><span class="line"># 全部，反向取值</span><br><span class="line">print(alist[-1:-11:-1])</span><br><span class="line"># stop_index &gt; len(list), 不报错</span><br><span class="line">print(alist[-1:-12:-1])</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>类似于list, 相对不可更改</strong></p>
-</blockquote>
-<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017092876846880" target="_blank" rel="noopener">参考：廖雪峰老师博客–使用list和tuple</a>的最后来看一个“可变的”tuple：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; t &#x3D; (&#39;a&#39;, &#39;b&#39;, [&#39;A&#39;, &#39;B&#39;])</span><br><span class="line">&gt;&gt;&gt; t[2][0] &#x3D; &#39;X&#39;</span><br><span class="line">&gt;&gt;&gt; t[2][1] &#x3D; &#39;Y&#39;</span><br><span class="line">&gt;&gt;&gt; t</span><br><span class="line">(&#39;a&#39;, &#39;b&#39;, [&#39;X&#39;, &#39;Y&#39;])</span><br></pre></td></tr></table></figure>
-
-<p>这个tuple定义的时候有3个元素，分别是’a’，’b’和一个list。不是说tuple一旦定义后就不可变了吗？怎么后来又变了？</p>
-<p>别急，我们先看看定义的时候tuple包含的3个元素：</p>
-<p><img data-src="0.png" alt="初始化"></p>
-<p>当我们把list的元素’A’和’B’修改为’X’和’Y’后，tuple变为：</p>
-<p><img data-src="1.png" alt="改变"></p>
-<p>表面上看，tuple的元素确实变了，但其实变的不是tuple的元素，<strong>而是list的元素</strong>。tuple一开始指向的list并没有改成别的list，所以，tuple所谓的“不变”是说，tuple的每个元素，指向永远不变。即指向’a’，就不能改成指向’b’，指向一个list，就不能改成指向其他对象，但指向的这个list本身是可变的！</p>
-<blockquote>
-<p>绝对不变的元组：必须保证tuple的每一个元素本身也不能变。</p>
-</blockquote>
-<p><img data-src="tuple.png" alt=""></p>
-<h3 id="第三部分-深浅拷贝"><a href="#第三部分-深浅拷贝" class="headerlink" title="第三部分 深浅拷贝"></a>第三部分 深浅拷贝</h3><p>对列表和元组进行拷贝时，默认进行的是 <strong>浅拷贝</strong>：<em>只拷贝成员对象的引用</em>，而不会拷贝引用指向的成员对象本身。借助于 <a href="http://docs.python.org/2/library/copy.html" target="_blank" rel="noopener">copy模块</a> 的deepcopy方法，可以实现深拷贝</p>
-<blockquote>
-<p>深拷贝：既拷贝成员对象的引用，又会拷贝引用指向的成员对象本身。<br>浅拷贝：只拷贝成员对象的引用，而不会拷贝引用指向的成员对象本身</p>
-</blockquote>
-<p>值得注意的是，上述说法并<strong>不完全正确</strong>：<strong>如果成员对象本身是原子类型的（数值、字符串，或者只包含数值或字符串的元组），那么对该成员不会发生真正的深拷贝，即便执行深拷贝动作，内部也只会进行浅拷贝。</strong></p>
-<blockquote>
-<p>浅拷贝和深拷贝的示意图如下：</p>
-</blockquote>
-<p><img data-src="copy.png" alt=""></p>
-<p>关于浅拷贝和深拷贝的实际案例，可以参考 <a href="http://book.douban.com/subject/3112503/" target="_blank" rel="noopener">《Python核心编程（第二版）》</a> 中的 『6.20』 一节：『*拷贝Python对象、浅拷贝和深拷贝』。</p>
-<p>参考链接</p>
-<p><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017092876846880" target="_blank" rel="noopener">使用list和tuple</a></p>
-<p><a href="http://www.liujiangblog.com/course/python/19" target="_blank" rel="noopener">列表</a></p>
-<p><a href="https://www.cnblogs.com/russellluo/p/3297041.html" target="_blank" rel="noopener">Python基础：序列（列表、元组）</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2179,13 +2185,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">337k</span>
+    <span title="站点总字数">338k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:06</span>
+    <span title="站点阅读时长">5:07</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
