@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="凡是过去，皆为序曲。 All the past, all is overture.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql系列一 你可能不知道的 CRUD">
+<meta property="og:url" content="https://simuty.com/2021/01/01/mysql_1-crud/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="凡是过去，皆为序曲。 All the past, all is overture.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2021/002.jpg">
+<meta property="og:image" content="https://simuty.com/2021/01/01/mysql_1-crud/005.png">
+<meta property="article:published_time" content="2021-01-01T14:14:14.000Z">
+<meta property="article:modified_time" content="2021-01-08T06:25:30.943Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2021/002.jpg">
+
+<link rel="canonical" href="https://simuty.com/2021/01/01/mysql_1-crud/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Mysql系列一 你可能不知道的 CRUD | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DB引擎"><span class="nav-number">1.</span> <span class="nav-text">DB引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#你可能不知道的CRUD"><span class="nav-number">2.</span> <span class="nav-text">你可能不知道的CRUD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#INSERT"><span class="nav-number">2.1.</span> <span class="nav-text">INSERT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#情况一-Duplicate-key"><span class="nav-number">2.1.1.</span> <span class="nav-text">情况一 Duplicate key</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤一-直接插入"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">步骤一 直接插入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤二-关键字–IGNORE"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">步骤二 关键字–IGNORE</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#情况二-upsert操作"><span class="nav-number">2.1.2.</span> <span class="nav-text">情况二 upsert操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤一：-错误示范"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">步骤一： 错误示范</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤二-正确操作"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">步骤二 正确操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤三-测试其他表"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">步骤三 测试其他表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子查询"><span class="nav-number">2.2.</span> <span class="nav-text">子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代替子查询"><span class="nav-number">2.2.1.</span> <span class="nav-text">代替子查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表连接"><span class="nav-number">2.3.</span> <span class="nav-text">表连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内连接"><span class="nav-number">2.3.1.</span> <span class="nav-text">内连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#外连接"><span class="nav-number">2.3.2.</span> <span class="nav-text">外连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UPDATE"><span class="nav-number">2.4.</span> <span class="nav-text">UPDATE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表连接修改"><span class="nav-number">2.4.1.</span> <span class="nav-text">表连接修改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表连接删除"><span class="nav-number">2.5.</span> <span class="nav-text">表连接删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务机制"><span class="nav-number">3.</span> <span class="nav-text">事务机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undo-amp-redo"><span class="nav-number">3.1.</span> <span class="nav-text">undo &amp; redo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库日志分类"><span class="nav-number">3.1.1.</span> <span class="nav-text">数据库日志分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务机制-1"><span class="nav-number">3.2.</span> <span class="nav-text">事务机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ACID"><span class="nav-number">3.2.1.</span> <span class="nav-text">ACID</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2021/01/01/mysql_1-crud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mysql系列一 你可能不知道的 CRUD
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-01 22:14:14" itemprop="dateCreated datePublished" datetime="2021-01-01T22:14:14+08:00">2021-01-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-08 14:25:30" itemprop="dateModified" datetime="2021-01-08T14:25:30+08:00">2021-01-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2021/002.jpg" width=80% />
+
+<span class='geyan'>
+凡是过去，皆为序曲。
+All the past, all is overture.
+</span>
+<a id="more"></a>
+
+<p>本系列旨在系统学习提升Mysql技能，更完整内容可以参考<a href="https://coding.imooc.com/class/353.html" target="_blank" rel="noopener">阿里新零售数据库设计与实战</a></p>
+<h2 id="DB引擎"><a href="#DB引擎" class="headerlink" title="DB引擎"></a>DB引擎</h2><h2 id="你可能不知道的CRUD"><a href="#你可能不知道的CRUD" class="headerlink" title="你可能不知道的CRUD"></a>你可能不知道的CRUD</h2><h3 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h3><h4 id="情况一-Duplicate-key"><a href="#情况一-Duplicate-key" class="headerlink" title="情况一 Duplicate key"></a>情况一 Duplicate key</h4><p>当批量更新，如果有重复的primary key,如果有一条失败，则全部失败。</p>
+<div class="note danger">
+更新时忽略错误行，继续执行该如何处理？
+
+<p>如： <code>t_dept</code> 表中已经存在 <code>deptno = 40</code> 的数据；</p>
+</div>
+
+<h5 id="步骤一-直接插入"><a href="#步骤一-直接插入" class="headerlink" title="步骤一 直接插入"></a>步骤一 直接插入</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_dept (deptno, dname, loc) <span class="keyword">VALUES</span> </span><br><span class="line">(<span class="number">40</span>, <span class="string">'企划部'</span>, <span class="string">'北京'</span>),</span><br><span class="line">(<span class="number">50</span>, <span class="string">'培训部'</span>, <span class="string">'上海'</span>),</span><br></pre></td></tr></table></figure>
+
+
+<p>错误信息</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Error occurred during SQL query execution</span><br><span class="line">Reason:</span><br><span class="line">SQL Error [1062] [23000]: Duplicate entry '40' for key 't_dept.PRIMARY'</span><br></pre></td></tr></table></figure>
+
+<h5 id="步骤二-关键字–IGNORE"><a href="#步骤二-关键字–IGNORE" class="headerlink" title="步骤二 关键字–IGNORE"></a>步骤二 关键字–<strong>IGNORE</strong></h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">IGNORE</span>  <span class="keyword">INTO</span> t_dept (deptno, dname, loc) <span class="keyword">VALUES</span> </span><br><span class="line">(<span class="number">40</span>, <span class="string">'企划部'</span>, <span class="string">'北京'</span>),</span><br><span class="line">(<span class="number">50</span>, <span class="string">'培训部'</span>, <span class="string">'上海'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="情况二-upsert操作"><a href="#情况二-upsert操作" class="headerlink" title="情况二 upsert操作"></a>情况二 upsert操作</h4><blockquote>
+<p>目标：存在则更新，不存在则创建。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`t_emp_ip`</span>  (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`empno`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`ip`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>) <span class="keyword">USING</span> BTREE,</span><br><span class="line">  <span class="keyword">UNIQUE</span> <span class="keyword">INDEX</span> <span class="string">`empno`</span>(<span class="string">`empno`</span>) <span class="keyword">USING</span> BTREE,</span><br><span class="line">  <span class="keyword">UNIQUE</span> <span class="keyword">INDEX</span> <span class="string">`ip`</span>(<span class="string">`ip`</span>) <span class="keyword">USING</span> BTREE</span><br><span class="line">) <span class="keyword">ENGINE</span> = <span class="keyword">InnoDB</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> = utf8 <span class="keyword">COLLATE</span> = utf8_general_ci ROW_FORMAT = Dynamic;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 原有数据</span></span><br><span class="line"><span class="comment">-- empno字段为： 唯一性约束</span></span><br><span class="line">id|empno|ip         |</span><br><span class="line"><span class="comment">--|-----|-----------|</span></span><br><span class="line"> 1|  100|192.168.0.1|</span><br><span class="line"> 2|  101|192.168.0.2|</span><br></pre></td></tr></table></figure>
+
+<div class="note success">
+
+<p>目标</p>
+<ol>
+<li>插入102、103两条数据</li>
+<li>更新101对应的IP</div>
+
+</li>
+</ol>
+<h5 id="步骤一：-错误示范"><a href="#步骤一：-错误示范" class="headerlink" title="步骤一： 错误示范"></a>步骤一： 错误示范</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_emp_ip(<span class="keyword">id</span>, empno, ip) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">4</span>, <span class="number">102</span>, <span class="string">'192.168.0.100'</span>),</span><br><span class="line">(<span class="number">5</span>, <span class="number">103</span>, <span class="string">'192.168.0.150'</span>),</span><br><span class="line">(<span class="number">6</span>, <span class="number">101</span>, <span class="string">'192.168.0.200'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Error occurred during SQL query execution</span><br><span class="line">Reason:</span><br><span class="line">SQL Error [1062] [23000]: Duplicate entry '101' for key 't_emp_ip.empno'</span><br></pre></td></tr></table></figure>
+<h5 id="步骤二-正确操作"><a href="#步骤二-正确操作" class="headerlink" title="步骤二 正确操作"></a>步骤二 正确操作</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_emp_ip(<span class="keyword">id</span>, empno, ip) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">4</span>, <span class="number">102</span>, <span class="string">'192.168.0.100'</span>),</span><br><span class="line">(<span class="number">5</span>, <span class="number">103</span>, <span class="string">'192.168.0.150'</span>),</span><br><span class="line">(<span class="number">6</span>, <span class="number">101</span>, <span class="string">'192.168.0.200'</span>)</span><br><span class="line"><span class="comment">-- 子句更新｜｜插入</span></span><br><span class="line"><span class="keyword">ON</span> <span class="keyword">duplicate</span> <span class="keyword">UPDATE</span> ip=<span class="keyword">VALUES</span>(ip);</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">id|empno|ip           |</span><br><span class="line"><span class="comment">--|-----|-------------|</span></span><br><span class="line"> 1|  100|192.168.0.1  |</span><br><span class="line"> 2|  101|192.168.0.200| <span class="comment">-- update</span></span><br><span class="line"> 4|  102|192.168.0.100| <span class="comment">-- insert</span></span><br><span class="line"> 5|  103|192.168.0.150| <span class="comment">-- insert</span></span><br></pre></td></tr></table></figure>
+<h5 id="步骤三-测试其他表"><a href="#步骤三-测试其他表" class="headerlink" title="步骤三 测试其他表"></a>步骤三 测试其他表</h5><p>如果需要更新多个字段，则字句中需要罗列完整的字段。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">8000</span>, <span class="string">'MILLER'</span>, <span class="string">'CLERK'</span>, <span class="number">7782</span>, <span class="string">'1982-01-23'</span>, <span class="number">1300.00</span>, <span class="number">0.9</span> ,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t_emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">8000</span>, <span class="string">'MILLER'</span>, <span class="string">'CLERK'</span>, <span class="number">7782</span>, <span class="string">'1982-01-23'</span>, <span class="number">300.00</span>, <span class="number">100</span> ,<span class="number">0</span>)</span><br><span class="line"><span class="keyword">ON</span> <span class="keyword">duplicate</span> <span class="keyword">KEY</span> <span class="keyword">UPDATE</span> comm=<span class="keyword">VALUES</span>(comm);</span><br></pre></td></tr></table></figure>
+
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><div class="note danger">
+
+<p>相关子查询就是要循环执行多次的子查询。</p>
+<div class="note success">
+
+<ol>
+<li>子查询：<code>独立于外部查询的子查询</code>，子查询总共执行一次，执行完毕后将值传递给外部查询；</li>
+<li>相关子查询：相关子查询的执行依赖于外部查询的数据，外部查询执行一行，子查询就执行一次；</li>
+</ol>
+</div>
+
+
+<p><strong>注：</strong></p>
+<ol>
+<li>mysql默认关闭了缓存，所以每个<code>子查询</code>都是<code>相关子查询</code>。</li>
+<li>一般ORM开启了缓存。</li>
+</ol>
+</div>
+
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> empno, ename</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">  t_emp</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">  sal &gt; (</span><br><span class="line">    <span class="comment">-- WHERE语句每过滤一条数据，子查询就会执行一次</span></span><br><span class="line">    <span class="keyword">SELECT</span> sal <span class="keyword">FROM</span> t_emp <span class="keyword">WHERE</span> empno = <span class="number">7499</span></span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">AND</span> empno != <span class="number">7499</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="代替子查询"><a href="#代替子查询" class="headerlink" title="代替子查询"></a>代替子查询</h4><div class="note success">
+使用FROM子查询，代替WHERE子查询
+
+<ol>
+<li>FROM子查询<code>只会执行一次</code>，优先执行数据来源，所以不是相关子查询</li>
+</ol>
+</div>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 相关子查询代替方案</span></span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">SELECT</span> empno, ename</span><br><span class="line"><span class="keyword">FROM</span> t_emp e </span><br><span class="line">    <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> sal <span class="keyword">FROM</span> t_emp <span class="keyword">WHERE</span> empno = <span class="number">7499</span>) t</span><br><span class="line"><span class="keyword">ON</span> e.sal &gt; t.sal <span class="keyword">AND</span> e.empno != <span class="number">7499</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表连接"><a href="#表连接" class="headerlink" title="表连接"></a>表连接</h3><h4 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h4><p>内连接里，<code>查询条件写在ON子句或where子句，效果相同</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> e.ename, e.dname </span><br><span class="line"><span class="keyword">FROM</span> t_emp e</span><br><span class="line"><span class="keyword">JOIN</span> t_dept d <span class="keyword">ON</span> e.deptno = d.deptno <span class="keyword">AND</span> d.deptno = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> e.ename, d.name </span><br><span class="line"><span class="keyword">FROM</span> t_emp e</span><br><span class="line"><span class="keyword">JOIN</span> t_dept d <span class="keyword">ON</span> e.deptno = d.deptno</span><br><span class="line"><span class="keyword">WHERE</span> d.deptno = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h4><p>内连接里，查询条件写在<strong>ON子句</strong>或<strong>where子句</strong>，<code>效果相差很大</code>.</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 保留左表所有数据和右表关联</span></span><br><span class="line"><span class="keyword">SELECT</span> e.ename, e.ename </span><br><span class="line"><span class="keyword">FROM</span> t_emp e</span><br><span class="line"><span class="comment">-- ON 条件如果符合则返回，否则返回null</span></span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> t_dept d <span class="keyword">ON</span> e.deptno = d.deptno</span><br><span class="line"><span class="comment">-- 不强求连接条件，会返回部门ID不等10的部门</span></span><br><span class="line"><span class="keyword">AND</span> d.deptno = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>返回结果</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ename |ename |deptno|</span><br><span class="line"><span class="comment">------|------|------|</span></span><br><span class="line">SMITH |SMITH |    20|</span><br><span class="line">ALLEN |ALLEN |    30|</span><br><span class="line">WARD  |WARD  |    30|</span><br><span class="line">JONES |JONES |    20|</span><br><span class="line">MARTIN|MARTIN|    30|</span><br><span class="line">BLAKE |BLAKE |    30|</span><br><span class="line">CLARK |CLARK |    10|</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 左表数据必须满足 where 条件才会返回。</span></span><br><span class="line"><span class="keyword">SELECT</span> e.ename, d.name </span><br><span class="line"><span class="keyword">FROM</span> t_emp e</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> t_dept d <span class="keyword">ON</span> e.deptno = d.deptno</span><br><span class="line"><span class="keyword">WHERE</span> d.deptno = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>返回结果</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ename |ename |deptno|</span><br><span class="line"><span class="comment">------|------|------|</span></span><br><span class="line">CLARK |CLARK |    10|</span><br><span class="line">KING  |KING  |    10|</span><br><span class="line">MILLER|MILLER|    10|</span><br><span class="line">MILLER|MILLER|    10|</span><br></pre></td></tr></table></figure>
+
+<p><strong>小结</strong></p>
+<ol>
+<li>where子句：需要满足条件才可以返回；</li>
+<li>on子句：完全以左表为主，</li>
+</ol>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><h4 id="表连接修改"><a href="#表连接修改" class="headerlink" title="表连接修改"></a>表连接修改</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> t_emp <span class="keyword">SET</span> sal = <span class="number">10000</span></span><br><span class="line"><span class="keyword">WHERE</span> deptno = (<span class="keyword">SELECT</span> deptno <span class="keyword">FROM</span> t_dept <span class="keyword">WHERE</span> dname = <span class="string">'SALES'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> t_emp e </span><br><span class="line"><span class="comment">-- 内连接，条件写在on || where 效果一样。</span></span><br><span class="line"><span class="keyword">JOIN</span> t_dept d <span class="keyword">ON</span> e.deptno = d.deptno <span class="keyword">AND</span> d.dname = <span class="string">'SALES'</span></span><br><span class="line"><span class="comment">-- 更改多个表的字段</span></span><br><span class="line"><span class="keyword">SET</span> e.sal = <span class="number">10000</span>, d.dname = <span class="string">'销售部'</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表连接删除"><a href="#表连接删除" class="headerlink" title="表连接删除"></a>表连接删除</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 删除t_emp、t_dept表符合条件的数据</span></span><br><span class="line"><span class="comment">-- 写谁删谁，不写不删除</span></span><br><span class="line"><span class="keyword">DELETE</span> e, d <span class="keyword">FROM</span> t_emp e <span class="keyword">JOIN</span> t_dept d <span class="keyword">ON</span> e.deptno = d.deptno <span class="keyword">AND</span> d.dname = <span class="string">'销售部'</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="事务机制"><a href="#事务机制" class="headerlink" title="事务机制"></a>事务机制</h2><blockquote>
+<p>为啥数据库需要有事务机制？</p>
+<blockquote>
+<p>类比，操作重要代码，可能先要新建一个分之，避免混乱。</p>
+</blockquote>
+</blockquote>
+<div class="note danger">
+
+<p>同理：如果数据的写入直接操作数据文件是<strong>非常危险的事情</strong></p>
+<p>如：给员工工资普普涨，但中途失败了，怎么确认那些成功，哪些失败。</p>
+<p><strong>就需要引入事务机制。</strong></p>
+</div>
+
+<blockquote>
+<p>日志文件相当于数据副本</p>
+</blockquote>
+<h3 id="undo-amp-redo"><a href="#undo-amp-redo" class="headerlink" title="undo &amp; redo"></a>undo &amp; redo</h3><h4 id="数据库日志分类"><a href="#数据库日志分类" class="headerlink" title="数据库日志分类"></a>数据库日志分类</h4><ol>
+<li>重做日志（redo log）</li>
+<li>回滚日志（undo log）</li>
+<li>二进制日志（binlog）</li>
+<li>错误日志（errorlog）</li>
+<li>慢查询日志（slow query log）</li>
+<li>一般查询日志（general log）</li>
+<li>中继日志（relay log）</li>
+</ol>
+<div class="note danger">
+
+<ol>
+<li><code>SQL</code>操作的<code>记录</code>会被复制<code>undo日志</code>中；</li>
+<li>CRUD的<code>结果</code>会记录在<code>redo日志</code>中；</li>
+<li>如果CRUD没问题，将redo日志中的数据同步到<code>SQL文件</code>中;</li>
+<li>如果同步过程中出现问题，则之后再次同步即可。</li>
+</ol>
+<blockquote>
+<p>undo &amp; redo 对于事务机制的重要性不言而喻。</p>
+</blockquote>
+</div>
+
+<h3 id="事务机制-1"><a href="#事务机制-1" class="headerlink" title="事务机制"></a>事务机制</h3><p>事务是一个或多个SQL语句组成的整体，要么全部执行成功，要么全部执行失败。</p>
+<img data-src="005.png" width=80% />
+
+<h4 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h4><ol>
+<li>原子性：要么成功要么失败；</li>
+<li>一致性：不论并发多少，必须保证结果一致性；事务隔离，不能读写其他事务的临时日志；</li>
+<li>隔离性：事务相互之间隔离；</li>
+<li>持久性：一旦提交，结果便是永久性的，宕机可以恢复事务日志完成数据的持久化。</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://coding.imooc.com/class/353.html" target="_blank" rel="noopener">阿里新零售数据库设计与实战</a><br><a href="http://www.bubuko.com/infodetail-2945382.html" target="_blank" rel="noopener">Mysql-innoDB存储引擎(事物，锁，MVCC)</a><br><a href="https://my.oschina.net/leejun2005/blog/288533" target="_blank" rel="noopener">浅谈 MySQL 子查询及其优化</a><br><a href="https://www.cnblogs.com/ggjucheng/archive/2012/11/11/2765237.html" target="_blank" rel="noopener">Explain语法</a><br><a href="https://www.cnblogs.com/annsshadow/p/5037667.html" target="_blank" rel="noopener">步步深入：MySQL架构总览-&gt;查询执行流程-&gt;SQL解析顺序</a><br><a href="https://cloud.tencent.com/developer/article/1181844" target="_blank" rel="noopener">MySQL到底有多少种日志类型需要我们记住的！</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2021/01/01/mysql_1-crud/" title="Mysql系列一 你可能不知道的 CRUD">https://simuty.com/2021/01/01/mysql_1-crud/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/01/mysql_2-sku/" rel="prev" title="Mysql系列二 新零售">
+      <i class="fa fa-chevron-left"></i> Mysql系列二 新零售
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/04/v8_1/" rel="next" title="V8系列一">
+      V8系列一 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">360k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:27</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : 'fb1bcde8fceea751cbc3ada967dd508b',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

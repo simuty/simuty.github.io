@@ -164,6 +164,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -233,20 +238,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">72</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -291,6 +296,1325 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/16/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/16/index/" class="post-title-link" itemprop="url">Python基础系列之作用域【10】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-16 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-16T10:38:59+08:00">2019-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>尽量掌握 Python 命名空间、作用域</li>
+<li>掌握 Python 匿名函数</li>
+</ol>
+<blockquote>
+<p>本文本属于那种</p>
+<blockquote>
+<p>只可意会不可言传的范畴</p>
+</blockquote>
+</blockquote>
+<p>原因:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 大部分人都直接开撸，因为和想象差不多；</span><br><span class="line">2. 不容易说明白, 除非遇到bug了，断点调试。</span><br></pre></td></tr></table></figure>
+<h3 id="第一部分-命名空间"><a href="#第一部分-命名空间" class="headerlink" title="第一部分 命名空间"></a>第一部分 命名空间</h3><blockquote>
+<p>听起来高大上的词汇，或许是简单的.</p>
+</blockquote>
+<p><strong>在理解这个词汇钱，先看一个示例</strong></p>
+<p>A 公司有个员工 A1，工号 001；<br>B 公司有个员工 B1，工号 001；</p>
+<p>为何工资不会发错？</p>
+<p><strong>这不废话么？</strong></p>
+<p>原因在于：虽有同样的工号，但是相对而言的，在不同的公司（<code>空间</code>）内。</p>
+<h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h4><p><strong>命名空间（英语：Namespace）</strong>，也称名字空间、名称空间等，它表示着一个<code>标识符（identifier）的可见范围</code>。<br>一个标识符可在多个名字空间中定义，它在不同名字空间中的含义是<code>互不相干的</code>。这样，在一个新的名字空间中可定义任何标识符，它们不会与任何已有的标识符发生冲突，因为已有的定义都处于其他名字空间中。</p>
+<p><strong>空间</strong>相当于一个<code>集合</code>，<code>包含</code>相对相对范围内所有的内容(<strong>对象名</strong>)</p>
+<h4 id="2-分类"><a href="#2-分类" class="headerlink" title="2. 分类"></a>2. 分类</h4><ol>
+<li>内置命名空间(Built-in Namespaces)：伴随 Python 的运行而存在，<code>内置函数的命名空间</code>都属于<code>内置命名空间</code>，比如前面的 id()，直接可以用。</li>
+<li>全局命名空间(Module:Global Namespaces)：每个模块拥有自己的命名集合；</li>
+<li>本地命名空间(Function&amp;Class: Local Namespaces)：局部命名空间，每个函数、类所拥有的命名空间，记录了函数、类中定义的所有变量。</li>
+</ol>
+<blockquote>
+<p>一图胜前言</p>
+</blockquote>
+<p><img data-src="1.jpg" alt="命名空间"></p>
+<h4 id="3-生命周期"><a href="#3-生命周期" class="headerlink" title="3. 生命周期"></a>3. 生命周期</h4><ol>
+<li>内置命名空间在 Python<code>解释器启动时创建</code>，解释器<code>退出时销毁</code>；</li>
+<li>全局命名空间在模块被解释器<code>读入时创建</code>，<code>解释器退出时销毁</code>；</li>
+<li>局部命名空间，包含函数、类定义。<ul>
+<li>函数的局部命名空间：在函数调用时创建，函数返回结果或抛出异常时被销毁（每一个递归函数都拥有自己的命名空间）；</li>
+<li>类定义的命名空间：在解释器读到类定义（class 关键字）时创建，类定义结束后销毁。（*）</li>
+</ul>
+</li>
+</ol>
+<h4 id="4-存在的意义"><a href="#4-存在的意义" class="headerlink" title="4. 存在的意义"></a>4. 存在的意义</h4><p>为了解决命名冲突。</p>
+<p>你去寄快递，说邮寄到<strong>南京路 118 号</strong>，他肯定会让你写上是哪个省的，否则不就乱了么。</p>
+<h3 id="第二部分-作用域"><a href="#第二部分-作用域" class="headerlink" title="第二部分 作用域"></a>第二部分 作用域</h3><h4 id="1-作用域是什么？"><a href="#1-作用域是什么？" class="headerlink" title="1. 作用域是什么？"></a>1. 作用域是什么？</h4><blockquote>
+<p>可能有点绕，多读几遍，多思考下</p>
+<p>可能有点绕，多读几遍，多思考下</p>
+</blockquote>
+<p>命名空间是<code>对象名称</code>的<strong>集合</strong>,可被访问区域，比如 id(),可以全局<strong>被调用</strong><br>作用域是针对命名空间而言的，是<strong>作用域定义了命名空间的可用范围</strong></p>
+<p>以下注意事项会在第三部分的代码中证实：</p>
+<ol>
+<li>只有函数、类、模块会产生新的作用域，代码块（例如if、for代码块）不会产生新的作用域。</li>
+<li>python中变量的作用域是由它在源代码中的位置决定的（*）</li>
+</ol>
+<p>先看下分类，然后进一步阐述<strong>命名空间与作用域的关系</strong></p>
+<h4 id="2-分类-1"><a href="#2-分类-1" class="headerlink" title="2. 分类"></a>2. 分类</h4><ol>
+<li>Local（局部作用域）：首先搜索，包含局部名字的最内层（innermost）作用域，如函数/方法/类的内部局部作用域；</li>
+<li>Enclosing（ 闭包函数外的函数中）：根据嵌套层次从内到外搜索，包含非局部（nonlocal）非全局（nonglobal）名字的任意封闭函数的作用域。如两个嵌套的函数，内层函数的作用域是局部作用域，外层函数作用域就是内层函数的 Enclosing 作用域；</li>
+<li>Global（全局作用域<br>）：倒数第二次被搜索，包含当前模块全局名字的作用域；</li>
+<li>Built-in（内建作用域）：最后被搜索，包含内建名字的最外层作用域。</li>
+</ol>
+<p><strong>查找规则</strong></p>
+<p><img data-src="2.jpg" alt="如图所示"></p>
+<blockquote>
+<p>内层可以访问外层，但外层不能访问内层</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">global_var = <span class="number">2</span>  <span class="comment"># 全局作用域</span></span><br><span class="line">x = id(global_var)  <span class="comment"># 内建作用域，调用id()函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">()</span>:</span></span><br><span class="line">    out_var = <span class="number">1</span>  <span class="comment"># 闭包函数外的函数中</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        inner_var = <span class="number">2</span>  <span class="comment"># 局部作用域</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-关系"><a href="#3-关系" class="headerlink" title="3. 关系"></a>3. 关系</h4><p><del>尽量用自己的理解去阐述明白，如有不对，敬请指正。</del></p>
+<p><del>第一阶段：在人类诞生初期，是没有族群、部落、国家之分的，此时相当于全人类都是属于一个<strong>人类的集合</strong>，此时的<strong>人类</strong>相当于<strong>一个人类</strong>，没有高低贵贱黑白美丑之分。</del></p>
+<p><del>第二阶段：族群的出现，代表着某些人有用自己的势力范围，把人类一个整体分为N个族群</del></p>
+<h3 id="第三部分-函数作用域"><a href="#第三部分-函数作用域" class="headerlink" title="第三部分 函数作用域"></a>第三部分 函数作用域</h3><p>上一篇是关于<strong>函数的</strong>，那就以函数作用域为实例，类、模块都是类似的。</p>
+<h4 id="1-整体的例子"><a href="#1-整体的例子" class="headerlink" title="1. 整体的例子"></a>1. 整体的例子</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = <span class="number">1</span></span><br><span class="line">print(<span class="string">"第一步：x的内存地址： "</span>, id(x))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">2</span></span><br><span class="line">    <span class="comment"># 同层 x=2</span></span><br><span class="line">    print(<span class="string">"第二步：x的内存地址： "</span>, id(x))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        x = <span class="number">3</span></span><br><span class="line">        <span class="comment"># 打印同层 x=3</span></span><br><span class="line">        print(<span class="string">"第三步：x的内存地址： "</span>, id(x))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_up</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="comment"># 打印上层 x=2</span></span><br><span class="line">        print(<span class="string">"第三步(up)：x的内存地址： "</span>, id(x))</span><br><span class="line">    inner()</span><br><span class="line">    inner_up()</span><br><span class="line">    <span class="comment"># 打印的是同层x=2，即outer()下侧的同一作用域的x</span></span><br><span class="line">    print(<span class="string">"第四步：x的内存地址： "</span>, id(x))</span><br><span class="line">outer()</span><br><span class="line">print(<span class="string">"第五步：x的内存地址： "</span>, id(x))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ python3 fun.py </span><br><span class="line">第一步：a的内存地址：  <span class="number">4336156688</span></span><br><span class="line">第二步：x的内存地址：  <span class="number">4336156720</span></span><br><span class="line">第三步：x的内存地址：  <span class="number">4336156752</span></span><br><span class="line">第三步(up)：x的内存地址：  <span class="number">4336156720</span></span><br><span class="line">第四步：x的内存地址：  <span class="number">4336156720</span></span><br><span class="line">第五步：x的内存地址：  <span class="number">4336156688</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-nonlocal和global区别"><a href="#2-nonlocal和global区别" class="headerlink" title="2. nonlocal和global区别"></a>2. nonlocal和global区别</h4><ol>
+<li>global关键字：用来在函数或其它局部作用域中<strong>使用全局变量</strong>。</li>
+<li>nonlocal关键字：用来在函数或其它作用域中使用外层（非全局）变量</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = <span class="number">1</span></span><br><span class="line">print(<span class="string">"第一步：x的内存地址： "</span>, id(x))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">2</span></span><br><span class="line">    print(<span class="string">"第二步：x的内存地址： "</span>, id(x))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="comment"># 注意这行</span></span><br><span class="line">        <span class="keyword">global</span> x</span><br><span class="line">        x = <span class="number">3</span></span><br><span class="line">        print(<span class="string">"第三步：x的内存地址： "</span>, id(x))</span><br><span class="line">    inner()</span><br><span class="line">    print(<span class="string">"第四步：x的内存地址： "</span>, id(x))</span><br><span class="line">outer()</span><br><span class="line">print(<span class="string">"第五步：x的内存地址： "</span>, id(x))</span><br></pre></td></tr></table></figure>
+
+<p>针对outer中x的：</p>
+<ol>
+<li><p>采用global的结果<br><img data-src="20.png" alt="global"></p>
+</li>
+<li><p>采用nonlocal的结果<br><img data-src="30.png" alt="nonlocal"></p>
+</li>
+</ol>
+<h4 id="3-作用域的位置"><a href="#3-作用域的位置" class="headerlink" title="3. 作用域的位置"></a>3. 作用域的位置</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">name &#x3D;&#39;简单即是美&#39;</span><br><span class="line"></span><br><span class="line">def f1():</span><br><span class="line">    print(name)</span><br><span class="line"></span><br><span class="line">def f2():</span><br><span class="line">    name &#x3D; &#39;Python&#39;</span><br><span class="line">    f1()</span><br><span class="line">f2()</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python函数的作用域取决于其函数代码块在整体代码中的位置，</strong>而不是调用时机的位置。调用f1的时候，会去f1函数的定义体查找，对于f1函数，它的外部是name=’简单即是美’，而不是name = ‘Python’。</p>
+<p><strong>结果</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">简单即是美</span><br></pre></td></tr></table></figure>
+
+<p>倒数第二步<br><img data-src="31.png" alt="倒数第二步"></p>
+<p>参考链接</p>
+<p><a href="https://www.linuxidc.com/Linux/2018-12/155918.htm" target="_blank" rel="noopener">Python 中命名空间与作用域使用总结</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/15/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/15/index/" class="post-title-link" itemprop="url">Python基础系列之--函数【9】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-15 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-15T10:38:59+08:00">2019-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握 Python 函数–定义、参数类型</li>
+<li>掌握 Python 函数–变量作用域</li>
+</ol>
+<blockquote>
+<p>正确理解 Python 函数，能够更好地理解 <strong>Python 装饰器、匿名函数（lambda）、函数式编程</strong>等高阶技术。</p>
+</blockquote>
+<p>文章较长，整体内容包含如下思维导图</p>
+<p><img data-src="func.png" alt="概述"></p>
+<h3 id="第一部分-重新认识函数"><a href="#第一部分-重新认识函数" class="headerlink" title="第一部分 重新认识函数"></a>第一部分 重新认识函数</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>Python 中函数的定义如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名<span class="params">(参数)</span>:</span></span><br><span class="line">    <span class="comment"># 内部代码</span></span><br><span class="line">    <span class="keyword">return</span> 表达式</span><br></pre></td></tr></table></figure>
+
+<p>注意点：</p>
+<ol>
+<li>函数代码块以<code>def关键词</code>开头，一个空格之后接<code>函数标识符名称</code>和<code>圆括号()</code>，再接个<code>冒号</code>。</li>
+<li>圆括号中间存放参数</li>
+<li>使用 return 结束函数。默认返回 None。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a + b</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum</span><br><span class="line"><span class="comment"># 函数地址</span></span><br><span class="line">&lt;function sum at <span class="number">0x10af4f158</span>&gt;</span><br><span class="line"><span class="comment">## 函数方法</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(sum)</span><br><span class="line">[<span class="string">'__annotations__'</span>, <span class="string">'__call__'</span>, <span class="string">'__class__'</span>, <span class="string">'__closure__'</span>, <span class="string">'__code__'</span>, <span class="string">'__defaults__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>, <span class="string">'__get__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__globals__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>, <span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>, <span class="string">'__kwdefaults__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__module__'</span>, <span class="string">'__name__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__qualname__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>, <span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>, <span class="string">'__subclasshook__'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum.__name__</span><br><span class="line"><span class="string">'sum'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum.__module__</span><br><span class="line"><span class="string">'__main__'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-调用函数"><a href="#2-调用函数" class="headerlink" title="2 调用函数"></a>2 调用函数</h4><p>使用函数名后跟圆括号的方式调用函数。<br>调用的同时要根据函数的定义体，提供<code>相应个数和类型的参数</code>，每个参数之间用逗号分隔。</p>
+<h4 id="3-函数是对象"><a href="#3-函数是对象" class="headerlink" title="3. 函数是对象"></a>3. 函数是对象</h4><p><strong>在 Python 中万物皆为对象</strong>，函数也不例外，</p>
+<ol>
+<li>可以作为对象可以赋值给一个变量</li>
+<li>可以作为元素添加到集合对象中</li>
+<li>可作为参数值传递给其它函数</li>
+<li>可以当做函数的返回值</li>
+</ol>
+<blockquote>
+<p>函数身为一个对象，拥有对象模型的三个通用属性：<strong>id、类型、和值。</strong></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a + b</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(add)</span><br><span class="line"><span class="number">4472644200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(add)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">function</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">add</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">function</span> <span class="title">add</span> <span class="title">at</span> 0<span class="title">x10a972268</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>变量赋值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd = add</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>newAdd(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add <span class="keyword">is</span> newAdd</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>其实上侧的，只是不同的名字指向同一个内存地址，同时这块地址被多次引用。</p>
+<p><img data-src="1.jpg" alt="变量"></p>
+<blockquote>
+<p>了解了函数是对象，以及上侧的几个性质，更得牢记一切都是对象。<br>既然是对象，性质都类似，其余的集合、参数、返回值，思考下就明白了</p>
+</blockquote>
+<h3 id="第二部分-参数类型"><a href="#第二部分-参数类型" class="headerlink" title="第二部分 参数类型"></a>第二部分 参数类型</h3><p>其实就是下侧那个括号里的数据，但是需要注意的是，<code>传的是什么</code>，<code>怎么传</code></p>
+<p><strong>定义</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> 函数名<span class="params">(参数)</span>:</span></span><br><span class="line">    <span class="comment"># 内部代码</span></span><br><span class="line">    <span class="keyword">return</span> 表达式</span><br></pre></td></tr></table></figure>
+
+<p><strong>完整的语法</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">func(positional_args, keyword_args, *tuple_nonkw_args, **dict_kw_args)</span><br></pre></td></tr></table></figure>
+
+<p><strong>函数的参数的分类</strong></p>
+<ol>
+<li>位置参数(必选参数)</li>
+<li>默认参数</li>
+<li>可变参数 *args</li>
+<li>可变参数 **kwargs</li>
+<li>必选参数</li>
+</ol>
+<h4 id="1-位置参数"><a href="#1-位置参数" class="headerlink" title="1. 位置参数"></a>1. 位置参数</h4><p>定义：<code>调用</code>时候的传的<code>参数</code>必须与<code>定义</code>时的<code>参数</code>一一对应。<br>注意事项：<br>不能多也不能少。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> a + b</span><br><span class="line"><span class="comment"># 一一对应</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="comment"># 参数缺失</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(sum(<span class="number">1</span>))</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: sum() missing <span class="number">1</span> required positional argument: <span class="string">'b'</span></span><br><span class="line"><span class="comment"># 关键字参数,顺序不重要，存在即可</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(sum(b=<span class="number">10</span>, a=<span class="number">4</span>))</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-默认值"><a href="#2-默认值" class="headerlink" title="2. 默认值"></a>2. 默认值</h4><p>定义：在函数声明的时候，可以给某个参数指定默认值<br>注意事项：<br>位置：需要放在<code>位置参数</code>之后</p>
+<p><strong>默认参数需要在位置参数的后边</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">power</span><span class="params">(x, n = <span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x**n</span><br><span class="line">ret1 = power(<span class="number">10</span>)   <span class="comment"># 使用默认的参数值n=2</span></span><br><span class="line">ret2 = power(<span class="number">10</span>, <span class="number">4</span>)  <span class="comment"># 将4传给n，实际计算10**4的值</span></span><br><span class="line">ret3 = power(n=<span class="number">1</span>, x=<span class="number">100</span>) <span class="comment"># 指定参数名传值</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>来个例子</strong><br>主要涉及：内存地址、参数默认值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=[])</span>:</span></span><br><span class="line">    a.append(<span class="string">"A"</span>)</span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line"></span><br><span class="line">print(func())</span><br><span class="line">print(func())</span><br><span class="line">print(func())</span><br></pre></td></tr></table></figure>
+
+<p><strong>三思</strong><br><strong>三思</strong><br><strong>三思</strong></p>
+<p>答案如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="string">'A'</span>]</span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'A'</span>]</span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'A'</span>, <span class="string">'A'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果真正理解了，Python 对象的<strong>变量名与内存地址</strong>,这个问题还是很简单的。</p>
+<ol>
+<li>默认参数 a 指向的空列表对象就会被创建，假如内存地址为<code>0x123</code>;</li>
+<li>之后每次调用，都会在原地址后追加<code>A</code>;</li>
+<li>可以试着在函数内部打印 a 的内存地址，应该是一致的。</li>
+</ol>
+<blockquote>
+<p>如何避免这种操作？</p>
+<blockquote>
+<p>让 a 的默认值指向一个<strong>不可变对象即可</strong>，如：数字、None 等</p>
+</blockquote>
+</blockquote>
+<h4 id="3-可变参数-args"><a href="#3-可变参数-args" class="headerlink" title="3. 可变参数 *args"></a>3. 可变参数 *args</h4><p>在 python 里面，函数在声明的时候，参数中可以使用(<em>变量名)的方式来接受<code>不确定长度的参数</code>，但是在 python 里面大家约定俗成使用`</em>args<code>接受不定长参数，之后将这些参数放到一个</code>tuple`里面，可以通过访问 args 来获取这些不定长参数。</p>
+<p><code>例子一</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">changeFunc</span><span class="params">(*args)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(type(args))</span><br><span class="line"><span class="meta">... </span>    print(args)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>changeFunc(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">3</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><code>例子二</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>changeFunc([<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">3</span>])</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">([<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>],)</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为何打印出来是这样？<br>因为是数组是作为一个整体传过来的。<br>如何将 list 的元素转换为 tuple 的元素？结果与例子一一致？</p>
+</blockquote>
+<p><strong>答案：</strong> 参数前加个星号,<a href="https://docs.python.org/2/tutorial/controlflow.html#unpacking-argument-lists" target="_blank" rel="noopener">解压参数列表</a>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>tmpList = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(*tmpList)</span><br><span class="line">a b <span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(tmpList)</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment"># 调用函数时，数组➕星号，解压参数列表</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>changeFunc(*tmpList)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="number">3</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>当参数已经在<code>列表或元组中</code>但需要为需要单独位置参数的函数, 需要解压参数, 然后再一一传进去</p>
+<p>针对字典带上*号，解压的是 key</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict = &#123;<span class="string">"a"</span>: <span class="number">1</span>, <span class="string">"b"</span>: <span class="number">2</span>, <span class="string">"c"</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(*dict)</span><br><span class="line">a b c</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-可变参数-args"><a href="#4-可变参数-args" class="headerlink" title="4. 可变参数 *args"></a>4. 可变参数 *args</h4><p>定义：<code>*args</code>参数表示未知的位置参数序列长度，而<code>\*\*kwargs</code>代表包含<strong>关键字和值映射关系的字典</strong>，它可以包含任意数量的关键字和值映射，并且在函数定义中“*args”必须位于“**kwargs”前面。</p>
+<blockquote>
+<p>*args 必须在**kwargs 之前。<br>默认值参数必须再必选参数之前。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">kwargs</span><span class="params">(first, second=<span class="number">2</span>, *args, **kwargs)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(first, second)</span><br><span class="line"><span class="meta">... </span>    print(args)</span><br><span class="line"><span class="meta">... </span>    print(kwargs)</span><br><span class="line">...</span><br><span class="line"><span class="comment"># kwargs为空是因为被*args吃掉了</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>kwargs(<span class="number">1</span>, <span class="number">3</span>, <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, &#123;<span class="string">"key1"</span>: <span class="string">"value"</span>&#125;)</span><br><span class="line"><span class="number">1</span> <span class="number">3</span></span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, &#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict = &#123;<span class="string">"key1"</span>: <span class="string">"value"</span>&#125;</span><br><span class="line"><span class="comment"># 解压参数，</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>kwargs(<span class="number">1</span>, <span class="number">3</span>, *list, **dict)</span><br><span class="line"><span class="number">1</span> <span class="number">3</span></span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>)</span><br><span class="line">&#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 后边不能追加参数了。。</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(**kw, error)</span>:</span></span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(**kw, error)</span>:</span></span><br><span class="line">                       ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-关键字参数"><a href="#5-关键字参数" class="headerlink" title="5. 关键字参数"></a>5. 关键字参数</h4><blockquote>
+<p>位置参数可以不带参数名，但是星号后边的就必选带上参数名</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 星号后必选加上参数名字</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(loction, second, *, must)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(loction, second, must)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: func() takes <span class="number">2</span> positional arguments but <span class="number">3</span> were given</span><br><span class="line"><span class="comment"># 符合预期</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>func(<span class="number">1</span>, <span class="number">2</span>, must=<span class="number">3</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>来一个汇总的骚操作</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">student</span><span class="params">(name, age=<span class="number">18</span>, *args, sex, classroom, **kwargs)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(name, age, args, sex, classroom, kwargs)</span><br><span class="line">...</span><br><span class="line"><span class="comment"># *args 之后的一般参数默认更改为关键字参数，sex/classroom未传递，报错</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student(<span class="string">"howard"</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: student() missing <span class="number">2</span> required keyword-only arguments: <span class="string">'sex'</span> <span class="keyword">and</span> <span class="string">'classroom'</span></span><br><span class="line"><span class="comment"># 位置参数与关键字参数【必选】，可选参数【可选】</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student(<span class="string">"howard"</span>, sex=<span class="string">"1"</span>, classroom=<span class="string">"python"</span>)</span><br><span class="line">howard <span class="number">10</span> () <span class="number">1</span> python &#123;&#125;</span><br><span class="line"><span class="comment"># dict</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict</span><br><span class="line">&#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student(<span class="string">"howard"</span>, sex=<span class="string">"1"</span>, classroom=<span class="string">"python"</span>, **dict)</span><br><span class="line">howard <span class="number">10</span> () <span class="number">1</span> python &#123;<span class="string">'key1'</span>: <span class="string">'value'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="本文重点注意事项："><a href="#本文重点注意事项：" class="headerlink" title="本文重点注意事项："></a>本文重点注意事项：</h3><ol>
+<li>牢记函数为第一类对象；</li>
+<li>可选参数注意解压参数；</li>
+</ol>
+<p>参考<br><a href="https://www.zhihu.com/question/25950466" target="_blank" rel="noopener">函数作为参数的问题</a><br><a href="http://python.jobbole.com/81646/" target="_blank" rel="noopener">Python 中的函数详解</a><br><a href="http://python.jobbole.com/81646/" target="_blank" rel="noopener"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/14/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/14/index/" class="post-title-link" itemprop="url">Node.js基础系列之Http模块【5】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-14 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-14T10:38:59+08:00">2019-05-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 14:43:26" itemprop="dateModified" datetime="2020-05-28T14:43:26+08:00">2020-05-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>掌握Node.js核心模块之网络模块</li>
+</ul>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-c6a6ee0a6a22f108.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章目录"></p>
+<blockquote>
+<p>Node.js标准库提供了 http 模块，是Node.js中非常重要的一个核心模块。</p>
+</blockquote>
+<p>通过http模块，你可以使用其http.createServer方法创建一个<code>http服务器</code>，也可以使用其http.request方法创建一个<code>http客户端。</code></p>
+<h3 id="第一部分-http服务端"><a href="#第一部分-http服务端" class="headerlink" title="第一部分: http服务端"></a>第一部分: http服务端</h3><h4 id="1-1-HTTP是什么"><a href="#1-1-HTTP是什么" class="headerlink" title="1.1 HTTP是什么?"></a>1.1 HTTP是什么?</h4><p>HTTP是一个用来传送数据的应用层协议，在其底层使用TCP传输协议。HTTP是互联网数据通信的基础，要响应客户端请求（如：浏览器访问），首先要布署HTTP服务器。</p>
+<h4 id="1-2-HTTP之URL"><a href="#1-2-HTTP之URL" class="headerlink" title="1.2 HTTP之URL"></a>1.2 HTTP之URL</h4><p>URL: (Uniform / Universal Resource Locator，常缩写为URL)统一资源定位符,统一资源定位符的标准格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">协议类型:&#x2F;&#x2F;服务器地址（必要时需加上端口号）&#x2F;路径&#x2F;文件名</span><br></pre></td></tr></table></figure>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-0ada86699d61295d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="http1-url-structure.png"></p>
+<h4 id="1-3-http之请求报文"><a href="#1-3-http之请求报文" class="headerlink" title="1.3 http之请求报文"></a>1.3 http之请求报文</h4><p>一个HTTP请求报文由请求行（request line）、请求头部（header）、空行和请求数据4个部分组成;</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-f50e4e26dd6acfa8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2012072810301161.png"></p>
+<p><strong>举例子:</strong></p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-cf0c5d48bf504245.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201411187986714.png"></p>
+<p>请求报文中关键的字段:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">User-Agent：产生请求的浏览器类型;</span><br><span class="line">Accept：客户端可识别的响应内容类型列表;星号 “ * ” 用于按范围将类型分组，用 “ *&#x2F;* ” 指示可接受全部类型，用“ type&#x2F;* ”指示可接受 type 类型的所有子类型;</span><br><span class="line">Accept-Language：客户端可接受的自然语言;</span><br><span class="line">Accept-Encoding：客户端可接受的编码压缩格式;</span><br><span class="line">Accept-Charset：可接受的应答的字符集;</span><br><span class="line">Host：请求的主机名，允许多个域名同处一个IP 地址，即虚拟主机;</span><br><span class="line">connection：连接方式(close 或 keepalive);</span><br><span class="line">Cookie：存储于客户端扩展字段，向同一域名的服务端发送属于该域的cookie;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-HTTP响应报文"><a href="#1-4-HTTP响应报文" class="headerlink" title="1.4 HTTP响应报文"></a>1.4 HTTP响应报文</h4><p>HTTP 响应报文由<code>状态行、响应头部、空行 和 响应包体</code> 4 个部分组成</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-7c6e79fa4c5d355a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="201446213766964.jpg"></p>
+<p>状态代码由三位数字组成，第一个数字定义了响应的类别，且有五种可能取值。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1xx：指示信息--表示请求已接收，继续处理。</span><br><span class="line">2xx：成功--表示请求已被成功接收、理解、接受。</span><br><span class="line">3xx：重定向--要完成请求必须进行更进一步的操作。</span><br><span class="line">4xx：客户端错误--请求有语法错误或请求无法实现。</span><br><span class="line">5xx：服务器端错误--服务器未能实现合法的请求。</span><br></pre></td></tr></table></figure>
+
+<p>常见的状态码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">200 OK：客户端请求成功。</span><br><span class="line">400 Bad Request：客户端请求有语法错误，不能被服务器所理解。</span><br><span class="line">401 Unauthorized：请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用。</span><br><span class="line">403 Forbidden：服务器收到请求，但是拒绝提供服务。</span><br><span class="line">404 Not Found：请求资源不存在，举个例子：输入了错误的URL。</span><br><span class="line">500 Internal Server Error：服务器发生不可预期的错误。</span><br><span class="line">503 Server Unavailable：服务器当前不能处理客户端的请求，一段时间后可能恢复正常，举个例子：HTTP&#x2F;1.1 200 OK（CRLF）。</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="第二部分-http服务器端"><a href="#第二部分-http服务器端" class="headerlink" title="第二部分 http服务器端"></a>第二部分 http服务器端</h3><h4 id="1-1-http-server遵循了node-js的时间模块的规则-有触发和相应事件-http-Server对象是一个EventEmitter"><a href="#1-1-http-server遵循了node-js的时间模块的规则-有触发和相应事件-http-Server对象是一个EventEmitter" class="headerlink" title="1.1 http.server遵循了node.js的时间模块的规则, 有触发和相应事件;http.Server对象是一个EventEmitter;"></a>1.1 http.server遵循了node.js的时间模块的规则, 有触发和相应事件;http.Server对象是一个EventEmitter;</h4><p>创建: http.createServer方法会返回一个<code>http.Server对象实例</code>，requestListener可选参数传入时，将做为http.Server对象’request’事件的监听器。</p>
+<p>http.Server对象提供的事件方法有:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. request: function (request, response) &#123; &#125;每次请求都会触发该方法;</span><br><span class="line">2. connection：当TCP连接建立时，该事件被触发，提供一个参数socket，是net.Socket的实例;</span><br><span class="line">3. close: 当此服务器关闭时触发;</span><br><span class="line">等等..</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-http-Server中的方法"><a href="#1-2-http-Server中的方法" class="headerlink" title="1.2 http.Server中的方法"></a>1.2 http.Server中的方法</h4><h5 id="2-2-1-server-listen-port-hostname-backlog-callback"><a href="#2-2-1-server-listen-port-hostname-backlog-callback" class="headerlink" title="2.2.1 server.listen(port[, hostname][, backlog][, callback])"></a>2.2.1 server.listen(port[, hostname][, backlog][, callback])</h5><p>在指定的主机名（hostname）和端口（port）开始接收连接, </p>
+<h5 id="1-2-2-server-listen-path-callback"><a href="#1-2-2-server-listen-path-callback" class="headerlink" title="1.2.2 server.listen(path, [callback])"></a>1.2.2 server.listen(path, [callback])</h5><p>监听某个</p>
+<h4 id="1-3-http-ServerResponse服务器响应对象"><a href="#1-3-http-ServerResponse服务器响应对象" class="headerlink" title="1.3 http.ServerResponse服务器响应对象"></a>1.3 http.ServerResponse服务器响应对象</h4><p>http.ServerResponse是一个由http.Server创建的对象, ，在触发’request’事件后，做事件回调函数的第二个参数传递给回调函数.</p>
+<p><code>response.writeHead(statusCode[, statusMessage][, headers])</code></p>
+<p>向客户端请求发送一个响应头。<br>statusCode状态码是 3 位数字，如：404。<br>statusMessage设置状态消息。<br>最后一个参数headers是响应头。</p>
+<blockquote>
+<p>这个方法只能在当前请求中使用一次，并且必须在response.end()之前调用。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var body &#x3D; &#39;hello world&#39;;</span><br><span class="line">response.writeHead(200, &#123;</span><br><span class="line">  &#39;Content-Length&#39;: body.length,</span><br><span class="line">  &#39;Content-Type&#39;: &#39;text&#x2F;plain&#39; &#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>response.setHeader(name, value)</code></p>
+<p>为默认或者已存在的头设置一条单独的头内容。如果这个头已经存在于 将被送出的头中，将会覆盖原来的内容。如果我想设置更多的头， 就使用一个相同名字的字符串数组</p>
+<p><code>response.write(chunk, [encoding])</code><br>向响应流发送一个数据块。这个方法可能被调用多次，以提供响应体内容。</p>
+<p><code>response.end([data], [encoding])</code></p>
+<p>当所有的响应报头和报文被发送完成时这个方法将信号发送给服务器，服务器会认为这个消息完成了。 每次响应完成之后必须调用该方法。</p>
+<h3 id="第三部分-http客户端"><a href="#第三部分-http客户端" class="headerlink" title="第三部分 http客户端"></a>第三部分 http客户端</h3><p>http模块提供了两个创建HTTP客户端的方法<code>http.request</code>和<code>http.get</code>，以向HTTP服务器发起请求。<code>http.get是http.request快捷方法</code>，该方法仅支持GET方式的请求。</p>
+<p>一个 IncomingMessage对象是由 http.Server或http.ClientRequest创建的，并作为第一参数分别传递给’request’和’response’ 事件。它也可以被用来访问应答的状态，头文件和数据。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line"></span><br><span class="line">http.createServer(function (req, res) &#123;</span><br><span class="line">  var content &#x3D; &quot;&quot;;</span><br><span class="line"></span><br><span class="line">  req.on(&#39;data&#39;, function (chunk) &#123;</span><br><span class="line">    content +&#x3D; chunk;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  req.on(&#39;end&#39;, function () &#123;</span><br><span class="line">    res.writeHead(200, &#123;&quot;Content-Type&quot;: &quot;text&#x2F;plain&quot;&#125;);</span><br><span class="line">    res.write(&quot;You&#39;ve sent: &quot; + content);</span><br><span class="line">    res.end();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;).listen(3000);</span><br></pre></td></tr></table></figure>
+
+<p>data事件会在数据接收过程中，每收到一段数据就触发一次，接收到的数据被传入回调函数。end事件则是在所有数据接收完成后触发。</p>
+<p><code>http.request(options[, callback])</code><br>request方法的options参数，可以是一个对象，也可以是一个字符串。如果是字符串，就表示这是一个URL，Node内部就会自动调用url.parse()，处理这个参数。</p>
+<p>options对象可以设置如下属性:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">host：HTTP请求所发往的域名或者IP地址，默认是localhost。</span><br><span class="line">hostname：该属性会被url.parse()解析，优先级高于host。</span><br><span class="line">port：远程服务器的端口，默认是80。</span><br><span class="line">localAddress：本地网络接口。</span><br><span class="line">socketPath：Unix网络套接字，格式为host:port或者socketPath。</span><br><span class="line">method：指定HTTP请求的方法，格式为字符串，默认为GET。</span><br><span class="line">path：指定HTTP请求的路径，默认为根路径（&#x2F;）。可以在这个属性里面，指定查询字符串，比如&#x2F;index.html?page&#x3D;12。如果这个属性里面包含非法字符（比如空格），就会抛出一个错误。</span><br><span class="line">headers：一个对象，包含了HTTP请求的头信息。</span><br><span class="line">auth：一个代表HTTP基本认证的字符串user:password。</span><br><span class="line">agent：控制缓存行为，如果HTTP请求使用了agent，则HTTP请求默认为Connection: keep-alive，它的可能值如下：</span><br><span class="line">undefined（默认）：对当前host和port，使用全局Agent。</span><br><span class="line">Agent：一个对象，会传入agent属性。</span><br><span class="line">false：不缓存连接，默认HTTP请求为Connection: close。</span><br><span class="line">keepAlive：一个布尔值，表示是否保留socket供未来其他请求使用，默认等于false。</span><br><span class="line">keepAliveMsecs：一个整数，当使用KeepAlive的时候，设置多久发送一个TCP KeepAlive包，使得连接不要被关闭。默认等于1000，只有keepAlive设为true的时候，该设置才有意义。</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line">http.createServer(function(req, res)&#123;</span><br><span class="line">&#x2F;&#x2F;仅对从http.Server获得到的请求(request)有效.</span><br><span class="line">	console.log(req.url);</span><br><span class="line">	&#x2F;&#x2F;请求&#x2F;响应 头对象.</span><br><span class="line">	console.log(req.headers);</span><br><span class="line">	&#x2F;&#x2F;服务器的HTTP版本。</span><br><span class="line">	console.log(req.httpVersion);</span><br><span class="line">	&#x2F;&#x2F;接收到的原始请求&#x2F;响应头字段列表。</span><br><span class="line">	console.log(req.rawHeaders);</span><br><span class="line">	&#x2F;&#x2F;仅对从http.Server获得到的请求(request)有效.比如‘GET’、‘DELETE’。</span><br><span class="line">	console.log(req.method);</span><br><span class="line">&#125;).listen(3000, &#39;127.0.0.1&#39;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="第四部分-实例"><a href="#第四部分-实例" class="headerlink" title="第四部分 实例"></a>第四部分 实例</h3><h4 id="1-创建服务器-实现GET方法"><a href="#1-创建服务器-实现GET方法" class="headerlink" title="1 创建服务器, 实现GET方法"></a>1 创建服务器, 实现GET方法</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line">&#x2F;&#x2F;创建一个服务器, 回调函数的参数为响应, 和请求</span><br><span class="line">http.createServer(function(request, response)&#123;</span><br><span class="line">	&#x2F;&#x2F;response.writeHead方法用来写入HTTP回应的头信息；</span><br><span class="line">	response.writeHead(200, &#123;&#39;Content-Type&#39;: &#39;text&#x2F;plain&#39;&#125;);</span><br><span class="line">	&#x2F;&#x2F;指定HTTP回应的内容。</span><br><span class="line">	&#x2F;&#x2F;response.write(&#39;hello world&#39;);</span><br><span class="line">	&#x2F;&#x2F;response.end方法用来写入HTTP回应的具体内容，以及回应完成后关闭本次对话。</span><br><span class="line">	response.end(&#39;hello world&#39;);</span><br><span class="line">	&#x2F;&#x2F;监听端口号和主机名</span><br><span class="line">&#125;).listen(3000, &#39;127.0.0.1&#39;);</span><br><span class="line"></span><br><span class="line">console.log(&#39;127.0.0.1:3000&#39;);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="2-加载HTML文件"><a href="#2-加载HTML文件" class="headerlink" title="2. 加载HTML文件"></a>2. 加载HTML文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">http.createServer(function(req, res)&#123;</span><br><span class="line">	&#x2F;&#x2F;读取HTML文件</span><br><span class="line">	fs.readFile(&#39;.&#x2F;2index.html&#39;, &#39;utf-8&#39;,function(err, data)&#123;</span><br><span class="line">		if(err) throw err;</span><br><span class="line">		&#x2F;&#x2F;为默认或者已存在的头设置一条单独的头内容。</span><br><span class="line">		res.setHeader(&quot;Content-Type&quot;,&quot;text&#x2F;html;charset&#x3D;&#39;utf-8&#39;&quot;);</span><br><span class="line">		&#x2F;&#x2F;响应的数据</span><br><span class="line">		res.end(data);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;).listen(3000, &#39;127.0.0.1&#39;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建服务器-实现POST方法"><a href="#3-创建服务器-实现POST方法" class="headerlink" title="3 创建服务器, 实现POST方法"></a>3 创建服务器, 实现POST方法</h4><p>一个简单的post请求:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line"></span><br><span class="line">http.createServer(function(req, res) &#123;</span><br><span class="line">	&#x2F;&#x2F;fs模块创建流文件, 名称为post.txt</span><br><span class="line">	var file &#x3D; fs.createWriteStream(&#39;post.txt&#39;);</span><br><span class="line">	&#x2F;&#x2F;&#x2F;&#x2F;管子 pipe自动调用了data,end等事件 writeStream&#x2F;readStream</span><br><span class="line">	req.pipe(file);</span><br><span class="line">	&#x2F;&#x2F; 当有数据流时，写入数据</span><br><span class="line">	req.on(&#39;data&#39;, function(postData)&#123;</span><br><span class="line">		console.log(postData);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	req.on(&#39;end&#39;, function()&#123;</span><br><span class="line">		res.end(&#39;end&#39;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;).listen(3000);</span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-3bdb0fd3627591a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="post请求"></p>
+<p>参考链接<br><a href="http://www.ruanyifeng.com/blog/2016/08/http.html" target="_blank" rel="noopener">1.HTTP 协议入门</a><br><a href="http://www.ruanyifeng.com/blog/2016/08/migrate-from-http-to-https.html" target="_blank" rel="noopener">2.HTTPS 升级指南</a><br><a href="http://www.cnblogs.com/biyeymyhjob/archive/2012/07/28/2612910.html" target="_blank" rel="noopener">3.HTTP请求报文和HTTP响应报文</a><br><a href="http://yijiebuyi.com/blog/d37512fc6df0fc4d0adfc2ec5c3d46ff.html" target="_blank" rel="noopener">4.node.js querystring类介绍</a><br><a href="https://segmentfault.com/a/1190000000519006" target="_blank" rel="noopener">5.nodejs中流(stream)的理解</a><br><a href="http://www.cnblogs.com/dolphinX/p/3460545.html" target="_blank" rel="noopener">6.简单理解Socket</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/13/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/13/index/" class="post-title-link" itemprop="url">Node.js基础系列之Event模块【4】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-13 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-13T10:38:59+08:00">2019-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 14:43:26" itemprop="dateModified" datetime="2020-05-28T14:43:26+08:00">2020-05-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>理解JS 单线程、 Node.js EventLoop</li>
+<li>理解Node.js事件模块</li>
+</ol>
+<h3 id="第一部分-前提-Nodejs-EventLoop"><a href="#第一部分-前提-Nodejs-EventLoop" class="headerlink" title="第一部分 前提 Nodejs EventLoop"></a>第一部分 前提 Nodejs EventLoop</h3><h4 id="1-【堆】【栈】【队列】"><a href="#1-【堆】【栈】【队列】" class="headerlink" title="1 【堆】【栈】【队列】"></a>1 【堆】【栈】【队列】</h4><p><img data-src="http://upload-images.jianshu.io/upload_images/326255-bf1b1203a4c73069.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="堆栈队列"></p>
+<p>任何一种语言的运行环境都少不了*<em>堆（heap）栈（Stack）队列 (queue) *</em> JS也不例外。</p>
+<ol>
+<li>JS的<code>临时变量以及调用时的形参</code>等等数据都是存储在<code>栈</code>中；</li>
+<li><code>堆</code>则是存储实际的<code>对象</code>;</li>
+<li>对象的<code>引用变量名(指针)</code>也是在<code>栈</code>；</li>
+</ol>
+<p>而队列则是JS在实时运行环境中创建的消息队列或者事件队列。</p>
+<p><strong>JS是单线程，所以队列的实现让JS的异步处理有了可能性。</strong></p>
+<h4 id="2-单线程、任务队列"><a href="#2-单线程、任务队列" class="headerlink" title="2 单线程、任务队列"></a>2 单线程、任务队列</h4><blockquote>
+<p>尽信书不如无书，就喜欢这种有理有据的</p>
+</blockquote>
+<p>摘录自<a href="http://blog.csdn.net/lin_credible/article/details/40143961" target="_blank" rel="noopener">【朴灵评注】JavaScript 运行机制详解：再谈Event Loop</a></p>
+<p>为了避免复杂性，JS从一诞生，<strong>同一个时间只能做一件事</strong>。<br><code>JavaScript就是单线程</code>，这已经成了这门语言的核心特征，将来也不会改变。</p>
+<p>为了利用多核CPU的计算能力，HTML5提出Web Worker标准，<code>允许JavaScript脚本创建多个线程</code>，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并<strong>没有改变JavaScript单线程的本质。</strong></p>
+<p>异步执行的运行机制</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">（1）所有任务都在主线程上执行，形成一个执行栈（execution context stack）。</span><br><span class="line">（2）主线程之外，还存在一个&quot;任务队列&quot;（task queue）。系统把异步任务放到&quot;任务队列&quot;之中，然后继续执行后续的任务。</span><br><span class="line">（3）一旦&quot;执行栈&quot;中的所有任务执行完毕，系统就会读取&quot;任务队列&quot;。如果这个时候，异步任务已经结束了等待状态，就会从&quot;任务队列&quot;进入执行栈，恢复执行。</span><br><span class="line">（4）主线程不断重复上面的第三步。</span><br></pre></td></tr></table></figure>
+
+<p>上面这段初步地在说event loop。但是异步跟event loop其实没有关系。准确的讲，<strong>【event loop是实现异步的一种机制】</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">【上面提到的一系列的手段其实就是实现异步的方法，其中就包括event loop。以及轮询、事件等。】</span><br><span class="line">【所谓轮询：就是你在收银台付钱之后，坐到位置上不停的问服务员你的菜做好了没。】</span><br><span class="line">【所谓（事件）：就是你在收银台付钱之后，你不用不停的问，饭菜做好了服务员会自己告诉你。】</span><br></pre></td></tr></table></figure>
+
+<p>【JavaScript运行环境的运行机制，不是JavaScript的运行机制。】</p>
+<h4 id="3-事件循环"><a href="#3-事件循环" class="headerlink" title="3 事件循环"></a>3 事件循环</h4><p>首先我们看一下nodejs本质结构图</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-f87e70367e376a31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>Node.js 通过 libuv 来处理与操作系统的交互，并且因此具备了【异步、非阻塞、事件驱动】的能力。Node.js 实际上是 Javascript 执行线程的<strong>单线程</strong>，真正的<strong>I/O 操作</strong>，底层 API 调用都是通过<code>多线程执行</code>的。</p>
+<blockquote>
+<p>本质也就是：任务接收是单线程，任务执行是多线程。</p>
+</blockquote>
+<p>那么也就是主要依靠<code>libuv</code>，那么本文主要介绍Nodejs事件模块，当然离不开原理</p>
+<p>为何是这样？</p>
+<p>为何这么吊？</p>
+<p>为何又出现那么多回调函数？</p>
+<p>带着一些列问题搞明白了理论，至于代码，那也调用哪些大神写的API吧！</p>
+<p><strong>膜拜大神三秒钟</strong></p>
+<p>技术(艺术)源自生活、高于生活。对吧。</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-d471d0bb2ec57f84.gif?imageMogr2/auto-orient/strip" alt="歪瓜仁真会玩"></p>
+<p>只要开始启动，那么这个姑娘就开始嗨起来了，其实我们事件循环也是这样的！从启动开始，就一直不停止的监听。</p>
+<p>【论英文的重要性】</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-0508d9f9917ca62d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>一图胜千言，但我还是就下图做个简单的梳理吧。我可不想被同为学渣的老铁们骂哈。</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-e991be1421256e2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>我们程序猿其实工作还是仅限于代码调用编写阶段，主要的核心在于理解内部原理，然后根据需求去编写(复制)代码。</p>
+<p>讲个故事吧</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">JS单身狗(单线程)无异议，但它也是个贪心的黑心老板，在外边一直接活一直接活，根本无视</span><br><span class="line">员工的死活，程序猿们为了改变世界(为了生存)不得不听产品经理的安排（程序猿心中的恶魔），</span><br><span class="line">产品经理承上启下，一直分发任务(闲就不是代码狗了)，而为了理想而奋战(别给我嘚瑟四点的晨曦，</span><br><span class="line">老子刚下班)。</span><br><span class="line">世界越来越美好(为奋战的人祈祷安康)！</span><br></pre></td></tr></table></figure>
+
+
+<p>Nodejs中是怎么个情况，请看下图</p>
+<p><img data-src="http://upload-images.jianshu.io/upload_images/326255-7399386c22e242bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="event5.png"></p>
+<p>好了，结束了，接下来就是代码啦。</p>
+<h3 id="第二部分-Events模块概述"><a href="#第二部分-Events模块概述" class="headerlink" title="第二部分 Events模块概述"></a>第二部分 Events模块概述</h3><h4 id="1-Events模块"><a href="#1-Events模块" class="headerlink" title="1 Events模块"></a>1 Events模块</h4><p><strong>Events模块</strong>是Node对“发布/订阅”模式（publish/subscribe）的实现。一个对象通过这个模块，向另一个对象传递消息。</p>
+<p><strong>Node</strong>中的<em>Event模块仅仅<em>提供了一个对象: *</em>EventEmitter<strong>, EventEmitter 的</strong>核心*<em>就是</em>事件触发与事件监听器功能的封装。</em></p>
+<p>获取<strong>EventEmitter</strong>对象</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;引用模块events, 点语法获取到EventEmitter</span><br><span class="line">var EventEmitter &#x3D; require(&#39;events&#39;).EventEmitter;</span><br><span class="line">&#x2F;&#x2F;初始化一个对象, 这个实例就是消息中心。</span><br><span class="line">var emitter &#x3D; new EventEmitter;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="2-EventEmitter-实例对象的方法"><a href="#2-EventEmitter-实例对象的方法" class="headerlink" title="2 EventEmitter 实例对象的方法"></a>2 EventEmitter 实例对象的方法</h4><p><em>2.1 emitter.on(eventName, listener), 监听事件,如果触发就调用回调函数</em></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. eventName &lt;String&gt; | &lt;Symbol&gt;: 事件名称, 后边可以跟上函数;</span><br><span class="line">2. listener &lt;Function&gt; : 回调函数;</span><br></pre></td></tr></table></figure>
+<p><em>2.2 emitter.emit(eventName[, …args]), 根据eventName发送通知, 触发事件, 第一个参数为事件名称, 其余的参数会依次传入回调函数</em></p>
+<p>以上两个方法的示例代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var EventEmitter &#x3D; require(&#39;events&#39;).EventEmitter;</span><br><span class="line">var emitter &#x3D; new EventEmitter();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;监听函数1, 事件名为--fun1</span><br><span class="line">emitter.on(&#39;fun1&#39;, function()&#123;</span><br><span class="line">	console.log(&#39;触发函数1&#39;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;定义有参数函数fun2, </span><br><span class="line">var fun2 &#x3D; function(para)&#123;</span><br><span class="line">	console.log(&#39;触发函数2, 参数为&#39; + para);</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F;监听fun2</span><br><span class="line">emitter.on(&#39;fun2&#39;, fun2);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;触发事件名</span><br><span class="line">emitter.emit(&#39;fun1&#39;);</span><br><span class="line">&#x2F;&#x2F;触发事件名并且传参数</span><br><span class="line">emitter.emit(&#39;fun2&#39;, &#39;event&#39;);</span><br></pre></td></tr></table></figure>
+<p>打印结果为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ node 2on.js </span><br><span class="line">触发函数1</span><br><span class="line">触发函数2, 参数为event</span><br></pre></td></tr></table></figure>
+
+<p><em>2.3 emitter.once(eventName, listener), 类似on方法, 但回调函数只是执行一次</em></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var EventEmitter &#x3D; require(&#39;events&#39;).EventEmitter;</span><br><span class="line">var emitter &#x3D; new EventEmitter();</span><br><span class="line"></span><br><span class="line">emitter.once(&#39;oncefun&#39;, function()&#123;</span><br><span class="line">	console.log(&#39;函数只执行一次&#39;);</span><br><span class="line">&#125;);</span><br><span class="line">emitter.emit(&#39;oncefun&#39;);</span><br><span class="line">emitter.emit(&#39;oncefun&#39;);</span><br><span class="line"></span><br><span class="line">console.log(&#39;--------&#39;)</span><br><span class="line"></span><br><span class="line">emitter.on(&#39;fun&#39;, function()&#123;</span><br><span class="line">	console.log(&#39;函数&#39;);</span><br><span class="line">&#125;);</span><br><span class="line">emitter.emit(&#39;fun&#39;);</span><br><span class="line">emitter.emit(&#39;fun&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>执行的结果为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ node 3once.js </span><br><span class="line">函数只执行一次</span><br><span class="line">函数</span><br><span class="line">函数</span><br></pre></td></tr></table></figure>
+<p>虽然触发多次oncefun, 但依然打印一次;与下边形成对比;,</p>
+<p><em>2.4 emitter.addListener(eventName, listener)类似于emitter.on(eventName, listener)</em></p>
+<p><em>2.5 emitter.removeListener(eventName, listener), 移除监听</em></p>
+<p>详细见实例代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var EventEmitter &#x3D; require(&#39;events&#39;).EventEmitter;</span><br><span class="line">var emitter &#x3D; new EventEmitter();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;定义一个函数</span><br><span class="line">var removeFun &#x3D; function()&#123;</span><br><span class="line">	console.log(&#39;输出结果&#39;);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;以fun名称监听removeFun</span><br><span class="line">emitter.on(&#39;fun&#39;, removeFun);</span><br><span class="line">&#x2F;&#x2F;每个30毫秒触发一次回调函数</span><br><span class="line">setInterval(function()&#123;</span><br><span class="line">	emitter.emit(&#39;fun&#39;);</span><br><span class="line">&#125;, 30);</span><br><span class="line">&#x2F;&#x2F;200毫秒以后触发回调函数</span><br><span class="line">setTimeout(function()&#123;</span><br><span class="line">	emitter.removeListener(&#39;fun&#39;, removeFun);</span><br><span class="line">&#125;, 200);</span><br></pre></td></tr></table></figure>
+
+<p>打印结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ node 5removeListener.js </span><br><span class="line">输出结果</span><br><span class="line">输出结果</span><br><span class="line">输出结果</span><br><span class="line">输出结果</span><br><span class="line">输出结果</span><br><span class="line"></span><br><span class="line">#光标停止</span><br></pre></td></tr></table></figure>
+
+
+
+<p>######第三部分 更多API详见</p>
+<p>语法名称觉得挺好的, 见名知意. 更多的语法就看<a href="https://nodejs.org/api/events.html#events_emitter_removelistener_eventname_listener" target="_blank" rel="noopener">Node官网</a>吧 -__-</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Event: &#39;newListener&#39;</span><br><span class="line">Event: &#39;removeListener&#39;</span><br><span class="line">EventEmitter.listenerCount(emitter, eventName)</span><br><span class="line">EventEmitter.defaultMaxListeners</span><br><span class="line">emitter.addListener(eventName, listener)</span><br><span class="line">emitter.emit(eventName[, ...args])</span><br><span class="line">emitter.eventNames()</span><br><span class="line">emitter.getMaxListeners()</span><br><span class="line">emitter.listenerCount(eventName)</span><br><span class="line">emitter.listeners(eventName)</span><br><span class="line">emitter.on(eventName, listener)</span><br><span class="line">emitter.once(eventName, listener)</span><br><span class="line">emitter.prependListener(eventName, listener)</span><br><span class="line">emitter.prependOnceListener(eventName, listener)</span><br><span class="line">emitter.removeAllListeners([eventName])</span><br><span class="line">emitter.removeListener(eventName, listener)</span><br><span class="line">emitter.setMaxListeners(n)</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/12/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/12/index/" class="post-title-link" itemprop="url">Python基础系列之--阶段总结【8】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-12 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-12T10:38:59+08:00">2019-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.3k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>补充基础阶段相关内容</li>
+<li>回顾基础系列之<strong>数据类型</strong></li>
+</ol>
+<h3 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h3><p>有了前一部分的铺垫，相信大家已经明白<strong>变量名只是对内存空间的映射</strong>，那么</p>
+<ol>
+<li>共享变量是怎么回事？</li>
+<li>深浅拷贝又是是什么？</li>
+</ol>
+<h4 id="1-赋值与深浅拷贝"><a href="#1-赋值与深浅拷贝" class="headerlink" title="1. 赋值与深浅拷贝"></a>1. 赋值与深浅拷贝</h4><p>🤔 思考如下代码，<code>a、b、c、x</code>四者在<code>x = x + [3, 4]</code>前后的地址是如何变化的？</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line">c = <span class="number">1</span></span><br><span class="line"><span class="comment"># print(" a: %s \n b: %s \n c: %s" % (id(a), id(b), id(c)))</span></span><br><span class="line"><span class="comment"># print(" -----")</span></span><br><span class="line">x = [a, b, c]</span><br><span class="line"><span class="comment"># print(" x: %s \n ------ \n x[0]: %s \n x[1]: %s \n x[2]: %s" % (id(x), id(x[0]), id(x[1]), id(x[2])))</span></span><br><span class="line">x = x + [<span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"><span class="comment"># print(" -----")</span></span><br><span class="line"><span class="comment"># print(" x: %s \n ------ \n x[0]: %s \n x[1]: %s \n x[2]: %s" % (id(x), id(x[0]), id(x[1]), id(x[2])))</span></span><br><span class="line">a = <span class="number">3</span></span><br><span class="line"><span class="comment"># print(" a: %s" % (id(a)))</span></span><br></pre></td></tr></table></figure>
+
+<p>打印结果如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a: <span class="number">4323184656</span></span><br><span class="line">b: <span class="number">4323184688</span></span><br><span class="line">c: <span class="number">4323184656</span></span><br><span class="line">-----</span><br><span class="line">x: <span class="number">4324441928</span></span><br><span class="line">------</span><br><span class="line">x[<span class="number">0</span>]: <span class="number">4323184656</span></span><br><span class="line">x[<span class="number">1</span>]: <span class="number">4323184688</span></span><br><span class="line">x[<span class="number">2</span>]: <span class="number">4323184656</span></span><br><span class="line">-----</span><br><span class="line">x: <span class="number">4324441928</span>, y: <span class="number">4324441928</span></span><br><span class="line">-----</span><br><span class="line">x: <span class="number">4326634696</span></span><br><span class="line">------</span><br><span class="line">x[<span class="number">0</span>]: <span class="number">4323184656</span></span><br><span class="line">x[<span class="number">1</span>]: <span class="number">4323184688</span></span><br><span class="line">x[<span class="number">2</span>]: <span class="number">4323184656</span></span><br><span class="line">a: <span class="number">4323184720</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="01.jpg" alt="四种情况"></p>
+<ol>
+<li>尽量用<code>+=</code>,<code>-=</code>之类复合符号的，因为无需开辟新的，+=会自动调用 extend 方法进行合并运算, 共享引用；</li>
+<li><strong>【不可变对象】</strong>：如打印结果中的<code>开始和结束</code>的<code>a</code>,地址是不同的，重新申请地址；</li>
+<li><strong>【可变对象】</strong>：无需重新申请地址，但区域可长可短；</li>
+</ol>
+<h4 id="2-浅拷贝"><a href="#2-浅拷贝" class="headerlink" title="2. 浅拷贝"></a>2. 浅拷贝</h4><p>不管多么复杂的数据结构，浅拷贝都只会 copy 一层；如需<strong>完整拷贝，请参考深拷贝</strong>，还记得这个图么？</p>
+<p><img data-src="7.jpg" alt="浅复制"></p>
+<h4 id="3-深拷贝"><a href="#3-深拷贝" class="headerlink" title="3. 深拷贝"></a>3. 深拷贝</h4><p>深拷贝——即 python 的 copy 模块提供的另一个 deepcopy 方法。深拷贝会完全复制原变量相关的所有数据，在内存中生成一套完全一样的内容，在这个过程中我们对这两个变量中的一个进行<strong>任意修改都不会影响其他变量</strong>。</p>
+<p><img data-src="9.jpg" alt="深复制"></p>
+<h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><h4 id="1-打印-Print"><a href="#1-打印-Print" class="headerlink" title="1. 打印 Print"></a>1. 打印 Print</h4><p>日常调试，还是离不开打印的，大概了解下如何打印，有两种：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. %</span><br><span class="line">2. format</span><br></pre></td></tr></table></figure>
+
+<p>举几个简单的例子</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">" x: %s, y: %s"</span> % (id(x), id(y)))</span><br><span class="line"></span><br><span class="line">print(<span class="string">"&#123;&#125; &#123;&#125;"</span>.format(<span class="string">"hello"</span>, <span class="string">"world"</span>))</span><br><span class="line">print(<span class="string">"&#123;1&#125; &#123;0&#125;"</span>.format(<span class="string">"hello"</span>, <span class="string">"world"</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>表格</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%s    字符串 (采用str()的显示)</span><br><span class="line">%r    字符串 (采用repr()的显示)</span><br><span class="line">%c    单个字符</span><br><span class="line">%b    二进制整数</span><br><span class="line">%d    十进制整数</span><br><span class="line">%i    十进制整数</span><br><span class="line">%o    八进制整数</span><br><span class="line">%x    十六进制整数</span><br><span class="line">%e    指数 (基底写为e)</span><br><span class="line">%E    指数 (基底写为E)</span><br><span class="line">%f    浮点数</span><br><span class="line">%F    浮点数，与上相同</span><br><span class="line">%g    指数(e)或浮点数 (根据显示长度)</span><br><span class="line">%G    指数(E)或浮点数 (根据显示长度)</span><br></pre></td></tr></table></figure>
+
+<h3 id="第三部分-前期知识汇总"><a href="#第三部分-前期知识汇总" class="headerlink" title="第三部分 前期知识汇总"></a>第三部分 前期知识汇总</h3><p><img data-src="Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="Python基础数据类型"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/10/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/10/index/" class="post-title-link" itemprop="url">Python基础系列之--变量、赋值、引用【7】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-10 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-10T10:38:59+08:00">2019-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>了解变量名与变量的关系</li>
+<li>理解引用、拷贝、赋值等概念与含义</li>
+</ol>
+<h4 id="1-前提概况"><a href="#1-前提概况" class="headerlink" title="1 前提概况"></a>1 前提概况</h4><p>我们接触最多的就是<strong>变量</strong>，究竟<code>变量名</code> 与 <code>变量值</code> 关系是啥？如何存储？</p>
+<p>首先看一个最简单的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<p>上侧是一个<strong>赋值操作</strong>，其中<code>a是变量名</code>，<code>100是变量的值</code>。编程语言的编译器（或者解释器）处理到这一句代码的时候，一般语言会这样做</p>
+<ol>
+<li>在内存中<strong>开辟</strong>一个内存空间, <strong>地址</strong>0x4377878280;</li>
+<li><strong>存放</strong>100进第一步的空间中；</li>
+<li><strong>取值</strong>100时，找到地址为<strong>0x4377878280</strong>即可。</li>
+</ol>
+<p><strong>但是</strong><br><strong>但是</strong><br><strong>但是</strong></p>
+<p>这么长除了计算机能记住，我是记不住。正如ip地址与域名的关系，我们只需要记住taobao.com即可，所以，<strong>编译器给我们做了个表，在这个表中，它将内存地址和变量名做了个映射</strong></p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>内存地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>0x4377878280</td>
+</tr>
+<tr>
+<td>b</td>
+<td>0x4377878281</td>
+</tr>
+<tr>
+<td>c</td>
+<td>0x4377878282</td>
+</tr>
+<tr>
+<td>…</td>
+<td>….</td>
+</tr>
+</tbody></table>
+<p><strong>变量名完全可以看成一个内存地址的别名（只是方便我们记忆），真正的数据是存在这个内存地址的存储空间上的。变量名在运行的时候，没有任何用处。</strong></p>
+<p><img data-src="a.jpg" alt="赋值"></p>
+<h4 id="2-深入一些"><a href="#2-深入一些" class="headerlink" title="2. 深入一些"></a>2. 深入一些</h4><p>奔着：以问题来解决疑问题，先看这个代码，思考一下结果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values</span><br></pre></td></tr></table></figure>
+
+<p><strong>请认真思考此时 values 是多少？</strong><br><strong>请认真思考此时 values 是多少？</strong><br><strong>请认真思考此时 values 是多少？</strong></p>
+<p>也许你认为是<code>[0, [0, 1, 2], 2]</code>,原因可能是：</p>
+<ol>
+<li>list 可变；</li>
+<li>把list[1]的位置直接添加一个list；</li>
+</ol>
+<p>代码如下，<code>完全符合预期</code>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>但是结果却是 <strong>无限循环</strong></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [...], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>❌就❎在第二步中<br>其中涉及两个概念：引用、拷贝</p>
+</blockquote>
+<p>第一部分已经说过，<strong>变量名是内存的别称</strong>，</p>
+<p><code>a=10</code>的含义：内存中有个地址0x1234567的空间存了10，然后a指向这块内存。</p>
+<p><img data-src="1.jpg" alt="变量多次&#39;赋值‘"></p>
+<p><strong>上图中很好的证明了，变量‘赋不同值’，只是引用不同而已</strong></p>
+<p><code>values[1] = values</code>只是把自身指向自身。如图：</p>
+<p><img data-src="3.jpg" alt="自身引用自身"></p>
+<p>如需达到预期效果，只需要类似于你的逻辑，<strong>指向一份值相同但内存不同的值</strong></p>
+<p><img data-src="5.jpg" alt="值相同但内存不同"></p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拷贝生成一份新的数据，</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values[<span class="number">1</span>] = values[:]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values</span><br><span class="line">[<span class="number">0</span>, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>往更深处说，values[:] 复制操作是所谓的「浅复制」(shallow copy)，当列表对象有嵌套的时候也会产生出乎意料的错误，比如</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = a[:]</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br><span class="line"><span class="comment"># 正确答案</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line">[<span class="number">8</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(b)</span><br><span class="line">[<span class="number">0</span>, [<span class="number">1</span>, <span class="number">9</span>], <span class="number">3</span>]</span><br><span class="line"><span class="comment"># a 与 b 的地址确实不同</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a))</span><br><span class="line"><span class="number">4355761096</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b))</span><br><span class="line"><span class="number">4355761416</span></span><br><span class="line"><span class="comment"># 但是内部list的地址确实相同的，也就是共同指向了同一块内存地址</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(a[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(id(b[<span class="number">1</span>]))</span><br><span class="line"><span class="number">4354260680</span></span><br></pre></td></tr></table></figure>
+
+<p>看完上图的打印结果，请看下图；</p>
+<p><img data-src="7.jpg" alt="浅复制"></p>
+<p><strong>重点： values[:] 只是浅层复制</strong><br><strong>重点： values[:] 只是浅层复制</strong><br><strong>重点： values[:] 只是浅层复制</strong></p>
+<p>正确的复制嵌套元素的方法是进行「深复制」(deep copy)，方法是</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>], <span class="number">3</span>]</span><br><span class="line">b = copy.deepcopy(a)</span><br><span class="line">a[<span class="number">0</span>] = <span class="number">8</span></span><br><span class="line">a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="9.jpg" alt="深复制"></p>
+<h4 id="3-引用-VS-拷贝："><a href="#3-引用-VS-拷贝：" class="headerlink" title="3 引用 VS 拷贝："></a>3 引用 VS 拷贝：</h4><ol>
+<li>没有限制条件的分片表达式（L[:]）能够复制序列，但此法<strong>只能浅层复制</strong>。</li>
+<li>字典 copy 方法，D.copy() 能够复制字典，但此法<strong>只能浅层复制</strong></li>
+<li>有些内置函数，例如 list，能够生成拷贝 list(L)</li>
+<li>copy 标准库模块能够生成完整拷贝：<strong>deepcopy 本质上是递归 copy</strong></li>
+<li></li>
+</ol>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://my.oschina.net/leejun2005/blog/145911" target="_blank" rel="noopener">python基础（5）：深入理解 python 中的赋值、引用、拷贝、作用域 原</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/09/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/09/index/" class="post-title-link" itemprop="url">Python基础系列之--迭代器/解析式【6】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-09 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-09T10:38:59+08:00">2019-05-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握解析式的使用</li>
+</ol>
+<ul>
+<li>liet 解析式</li>
+<li>dict 解析式</li>
+</ul>
+<ol start="2">
+<li>深入理解迭代器</li>
+<li>深入理解生成器</li>
+</ol>
+<h3 id="第一部分-迭代器、生成器"><a href="#第一部分-迭代器、生成器" class="headerlink" title="第一部分 迭代器、生成器"></a>第一部分 迭代器、生成器</h3><p>参考<a href="https://foofish.net/iterators-vs-generators.html" target="_blank" rel="noopener">完全理解Python迭代对象、迭代器、生成器</a>, 完整实例请看原文。</p>
+<blockquote>
+<p>在了解Python的数据结构时，<strong>容器(container)</strong>、<strong>可迭代对象(iterable)</strong>、<strong>迭代器(iterator)</strong>、<strong>生成器(generator)</strong>、<strong>列表/集合/字典推导式(list,set,dict comprehension)</strong>众多概念参杂在一起，难免让初学者一头雾水，我将用一篇文章试图将这些概念以及它们之间的关系捋清楚。</p>
+</blockquote>
+<p><img data-src="relationships.png" alt="关系图"></p>
+<blockquote>
+<p>请仔细看上图<br>请仔细看上图<br>请仔细看上图</p>
+</blockquote>
+<h4 id="1-容器（container）"><a href="#1-容器（container）" class="headerlink" title="1 容器（container）"></a>1 容器（container）</h4><p>像列表（list）、集合（set）、序列（tuple）、字典（dict）都是容器。简单的说，容器是一种把多个元素组织在一起的数据结构， <code>【可以逐个迭代获取其中的元素。】</code><strong>但是，但是，但这并不是容器本身提供的能力</strong>，而是<code>可迭代对象赋予了容器这种能力</code>，当然并不是所有的容器都是可迭代的，比如：<a href="https://zh.wikipedia.org/wiki/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8" target="_blank" rel="noopener">Bloom filter</a>，虽然Bloom filter可以用来检测某个元素是否包含在容器中，但是并不能从容器中获取其中的每一个值，因为Bloom filter压根就没把元素存储在容器中，而是通过一个散列函数映射成一个值保存在数组中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'a'</span> <span class="keyword">in</span> &#123;<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>&#125; <span class="comment"># 输出 True</span></span><br><span class="line"><span class="string">'a'</span> <span class="keyword">in</span> &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>&#125; <span class="comment"># 输出 True</span></span><br><span class="line"><span class="string">'a'</span> <span class="keyword">in</span> set([<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]) <span class="comment"># 输出 True</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-可迭代对象-iterable"><a href="#2-可迭代对象-iterable" class="headerlink" title="2 可迭代对象(iterable)"></a>2 可迭代对象(iterable)</h4><blockquote>
+<p>凡是可以返回一个迭代器的对象都可称之为可迭代对象</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = iter(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = iter(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(y)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(z)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(x)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">list</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(y)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">list_iterator</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里x是一个可迭代对象，<strong>可迭代对象和容器一样是一种通俗的叫法</strong>，并不是指某种具体的数据类型，<code>list是可迭代对象，dict是可迭代对象，set也是可迭代对象</code>。<br>y和z是两个独立的迭代器，迭代器内部持有一个状态，该状态用于记录当前迭代所在的位置，以方便下次迭代的时候获取正确的元素。<br>迭代器有一种具体的迭代器类型，比如list_iterator，set_iterator。<br><strong>可迭代对象实现了<strong>iter</strong>方法，该方法返回一个迭代器对象。</strong></p>
+<p><img data-src="iterable-vs-iterator.png" alt=""></p>
+<h4 id="3-迭代器-iterator"><a href="#3-迭代器-iterator" class="headerlink" title="3 迭代器(iterator)"></a>3 迭代器(iterator)</h4><p>那么什么迭代器呢？它是一个带状态的对象，他能在你调用next()方法的时候返回容器中的下一个值，<strong>任何实现了<strong>iter</strong>和<strong>next</strong>()（python2中实现next()）方法的对象都是迭代器</strong>，<br><strong>iter</strong>返回迭代器自身，<br><strong>next</strong>返回容器中的下一个值，<br>如果容器中没有更多元素了，则抛出StopIteration异常，至于它们到底是如何实现的这并不重要。</p>
+<p>所以，迭代器就是实现了工厂模式的对象，它在你每次你询问要下一个值的时候给你返回。有很多关于迭代器的例子，比如itertools函数返回的都是迭代器对象。</p>
+<blockquote>
+<p>迭代器就像一个懒加载的工厂，等到有人需要的时候才给它生成值返回，没调用的时候就处于休眠状态等待下一次调用。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'white'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'blue'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(colors)</span><br><span class="line"><span class="string">'red'</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="4-生成器-generator"><a href="#4-生成器-generator" class="headerlink" title="4 生成器(generator)"></a>4 生成器(generator)</h4><p><strong>生成器算得上是Python语言中最吸引人的特性之一</strong>生成器其实是一种特殊的迭代器，不过这种迭代器更加优雅。<br>它不需要再像上面的类一样写<strong>iter</strong>()和<strong>next</strong>()方法了，<strong>只需要一个yiled关键字</strong>。<br><strong>生成器一定是迭代器（反之不成立）</strong>，因此任何生成器也是以一种懒加载的模式生成值。用生成器来实现斐波那契数列的例子是：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></span><br><span class="line">    prev, curr = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> curr</span><br><span class="line">        prev, curr = curr, curr + prev</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>说实在的没看懂，后续章节补充这个。。。</strong></p>
+<p><strong>总结：</strong></p>
+<ol>
+<li>容器是一系列元素的集合，str、list、set、dict、file、sockets对象都可以看作是容器<br>容器都可以被迭代（用在for，while等语句中），因此他们被称为可迭代对象。</li>
+<li>可迭代对象实现了<strong>iter</strong>方法，该方法返回一个迭代器对象。</li>
+<li>迭代器持有一个内部状态的字段，用于记录下次迭代返回值，它实现了<strong>next</strong>和<strong>iter</strong>方法，迭代器不会一次性把所有元素加载到内存，而是需要的时候才生成返回结果。</li>
+<li>生成器是一种特殊的迭代器，它的返回值不是通过return而是用yield。</li>
+</ol>
+<h3 id="第二部分-解析式"><a href="#第二部分-解析式" class="headerlink" title="第二部分 解析式"></a>第二部分 解析式</h3><h4 id="1-什么是列表解析式？"><a href="#1-什么是列表解析式？" class="headerlink" title="1 什么是列表解析式？"></a>1 什么是列表解析式？</h4><p><strong>列表解析式是将一个列表（实际上适用于任何可迭代对象（iterable））转换成另一个列表的工具。</strong>在转换过程中，可以指定元素必须符合一定的条件，才能添加至新的列表中，这样每个元素都可以按需要进行转换。<a href="http://codingpy.com/article/python-list-comprehensions-explained-visually/" target="_blank" rel="noopener">参考</a></p>
+<p><img data-src="ex.png" alt=""></p>
+<blockquote>
+<p>如果看过图就明白了，就结束啦</p>
+</blockquote>
+<h4 id="2-Show-Code"><a href="#2-Show-Code" class="headerlink" title="2 Show Code"></a>2 Show Code</h4><p><strong>需求： 遍历数组，将满足条件的数据放入新的数组中</strong></p>
+<p><em>单层嵌套</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一般的写法</span></span><br><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">doubled_odds = []</span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> numbers:</span><br><span class="line">    <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        doubled_odds.append(n)</span><br></pre></td></tr></table></figure>
+
+<p><strong>*解析式表达如下，分三部分</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">doubled_odds = [</span><br><span class="line">    n,</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> numbers</span><br><span class="line">    f n % <span class="number">2</span> == <span class="number">1</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<p>基本语法： <code>[ expr  for item in iterable  judge ]</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. expr 待操作元素</span><br><span class="line">2. for item in iterable  循环语句【可嵌套，从后往前】</span><br><span class="line">3. judge 判断条件 【可选】</span><br></pre></td></tr></table></figure>
+
+<p><em>双层嵌套</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tmpList = [ [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]  ]</span><br><span class="line">newList =[</span><br><span class="line">    n</span><br><span class="line">    <span class="comment"># 先后再前</span></span><br><span class="line">    <span class="keyword">for</span> inNum <span class="keyword">in</span> inList  <span class="keyword">for</span> inList <span class="keyword">in</span> tmpList</span><br><span class="line">    <span class="comment"># 判断语句可选</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><strong>参照list解析式，记住语法，其实也不难</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">flipped &#x3D; &#123;</span><br><span class="line">    value: key</span><br><span class="line">    for key, value in original.items()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/08/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/08/index/" class="post-title-link" itemprop="url">Python基础系列之--字典/集合类型【5】</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-08 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-08T10:38:59+08:00">2019-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.1k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握字典的常用操作</li>
+<li>掌握集合的常用操作</li>
+</ol>
+<p><img data-src="type.png" alt="整体"></p>
+<h3 id="第一部分-字典"><a href="#第一部分-字典" class="headerlink" title="第一部分 字典"></a>第一部分 字典</h3><p>字典就是一个个的键值对 {key: value}，实现原理：根据key 计算 hash， 速度快。<br><strong>注意事项</strong></p>
+<ol>
+<li>key: 任意不可变对象，但不能是list；</li>
+<li>value: 可以是任意对象。</li>
+</ol>
+<blockquote>
+<p><strong>字典是有序的</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>思考：为何字典的key不可以是list类型？</strong></p>
+</blockquote>
+<h4 id="1-三种创建方式"><a href="#1-三种创建方式" class="headerlink" title="1. 三种创建方式"></a>1. 三种创建方式</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dic1 = &#123;<span class="string">"sex"</span>: <span class="number">1</span>&#125;</span><br><span class="line">dic2 = dict([(<span class="string">'name'</span>, <span class="string">'simuty'</span>), (<span class="string">"age"</span>, <span class="number">1</span>)])</span><br><span class="line">dic3 = dict(age=<span class="number">2</span>, name=<span class="string">'python'</span>, sex=<span class="number">1</span>)</span><br><span class="line">print(dic1)</span><br><span class="line">print(dic2)</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&#123;'sex': 1&#125;</span></span><br><span class="line"><span class="string">&#123;'name': 'simuty'&#125;</span></span><br><span class="line"><span class="string">&#123;'age': 2&#125;</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-删除指定元素"><a href="#2-删除指定元素" class="headerlink" title="2. 删除指定元素"></a>2. 删除指定元素</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">del</span> dic3[<span class="string">'age'</span>]</span><br><span class="line">dic3.pop(<span class="string">'name'</span>)</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空字典</span></span><br><span class="line">dic3.clear()</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> dic3</span><br><span class="line">print(dic3)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">&#123;'age': 2, 'name': 'python', 'sex': 1&#125;</span></span><br><span class="line"><span class="string">&#123;'sex': 1&#125;</span></span><br><span class="line"><span class="string">&#123;&#125;</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "dic.py", line 28, in &lt;module&gt;</span></span><br><span class="line"><span class="string">    print(dic3)</span></span><br><span class="line"><span class="string">NameError: name 'dic3' is not defined</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-合并"><a href="#3-合并" class="headerlink" title="3. 合并"></a>3. 合并</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 合并</span></span><br><span class="line">a_dic = &#123;<span class="string">"k"</span>: <span class="number">1</span>&#125;</span><br><span class="line">b_dic = &#123;<span class="string">'k'</span>: <span class="number">2</span>, <span class="string">"x"</span>: <span class="number">3</span>&#125;</span><br><span class="line">a_dic.update(b_dic)</span><br><span class="line">print(a_dic)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除最后一个并返回</span></span><br><span class="line">print(b_dic.popitem())</span><br><span class="line">print(b_dic)</span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="string">'k'</span>: <span class="number">2</span>, <span class="string">"x"</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="comment"># 接遍历字典获取键，根据键取值</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> dic:</span><br><span class="line">    print(key, dic[key])</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="Dictionary.png" alt="字典"></p>
+<h3 id="第二部分-集合"><a href="#第二部分-集合" class="headerlink" title="第二部分 集合"></a>第二部分 集合</h3><p><strong>set集合是一个无序不重复元素的集，基本功能包括关系测试和消除重复元素。</strong></p>
+<blockquote>
+<p>集合使用大括号({})框定元素，并以逗号进行分隔。<br>创建一个空集合，必须用 set() 而不是 {} ，因为后者创建的是一个空字典。</p>
+</blockquote>
+<h4 id="1-集合操作"><a href="#1-集合操作" class="headerlink" title="1. 集合操作"></a>1. 集合操作</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">set1 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line">print(set1 ^ set2)</span><br><span class="line">print(set1 - set2)</span><br><span class="line">print(set2 - set1)</span><br><span class="line">print(set1 &amp; set2)</span><br><span class="line">print(set1 | set2)</span><br><span class="line"></span><br><span class="line">a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">print(a)</span><br><span class="line">b = a.add(<span class="number">5</span>)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="handleSet.png" alt="实例"></p>
+<p><img data-src="Set.png" alt="set"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/06/index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -322,7 +1646,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -502,7 +1826,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
+                <time title="修改时间：2020-05-29 11:48:02" itemprop="dateModified" datetime="2020-05-29T11:48:02+08:00">2020-05-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -592,1282 +1916,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/04/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/04/index/" class="post-title-link" itemprop="url">Python基础系列之--数字类型【2】</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-04 10:38:59" itemprop="dateCreated datePublished" datetime="2019-05-04T10:38:59+08:00">2019-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>总览 Python 数据类型</p>
-</blockquote>
-<p>目标</p>
-<ul>
-<li><ol>
-<li>了解Python有几种数据类型</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>认识Python的数字类型</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>重点掌握对数字类型的操作</li>
-</ol>
-</li>
-</ul>
-<p><img data-src="type.png" alt="Python数据类型"></p>
-<h2 id="第一部分-数字类型"><a href="#第一部分-数字类型" class="headerlink" title="第一部分 数字类型"></a>第一部分 数字类型</h2><p><strong>数字类型用于存储数学意义上的数值。</strong></p>
-<p>Python 支持三种不同的数字类型，<strong>整数、浮点数和复数</strong>：</p>
-<h3 id="1-整数"><a href="#1-整数" class="headerlink" title="1. 整数"></a>1. 整数</h3><p>定义：正或负整数，不带小数点的数</p>
-<p><strong>Python 的整数长度为 32 位，并且通常是连续分配内存空间的。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; id(0)</span><br><span class="line">4361838576</span><br><span class="line">&gt;&gt;&gt; id(1)</span><br><span class="line">4361838608</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="小整数对象池"><a href="#小整数对象池" class="headerlink" title="小整数对象池"></a>小整数对象池</h4><p>Python 初始化的时候会自动建立一个<strong>小整数对象池</strong>，方便我们调用，避免后期重复生成！这是一个包含<strong>262 个指向整数对象的指针数组，范围是-5 到 256</strong>。</p>
-<blockquote>
-<p>也就是说比如整数 10，即使我们在程序里没有创建它，其实在 Python 后台已经悄悄为我们创建了。</p>
-</blockquote>
-<p>看下边的 id(-6)与 id(257)的地址，<strong>4364640112</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; id(-6)</span><br><span class="line">4364640112</span><br><span class="line">&gt;&gt;&gt; id(-5)</span><br><span class="line">4361838416</span><br><span class="line">&gt;&gt;&gt; id(255)</span><br><span class="line">4361846736</span><br><span class="line">&gt;&gt;&gt; id(256)</span><br><span class="line">4361846768</span><br><span class="line">&gt;&gt;&gt; id(257)</span><br><span class="line">4364640112</span><br></pre></td></tr></table></figure>
-
-<h5 id="为什么存在小整数对象池？"><a href="#为什么存在小整数对象池？" class="headerlink" title="为什么存在小整数对象池？"></a>为什么存在小整数对象池？</h5><blockquote>
-<p>像懒加载一样，创建一个一直存在，永不销毁，随用随拿的小整数对象池，减小开支。</p>
-</blockquote>
-<h4 id="整数缓冲区"><a href="#整数缓冲区" class="headerlink" title="整数缓冲区"></a>整数缓冲区</h4><p>刚被删除的整数，不会被真正立刻删除回收，而是在后台缓冲一段时间，等待下一次的可能调用。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; 100</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4401859696</span><br><span class="line">&gt;&gt;&gt; del a</span><br><span class="line">&gt;&gt;&gt; b &#x3D; 100</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">4401859696</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<p>把 a 删了，然后创建一个 b,地址是一样的。</p>
-<h3 id="2-浮点数"><a href="#2-浮点数" class="headerlink" title="2. 浮点数"></a>2. 浮点数</h3><p>浮点数也就是小数<br>对于很大或很小的浮点数，一般用科学计数法表示，把10用e替代，1.23x10^9就是1.23e9，或者12.3e8，0.000012可以写成1.2e-5，等等。</p>
-<h3 id="3-复数"><a href="#3-复数" class="headerlink" title="3. 复数"></a>3. 复数</h3><p><strong>复数由实数部分和虚数部分构成</strong>，可以用a + bj,或者complex(a,b)表示，复数的实部a和虚部b都是浮点型。关于复数，不做科学计算或其它特殊需要，通常很难遇到。</p>
-<h2 id="第二部分-操作数字类型"><a href="#第二部分-操作数字类型" class="headerlink" title="第二部分 操作数字类型"></a>第二部分 操作数字类型</h2><p><img data-src="number.png" alt="数字类型操作"></p>
-<h3 id="1-简单常用的计算"><a href="#1-简单常用的计算" class="headerlink" title="1. 简单常用的计算"></a>1. 简单常用的计算</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import math</span><br><span class="line"># print(dir(math))</span><br><span class="line"># print(abs(-10))</span><br><span class="line"># print(cmp(1, 3))</span><br><span class="line"># print(math.exp(2))</span><br><span class="line"># print(math.ceil(1.2), math.ceil(-1.2))</span><br><span class="line"># print(math.floor(1.2))</span><br><span class="line"># print(max([12, 1]))</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-随机操作"><a href="#2-随机操作" class="headerlink" title="2. 随机操作"></a>2. 随机操作</h3><p>主要还没涉及更复杂的计算，只是罗列一些可能常用的方法；<br>真值分部相关的操作，如正态分部啥的，因为暂无需求，</p>
-<blockquote>
-<p>我希望: 有朝一日能用的上那些高大上的。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding&#x3D;utf-8</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">print(&quot;---基本---&quot;)</span><br><span class="line"># 基本</span><br><span class="line"># 返回当前生成器的内部状态</span><br><span class="line">print(random.getstate())</span><br><span class="line"># 不大于K位的Python整数,结果是0~2^10之间的整数</span><br><span class="line">print(random.getrandbits(10))</span><br><span class="line"></span><br><span class="line">print(&quot;---整数---&quot;)</span><br><span class="line"># 整数</span><br><span class="line"># 0-9的整数：</span><br><span class="line">print(random.randrange(10))</span><br><span class="line"># 0-100的偶数</span><br><span class="line">print(random.randrange(0, 101, 2))</span><br><span class="line"># 返回 a &lt;&#x3D; N &lt;&#x3D; b， 等同于randrange(a, b+1)。</span><br><span class="line">print(random.randint(1, 9))</span><br><span class="line"></span><br><span class="line">print(&quot;---list---&quot;)</span><br><span class="line"># list</span><br><span class="line"># 从序列随机选择一个元素</span><br><span class="line">print(random.choice([&#39;python&#39;, &#39;node&#39;, &#39;种地&#39;]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(&quot;---真值分布---&quot;)</span><br><span class="line"># 随机浮点数:  0.0 &lt;&#x3D; x &lt; 1.0</span><br><span class="line">print(random.random())</span><br><span class="line"># 随机浮点数:  1.1 &lt;&#x3D; x &lt; 11.1</span><br><span class="line">print(random.uniform(1.1, 11.1))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 对序列进行洗牌，改变原序列</span><br><span class="line">deck &#x3D; &#39;one two three four&#39;.split()</span><br><span class="line">random.shuffle(deck)</span><br><span class="line">print(deck)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/03/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/03/index/" class="post-title-link" itemprop="url">NodeJs 基础系列之--基本概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-03 23:59:59" itemprop="dateCreated datePublished" datetime="2019-05-03T23:59:59+08:00">2019-05-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>还记得之前说，NodeJs 拥有丰富的第三方模块吗？</p>
-<blockquote>
-<p>如何利用现有的模块，快速、高效的实现需求呢？</p>
-</blockquote>
-</blockquote>
-<h2 id="第一部分-模块管理工具"><a href="#第一部分-模块管理工具" class="headerlink" title="第一部分 模块管理工具"></a>第一部分 模块管理工具</h2><p><strong>几个关键字</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. nvm：主要管理nodejs版本；</span><br><span class="line">2. npm：nodejs自带模块管理工具；</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-NPM-是什么"><a href="#1-NPM-是什么" class="headerlink" title="1. NPM 是什么?"></a>1. NPM 是什么?</h3><blockquote>
-<p>npm 之于 Node.js ，就像 pip 之于 Python， gem 之于 Ruby， pear 之于 PHP 。</p>
-</blockquote>
-<p><a href="https://www.npmjs.com.cn/getting-started/what-is-npm/" target="_blank" rel="noopener">NPM 官网</a>给出解释如下:</p>
-<ol>
-<li>npm 为你和你的团队打开了连接整个 JavaScript 天才世界的一扇大门。</li>
-<li>它是世界上最大的软件注册表，每星期大约有 30 亿次的下载量，包含超过 600000 个 包（package） （即，代码模块）。</li>
-</ol>
-<p><strong>npm 由三个独立的部分组成：</strong></p>
-<ol>
-<li>网站：开发者查找包（package）、设置参数以及管理 npm 使用体验的主要途径；</li>
-<li>注册表（registry）：巨大的数据库，保存了每个包（package）的信息；</li>
-<li>命令行工具 (CLI)： 开发者通过 CLI 与 npm 打交道。</li>
-</ol>
-<p>总之一句话，<strong>想简单高效的完成任务么？NPM 你值得拥有</strong></p>
-<blockquote>
-<p>接下来主要介绍使用</p>
-<blockquote>
-<p>至于自我创建模块，暂不讨论</p>
-</blockquote>
-</blockquote>
-<h3 id="2-安装配置"><a href="#2-安装配置" class="headerlink" title="2. 安装配置"></a>2. 安装配置</h3><p>NodeJs 自带 npm, 故无需安装。<br>罗列几个常用的命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看 npm 命令列表</span><br><span class="line">$ npm help</span><br><span class="line"></span><br><span class="line"># 查看各个命令的简单用法</span><br><span class="line">$ npm -l</span><br><span class="line"></span><br><span class="line"># 查看 npm 的版本</span><br><span class="line">$ npm -v</span><br><span class="line"></span><br><span class="line"># 查看 npm 的配置</span><br><span class="line">$ npm config list -l</span><br><span class="line"></span><br><span class="line">$ npm list</span><br><span class="line"></span><br><span class="line"># 加上 global 参数，会列出全局安装的模块</span><br><span class="line">$ npm list -global</span><br><span class="line"></span><br><span class="line"># 搜索模块</span><br><span class="line">$ npm search &lt;关键字&gt;</span><br><span class="line"></span><br><span class="line"># 本地安装</span><br><span class="line">$ npm install &lt;package name&gt;</span><br><span class="line"></span><br><span class="line"># 全局安装</span><br><span class="line">$ sudo npm install -global &lt;package name&gt;</span><br><span class="line">$ sudo npm install -g &lt;package name&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="实例一-眼见为实"><a href="#实例一-眼见为实" class="headerlink" title="实例一 眼见为实"></a>实例一 眼见为实</h5><p>下载一个常用的框架—ExpressJs，借此展示一下效果，并熟悉一个 ExpressJs</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ mkdir first</span><br><span class="line">$ cd first</span><br><span class="line">$ npm install express</span><br><span class="line">$ node app.js</span><br><span class="line">Example app listening on port 3000!</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/2019/05/03/index/2.jpg" alt="效果如图"></p>
-<h5 id="实例二-初识-package-json-文件"><a href="#实例二-初识-package-json-文件" class="headerlink" title="实例二 初识 package.json 文件"></a>实例二 初识 package.json 文件</h5><p>简单说就是，记录文件，记录项目依赖的模块。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 初始化一个package.json文件</span><br><span class="line">$ npm init</span><br></pre></td></tr></table></figure>
-
-<p>实例说明</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 名称</span><br><span class="line">  &quot;name&quot;: &quot;npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 版本</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &#x2F;&#x2F; 描述</span><br><span class="line">  &quot;description&quot;: &quot;study npm&quot;,</span><br><span class="line">  &#x2F;&#x2F; 入口文件</span><br><span class="line">  &quot;main&quot;: &quot;app.js&quot;,</span><br><span class="line">  &#x2F;&#x2F; 模块依赖</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;express&quot;: &quot;^4.16.4&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;&#125;,</span><br><span class="line">  &#x2F;&#x2F; 执行脚本</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; 关键词</span><br><span class="line">  &quot;keywords&quot;: [</span><br><span class="line">    &quot;npm&quot;</span><br><span class="line">  ],</span><br><span class="line">  &#x2F;&#x2F; 作者</span><br><span class="line">  &quot;author&quot;: &quot;howard&quot;,</span><br><span class="line">  &#x2F;&#x2F; 协议</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如我们需要下载ExpressJs,</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一下命令即可将Express依赖加入到上边的文件中，偷个懒，不在重负写了</span><br><span class="line">$ npm install express --save</span><br></pre></td></tr></table></figure>
-
-<p>实例三 更改npm源</p>
-<p>可能你发现下载东西简直如龟速，这个你得感谢<a href="https://baike.baidu.com/item/%E6%96%B9%E6%BB%A8%E5%85%B4/9525950?fr=aladdin" target="_blank" rel="noopener">防火墙之父</a></p>
-<p>为了更快更好的完成工作，我们可以用国内的<a href="https://npm.taobao.org/" target="_blank" rel="noopener">淘宝</a>、清华等源；</p>
-<p><strong>淘宝镜像说明：这是一个完整 npmjs.org 镜像，你可以用此代替官方版本(只读)，同步频率目前为 10分钟 一次以保证尽量与官方服务同步。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>使用方法类似，用cnpm即可</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cnpm install [name]</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><blockquote>
-<p>Node.js 最大的特点就是异步式 I/O(或者非阻塞I/O)与事件紧密结合的编程模式。</p>
-</blockquote>
-<h4 id="1-阻塞I-O与非阻塞I-O概念"><a href="#1-阻塞I-O与非阻塞I-O概念" class="headerlink" title="1.阻塞I/O与非阻塞I/O概念"></a>1.阻塞I/O与非阻塞I/O概念</h4><h5 id="1-1-阻塞I-O-同步I-O"><a href="#1-1-阻塞I-O-同步I-O" class="headerlink" title="1.1 阻塞I/O(同步I/O)"></a>1.1 阻塞I/O(同步I/O)</h5><p>线程在执行中如果遇到磁盘读写或网络通信(<strong>统称为I/O 操作</strong>)， 通常要耗费较长的时间，这时操作系统会剥夺这个线程的 CPU 控制权，使其暂停执行，同时将资源让给其他的工作线程，这种线程调度方式称为<strong>阻塞</strong>,当<strong>I/O 操作</strong>完成时，操作系统将这个线程的阻塞解除，恢复其对CPU的控制 ，令其继续运行。这种 I/O 模式就是通常的<strong>同步式 I/O(Synchronous I/O)或阻塞式 I/O (Blocking I/O)。</strong></p>
-<h5 id="1-2-非阻塞I-O-异步I-O"><a href="#1-2-非阻塞I-O-异步I-O" class="headerlink" title="1.2 非阻塞I/O(异步I/O)"></a>1.2 非阻塞I/O(异步I/O)</h5><p>非阻塞I/O是针对所有的I/O<strong>不采用阻塞的策略</strong>, 当线程遇到I/O 操作时, <strong>不会阻塞等待完成</strong>, 而是将I/O 操作发送给操作系统, <strong>继续执行下一个语句</strong>, 等操作系统完成I/O 操作以后, 会以<strong>事件的形式</strong>发送通知执行I/O 操作的线程, 线程会在特定的时候处理这个事件; 也就是线程中会不停的监听时间循环, 看是否有未处理的事件, 并以此处理.</p>
-<blockquote>
-<p>举个通俗的例子：<br><a href="https://www.zhihu.com/question/19732473/answer/20851256" target="_blank" rel="noopener">例子来自知乎网友</a></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">你打电话问书店老板有没有《分布式系统》这本书，如果是&#96;同步通信机制&#96;，书店老板会说，你稍等，”我查一下&quot;，</span><br><span class="line">然后开始查啊查，等查好了（可能是5秒，也可能是一天）告诉你结果（返回结果）。</span><br><span class="line"></span><br><span class="line">而&#96;异步通信机制&#96;，书店老板直接告诉你我查一下啊，查好了打电话给你，然后直接挂电话了（不返回结果）。</span><br><span class="line">然后查好了，他会主动打电话给你。在这里老板通过“回电”这种方式来回调。</span><br></pre></td></tr></table></figure>
-
-
-<h5 id="2-阻塞I-O与非阻塞I-O特点"><a href="#2-阻塞I-O与非阻塞I-O特点" class="headerlink" title="2.阻塞I/O与非阻塞I/O特点"></a>2.阻塞I/O与非阻塞I/O特点</h5><table>
-<thead>
-<tr>
-<th>同步I/O(阻塞式)</th>
-<th>异步I/O(非阻塞式)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>利用多线程提供吞吐量</td>
-<td>单线程可实现高吞吐量</td>
-</tr>
-<tr>
-<td>通过事件分割和线程调度利用多核CPU</td>
-<td>通过功能划分利用多核CPU</td>
-</tr>
-<tr>
-<td>需要由操作系统调度多线程使用多核CPU</td>
-<td>可以将单进程绑定到单核 CPU</td>
-</tr>
-<tr>
-<td>难以充分利用 CPU 资源</td>
-<td>可以充分利用 CPU 资源</td>
-</tr>
-<tr>
-<td>符合线性的编程思维</td>
-<td>不符合传统编程思维</td>
-</tr>
-</tbody></table>
-<p><img data-src="/2019/05/03/index/3.jpg" alt="对比"></p>
-<h4 id="第二部分-异步式编程-函数式编程"><a href="#第二部分-异步式编程-函数式编程" class="headerlink" title="第二部分 异步式编程(函数式编程)"></a>第二部分 异步式编程(函数式编程)</h4><p>有异步I/O，就必然有异步编程。<br>首先以同步式编程的语法读取一个文件:</p>
-<p><em>创建readfilesync.js, 并执行</em></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">var data &#x3D; fs.readFileSync(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;); </span><br><span class="line">console.log(data);</span><br><span class="line">console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
-<p>打印的结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfilesync.js </span><br><span class="line">你好呀</span><br><span class="line">end.</span><br></pre></td></tr></table></figure>
-
-<p>以上代码很容易理解, 自上而下的执行, 那么异步编程的做法呢?</p>
-<p><em>创建readfileasync.js, 并执行</em></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var fs &#x3D; require(&#39;fs&#39;);</span><br><span class="line">fs.readFile(&#39;&#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;file.txt&#39;, &#39;utf-8&#39;, function(err, data) &#123;</span><br><span class="line">if (err)&#123; </span><br><span class="line">    console.error(err);</span><br><span class="line">&#125; else &#123; </span><br><span class="line">    console.log(data);</span><br><span class="line">&#125; </span><br><span class="line">&#125;);</span><br><span class="line">    console.log(&#39;end.&#39;);</span><br></pre></td></tr></table></figure>
-
-<p>打印的结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;执行</span><br><span class="line">$ node &#x2F;Users&#x2F;51testing&#x2F;Desktop&#x2F;readfileasync.js </span><br><span class="line">end.</span><br><span class="line">你好呀</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
-
-<p>fs.readFile 调用时所做的工作只是<code>将异步式 I/O 请求发给了操作系统</code>， 然后<code>立即返回</code>并执行后面的语句，执行完以后进入事件循环监听事件。  fs 接到I/O 请求完成的事件时，<code>事件循环会主动调用</code>回调函数以完成后续工作。<code>因此我们会先看到 end.然后看到 file.txt 文件的内容。</code></p>
-<h4 id="2-NodeJs循环机制"><a href="#2-NodeJs循环机制" class="headerlink" title="2 NodeJs循环机制"></a>2 NodeJs循环机制</h4><p><img data-src="/2019/05/03/index/4.jpg" alt="循环"></p>
-<blockquote>
-<p>Node.js 在什么时候会进入事件循环呢? </p>
-</blockquote>
-<p><strong>生命周期为:</strong><code>Node.js 程序由事件循环环开始，到事件循环结束</code>.</p>
-<p>所有的逻辑都是事件的回调函数，所以 Node.js 始终在事件循环中，程序入口就是 事件循环第一个事件的回调函数。事件的回调函数在执行的过程中，可能会发出 I/O 请求或直接发射  (emit)事件，执行完成后再返回事件 循环，事件循环会会检查循环中有没有  处理的事件,直到到程序结束。</p>
-<h4 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h4><p>Node 版本区别:</p>
-<p>从对 ES6 的支持来简单的区分是</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0.x 完全不支持ES6</span><br><span class="line">4.x 部分支持ES6特性，并处在LTS阶段</span><br><span class="line">5.x 部分支持ES6特性（比4.x多些），属于过渡产品，现在来说应该没有什么理由去用这个了</span><br><span class="line">6.x 支持98%的ES6特性</span><br></pre></td></tr></table></figure>
-
-<p><strong>参考链接</strong></p>
-<p><a href="https://www.byvoid.com/zhs/project/node" target="_blank" rel="noopener">Node.js开发指南</a><br><a href="http://www.infoq.com/cn/master-nodejs" target="_blank" rel="noopener">深入浅出Node.js</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/02/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/02/index/" class="post-title-link" itemprop="url">Python基础系列之--初识【1】</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-02 23:59:59" itemprop="dateCreated datePublished" datetime="2019-05-02T23:59:59+08:00">2019-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[toc]</p>
-<h1 id="认识-Python"><a href="#认识-Python" class="headerlink" title="认识 Python"></a>认识 Python</h1><blockquote>
-<p>人生苦短，我用 Python —— Life is short, you need Python</p>
-</blockquote>
-<p><img data-src="1.jpg" alt="img"></p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>Python 的起源</li>
-<li>为什么要用 Python？</li>
-<li>Python 的特点</li>
-<li>Python 的优缺点</li>
-<li><code>Python 2.x</code> 与 <code>3​​.x</code> 版本简介</li>
-<li>执行 <code>Python</code> 程序的三种方式<ul>
-<li>解释器 —— <code>python</code> / <code>python3</code></li>
-<li>交互式 —— <code>ipython</code></li>
-<li>我选择免费易扩展的VSCode,因为还得写别的语言，仅此而已</li>
-</ul>
-</li>
-</ul>
-<h2 id="01-Python-的起源"><a href="#01-Python-的起源" class="headerlink" title="01. Python 的起源"></a>01. Python 的起源</h2><blockquote>
-<p>Python 的创始人为吉多·范罗苏姆（Guido van Rossum）</p>
-<blockquote>
-<p>Python之父是荷兰人Guido van Rossum，被誉为历史上<a href="https://www.douban.com/group/topic/74259468/" target="_blank" rel="noopener">最伟大的12名程序员</a>之一。</p>
-</blockquote>
-</blockquote>
-<p><img data-src="2.jpg" alt="e747899073c9b4416c91c2bb326f1549.jpeg"></p>
-<ol>
-<li>1989 年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的<strong>解释程序</strong>，作为 ABC 语言的一种继承（<strong>感觉下什么叫牛人</strong>）</li>
-<li>ABC 是由吉多参加设计的一种教学语言，就吉多本人看来，ABC 这种语言非常优美和强大，是<strong>专门为非专业程序员设计的</strong>。但是 ABC 语言并没有成功，究其原因，吉多认为是<strong>非开放</strong>造成的。吉多决心在 Python 中避免这一错误，并获取了非常好的效果</li>
-<li>之所以选中 Python（蟒蛇） 作为程序的名字，是因为他是 BBC 电视剧——蒙提·派森的飞行马戏团（Monty Python’s Flying Circus）的爱好者</li>
-<li>1991 年，第一个 Python <strong>解释器</strong> 诞生，它是用 C 语言实现的，并能够调用 C 语言的库文件</li>
-</ol>
-<h3 id="1-1-解释器（科普）"><a href="#1-1-解释器（科普）" class="headerlink" title="1.1 解释器（科普）"></a>1.1 解释器（科普）</h3><p><strong>计算机不能直接理解任何除机器语言以外的语言</strong>，所以必须要把程序员所写的程序语言翻译成机器语言，计算机才能执行程序。<strong>将其他语言翻译成机器语言的工具，被称为编译器</strong></p>
-<p>编译器翻译的方式有两种：一个是<strong>编译</strong>，另外一个是<strong>解释</strong>。两种方式之间的区别在于<strong>翻译时间点的不同</strong>。当编译器<strong>以解释方式运行的时候</strong>，也称之为<strong>解释器</strong></p>
-<p><img data-src="3.png" alt="12ae91928d3e790ef0b8cdf9ec299685.png"></p>
-<ul>
-<li><strong>编译型语言</strong>：程序在执行之前需要一个专门的编译过程，把程序编译成为机器语言的文件，运行时不需要重新翻译，直接使用编译的结果就行了。程序执行效率高，依赖编译器，跨平台性差些。如 C、C++</li>
-<li><strong>解释型语言</strong>：解释型语言编写的程序不进行预先编译，以文本方式存储程序代码，会将代码一句一句直接运行。在发布程序时，看起来省了道编译工序，但是在运行程序的时候，必须先解释再运行</li>
-</ul>
-<p><img data-src="4.jpg" alt="e56f0d1450ca0c514ba954ef640b4b4c.png"></p>
-<h4 id="编译型语言和解释型语言对比"><a href="#编译型语言和解释型语言对比" class="headerlink" title="编译型语言和解释型语言对比"></a>编译型语言和解释型语言对比</h4><ul>
-<li><strong>速度</strong> —— 编译型语言比解释型语言执行速度快</li>
-<li><strong>跨平台性</strong> —— 解释型语言比编译型语言跨平台性好</li>
-</ul>
-<h3 id="1-2-Python-的设计目标"><a href="#1-2-Python-的设计目标" class="headerlink" title="1.2 Python 的设计目标"></a>1.2 Python 的设计目标</h3><p>1999 年，吉多·范罗苏姆向 DARPA 提交了一条名为 “Computer Programming for Everybody” 的资金申请，并在后来说明了他对 Python 的目标：</p>
-<ul>
-<li>一门<strong>简单直观的语言</strong>并与主要竞争者一样强大</li>
-<li><strong>开源</strong>，以便任何人都可以为它做贡献</li>
-<li>代码<strong>像纯英语那样容易理解</strong></li>
-<li>适用于<strong>短期</strong>开发的日常任务</li>
-</ul>
-<p>这些想法中的基本都已经成为现实，Python 已经成为一门流行的编程语言</p>
-<h3 id="1-3-Python-的设计哲学"><a href="#1-3-Python-的设计哲学" class="headerlink" title="1.3 Python 的设计哲学"></a>1.3 Python 的设计哲学</h3><p><img data-src="5.jpg" alt="7ff693d9b86899489ddfc38bfe444bdc.png"></p>
-<ol>
-<li>优雅</li>
-<li>明确</li>
-<li>简单</li>
-</ol>
-<!-- > 在 Python 解释器内运行 `import this` 可以获得完整的列表 -->
-
-<ul>
-<li>Python 开发者的哲学是：<strong>用一种方法，最好是只有一种方法来做一件事</strong></li>
-<li>如果面临多种选择，Python 开发者一般会拒绝花俏的语法，而选择<strong>明确没有或者很少有歧义的语法</strong></li>
-</ul>
-<blockquote>
-<p>在 Python 社区，吉多被称为“仁慈的独裁者”</p>
-</blockquote>
-<h2 id="02-为什么选择-Python？"><a href="#02-为什么选择-Python？" class="headerlink" title="02. 为什么选择 Python？"></a>02. 为什么选择 Python？</h2><ul>
-<li>代码量少</li>
-<li>……</li>
-</ul>
-<blockquote>
-<p>同一样问题，用不同的语言解决，代码量差距还是很多的，一般情况下 <code>Python</code> 是 <code>Java</code> 的 <strong>1/5</strong>，所以说 <strong>人生苦短，我用 Python</strong></p>
-</blockquote>
-<h2 id="03-Python-特点"><a href="#03-Python-特点" class="headerlink" title="03. Python 特点"></a>03. Python 特点</h2><ul>
-<li>Python 是<strong>完全面向对象的语言</strong><ul>
-<li><strong>函数</strong>、<strong>模块</strong>、<strong>数字</strong>、<strong>字符串</strong>都是对象，<strong>在 Python 中一切皆对象</strong></li>
-<li>完全支持继承、重载、多重继承</li>
-<li>支持重载运算符，也支持泛型设计</li>
-</ul>
-</li>
-<li>Python <strong>拥有一个强大的标准库</strong>，Python 语言的核心只包含 <strong>数字</strong>、<strong>字符串</strong>、<strong>列表</strong>、<strong>字典</strong>、<strong>文件</strong> 等常见类型和函数，而由 Python 标准库提供了 <strong>系统管理</strong>、<strong>网络通信</strong>、<strong>文本处理</strong>、<strong>数据库接口</strong>、<strong>图形系统</strong>、<strong>XML 处理</strong> 等额外的功能</li>
-<li>Python 社区提供了<strong>大量的第三方模块</strong>，使用方式与标准库类似。它们的功能覆盖 <strong>科学计算</strong>、<strong>人工智能</strong>、<strong>机器学习</strong>、<strong>Web 开发</strong>、<strong>数据库接口</strong>、<strong>图形系统</strong> 多个领域</li>
-</ul>
-<h3 id="面向对象的思维方式"><a href="#面向对象的思维方式" class="headerlink" title="面向对象的思维方式"></a>面向对象的思维方式</h3><ul>
-<li><strong>面向对象</strong> 是一种 <strong>思维方式</strong>，也是一门 <strong>程序设计技术</strong></li>
-<li>要解决一个问题前，首先考虑 <strong>由谁</strong> 来做，怎么做事情是 <strong>谁</strong> 的职责，最后把事情做好就行！<ul>
-<li><strong>对象</strong> 就是 <strong>谁</strong></li>
-</ul>
-</li>
-<li>要解决复杂的问题，就可以找<strong>多个不同的对象</strong>，<strong>各司其职</strong>，共同实现，最终完成需求</li>
-</ul>
-<h2 id="04-Python-的优缺点"><a href="#04-Python-的优缺点" class="headerlink" title="04. Python 的优缺点"></a>04. Python 的优缺点</h2><h3 id="4-1-优点"><a href="#4-1-优点" class="headerlink" title="4.1 优点"></a>4.1 优点</h3><ul>
-<li>简单、易学</li>
-<li>免费、开源</li>
-<li><strong>面向对象</strong></li>
-<li>丰富的库</li>
-<li>可扩展性<ul>
-<li>如果需要一段关键代码运行得更快或者希望某些算法不公开，可以把这部分程序用 <code>C</code> 或 <code>C++</code> 编写，然后在 <code>Python</code> 程序中使用它们</li>
-</ul>
-</li>
-<li>……</li>
-</ul>
-<h3 id="4-2-缺点"><a href="#4-2-缺点" class="headerlink" title="4.2 缺点"></a>4.2 缺点</h3><ul>
-<li>运行速度</li>
-<li>国内市场较小</li>
-<li>中文资料匮乏</li>
-</ul>
-<h2 id="01-Python-2-x-与-3​​-x-版本简介"><a href="#01-Python-2-x-与-3​​-x-版本简介" class="headerlink" title="01. Python 2.x 与 3​​.x 版本简介"></a>01. <code>Python 2.x</code> 与 <code>3​​.x</code> 版本简介</h2><p>目前市场上有两个 Python 的版本并存着，分别是 <code>Python 2.x</code> 和 <code>Python 3.x</code></p>
-<p><img data-src="6.jpg" alt=""></p>
-<blockquote>
-<p>新的 Python 程序建议使用 <code>Python 3.0</code> 版本的语法</p>
-</blockquote>
-<ul>
-<li>Python 2.x 是 <strong>过去的版本</strong><ul>
-<li>解释器名称是 <strong>python</strong></li>
-</ul>
-</li>
-<li>Python 3.x 是 <strong>现在和未来 主流的版本</strong><ul>
-<li>解释器名称是 <strong>python3</strong></li>
-<li>相对于 <code>Python</code> 的早期版本，这是一个 <strong>较大的升级</strong></li>
-<li>为了不带入过多的累赘，<code>Python 3.0</code> 在设计的时候 <strong>没有考虑向下兼容</strong><ul>
-<li>许多早期 <code>Python</code> 版本设计的程序都无法在 <code>Python 3.0</code> 上正常执行</li>
-</ul>
-</li>
-<li>Python 3.0 发布于 <strong>2008 年</strong></li>
-<li>到目前为止，Python 3.0 的稳定版本已经有很多年了<ul>
-<li>Python 3.3 发布于 2012</li>
-<li>Python 3.4 发布于 2014</li>
-<li>Python 3.5 发布于 2015</li>
-<li>Python 3.6 发布于 2016</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>为了照顾现有的程序，官方提供了一个过渡版本 —— <strong>Python 2.6</strong><ul>
-<li>基本使用了 <code>Python 2.x</code> 的语法和库</li>
-<li>同时考虑了向 <code>Python 3.0</code> 的迁移，<strong>允许使用部分</strong> <code>Python 3.0</code> 的语法与函数</li>
-<li>2010 年中推出的 <code>Python 2.7</code> 被确定为 <strong>最后一个Python 2.x 版本</strong></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>提示：如果开发时，无法立即使用 Python 3.0（还有极少的第三方库不支持 3.0 的语法），建议</p>
-<ul>
-<li>先使用 <code>Python 3.0</code> 版本进行开发</li>
-<li>然后使用 <code>Python 2.6</code>、<code>Python 2.7</code> 来执行，并且做一些兼容性的处理</li>
-</ul>
-</blockquote>
-<h2 id="03-执行-Python-程序的三种方式"><a href="#03-执行-Python-程序的三种方式" class="headerlink" title="03. 执行 Python 程序的三种方式"></a>03. 执行 Python 程序的三种方式</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">解释器 —— python &#x2F; python3</span><br><span class="line">交互式 —— ipython</span><br><span class="line">集成开发环境 —— PyCharm &#x2F; VsCode</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="3-1-解释器-python-python3"><a href="#3-1-解释器-python-python3" class="headerlink" title="3.1. 解释器 python / python3"></a>3.1. 解释器 <code>python</code> / <code>python3</code></h3><h4 id="Python-的解释器"><a href="#Python-的解释器" class="headerlink" title="Python 的解释器"></a>Python 的解释器</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 python 2.x 解释器</span></span><br><span class="line">$ python xxx.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 python 3.x 解释器</span></span><br><span class="line">$ python3 xxx.py</span><br></pre></td></tr></table></figure>
-
-<h5 id="其他解释器"><a href="#其他解释器" class="headerlink" title="其他解释器"></a>其他解释器</h5><p><strong>Python 的解释器</strong> 如今有多个语言的实现，包括：</p>
-<ul>
-<li><code>CPython</code> —— 官方版本的 C 语言实现</li>
-<li><code>Jython</code> —— 可以运行在 Java 平台</li>
-<li><code>IronPython</code> —— 可以运行在 .NET 和 Mono 平台</li>
-<li><code>PyPy</code> —— Python 实现的，支持 JIT 即时编译</li>
-</ul>
-<h3 id="3-2-交互式运行-Python-程序"><a href="#3-2-交互式运行-Python-程序" class="headerlink" title="3.2. 交互式运行 Python 程序"></a>3.2. 交互式运行 Python 程序</h3><ul>
-<li>直接在终端中运行解释器，而不输入要执行的文件名</li>
-<li>在 Python 的 <code>Shell</code> 中直接输入 <strong>Python 的代码</strong>，会立即看到程序执行结果</li>
-</ul>
-<h4 id="1-交互式运行-Python-的优缺点"><a href="#1-交互式运行-Python-的优缺点" class="headerlink" title="1) 交互式运行 Python 的优缺点"></a>1) 交互式运行 Python 的优缺点</h4><h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><ul>
-<li>适合于学习/验证 Python 语法或者局部代码</li>
-</ul>
-<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><ul>
-<li>代码不能保存</li>
-<li>不适合运行太大的程序</li>
-</ul>
-<h4 id="2-退出-官方的解释器"><a href="#2-退出-官方的解释器" class="headerlink" title="2) 退出 官方的解释器"></a>2) 退出 官方的解释器</h4><h5 id="1-gt-直接输入-exit"><a href="#1-gt-直接输入-exit" class="headerlink" title="1&gt; 直接输入 exit()"></a>1&gt; 直接输入 <code>exit()</code></h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>exit()</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-gt-使用热键退出"><a href="#2-gt-使用热键退出" class="headerlink" title="2&gt; 使用热键退出"></a>2&gt; 使用热键退出</h5><p>在 python 解释器中，按热键 <code>ctrl + d</code> 可以退出解释器</p>
-<h4 id="3-gt-IPython"><a href="#3-gt-IPython" class="headerlink" title="3&gt; IPython"></a>3&gt; IPython</h4><ul>
-<li>IPython 中 的 “I” 代表 <strong>交互 interactive</strong></li>
-</ul>
-<h5 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h5><ul>
-<li>IPython 是一个 python 的 <strong>交互式 shell</strong>，比默认的 <code>python shell</code> 好用得多<ul>
-<li>支持自动补全</li>
-<li>自动缩进</li>
-<li>支持 <code>bash shell</code> 命令</li>
-<li>内置了许多很有用的功能和函数</li>
-</ul>
-</li>
-<li>IPython 是基于 BSD 开源的</li>
-</ul>
-<h5 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h5><ul>
-<li><p>Python 2.x 使用的解释器是 <strong>ipython</strong></p>
-</li>
-<li><p>Python 3.x 使用的解释器是 <strong>ipython3</strong></p>
-</li>
-<li><p>要退出解释器可以有以下两种方式：</p>
-</li>
-</ul>
-<h5 id="1-gt-直接输入-exit-1"><a href="#1-gt-直接输入-exit-1" class="headerlink" title="1&gt; 直接输入 exit"></a>1&gt; 直接输入 <code>exit</code></h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">In [<span class="number">1</span>]: exit</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-gt-使用热键退出-1"><a href="#2-gt-使用热键退出-1" class="headerlink" title="2&gt; 使用热键退出"></a>2&gt; 使用热键退出</h5><p>在 IPython 解释器中，按热键 <code>ctrl + d</code>，<code>IPython</code> 会询问是否退出解释器</p>
-<h3 id="3-3-不过我选择vscode-一个编辑器走天下！"><a href="#3-3-不过我选择vscode-一个编辑器走天下！" class="headerlink" title="### 3.3 不过我选择vscode, 一个编辑器走天下！"></a>### 3.3 不过我选择vscode, 一个编辑器走天下！</h3><p>工具顺手就行，只是为了提升开发效率，对Python的基本认识应该就到此位置了</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/05/01/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/01/index/" class="post-title-link" itemprop="url">NodeJs系列之--相见恨晚</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-01 23:59:59" itemprop="dateCreated datePublished" datetime="2019-05-01T23:59:59+08:00">2019-05-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第一部分-NodeJs-初识"><a href="#第一部分-NodeJs-初识" class="headerlink" title="第一部分 NodeJs 初识"></a>第一部分 NodeJs 初识</h3><p><strong>不知了了几行代码是否可以引起你的兴趣</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; service.js</span><br><span class="line">var http &#x3D; require(&quot;http&quot;);</span><br><span class="line">http.createServer(function(req,res)&#123;</span><br><span class="line">   res.write(&quot;Hello NodeJs&quot;);</span><br><span class="line">   res.end();</span><br><span class="line">&#125;).listen(8888);</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="media/15563604190618/15567161245047.jpg" alt=""></p>
-<h4 id="1-Nodejs是什么"><a href="#1-Nodejs是什么" class="headerlink" title="1 Nodejs是什么?"></a>1 Nodejs是什么?</h4><ul>
-<li><p>Node.js是一个让 <strong>JavaScript 运行在服务端的开发平台</strong>;</p>
-</li>
-<li><p>Node.js可以作为服务器向用户提供服务,它<strong>跳过了 Apache、Nginx 等 HTTP 服务器</strong>,直接面向前端开发。</p>
-</li>
-<li><p>优秀的第三方包管理器(node package manager,<strong>npm</strong>)</p>
-</li>
-</ul>
-<h4 id="2-Nodejs不是什么"><a href="#2-Nodejs不是什么" class="headerlink" title="2 Nodejs不是什么?"></a>2 Nodejs不是什么?</h4><ol>
-<li><strong>Node.js 不是一种独立的语言</strong>，</li>
-<li><strong>Node.js 不是一个 JavaScript 框架 ;</strong> </li>
-</ol>
-<h4 id="3-Nodejs能做什么"><a href="#3-Nodejs能做什么" class="headerlink" title="3 Nodejs能做什么?"></a>3 Nodejs能做什么?</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> 具有复杂逻辑的网站;</span><br><span class="line"> 基于社交网络的大规模 Web 应用;</span><br><span class="line"> Web Socket 服务器;</span><br><span class="line"> TCP&#x2F;UDP 套接字应用程序; 8  命令行工具;</span><br><span class="line"> 交互式终端程序;</span><br><span class="line"> 带有图形用户界面的本地应用程序;</span><br><span class="line"> 单元测试工具;</span><br><span class="line"> 客户端 JavaScript 编译器。</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-Nodejs-原理"><a href="#4-Nodejs-原理" class="headerlink" title="4 Nodejs 原理"></a>4 Nodejs 原理</h4><p>Node.js 是基于<strong>Chrome V8引擎</strong>构建的，由事件循环（Event Loop）分发 I/O 任务，最终工作线程（Work Thread）将任务丢到<strong>线程池（Thread Pool）里去执行</strong>，而事件循环只要等待执行结果就可以了。</p>
-<p><img data-src="media/15563604190618/15567164616816.jpg" alt=""></p>
-<p>核心概念</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* Chrome V8 是 Google 发布的开源 JavaScript 引擎，</span><br><span class="line">  采用 C&#x2F;C++ 编写，在 Google 的 Chrome 浏览器中被使用。</span><br><span class="line">  Chrome V8 引擎可以独立运行，也可以用来嵌入到 C&#x2F;C++ 应用程序中执行。</span><br><span class="line">* Event Loop 事件循环（由 libuv 提供）</span><br><span class="line">* Thread Pool 线程池（由 libuv 提供）</span><br></pre></td></tr></table></figure>
-
-<p><strong>重点: 整体思路梳理</strong></p>
-<p><strong>重点: 整体思路梳理</strong></p>
-<p><strong>重点: 整体思路梳理</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. Chrome V8 是 JavaScript 引擎</span><br><span class="line">2. Node.js 内置 Chrome V8 引擎，所以它使用的 JavaScript 语法</span><br><span class="line">3. JavaScript 语言的一大特点就是单线程，也就是说，同一个时间只能做一件事</span><br><span class="line">4. 单线程就意味着，所有任务需要排队，前一个任务结束，</span><br><span class="line">   才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。</span><br><span class="line">5. 如果排队是因为计算量大，CPU 忙不过来，倒也算了，</span><br><span class="line">   但是很多时候 CPU 是闲着的，因为 I&#x2F;O 很慢，不得不等着结果出来，再往下执行。</span><br><span class="line">6. CPU 完全可以不管 I&#x2F;O 设备，挂起处于等待中的任务，先运行排在后面的任务，</span><br><span class="line">   将等待中的 I&#x2F;O 任务放到 Event Loop 里，由 Event Loop 将 I&#x2F;O 任务放到线程池里，</span><br><span class="line">   只要有资源，就尽力执行。</span><br></pre></td></tr></table></figure>
-<p><img data-src="media/15563604190618/15567168580070.jpg" alt=""></p>
-<p><strong>重点理解如下这句话</strong></p>
-<blockquote>
-<p>Nodejs接受任务是单线程，执行任务是多线程。</p>
-</blockquote>
-<p>思路如下：</p>
-<ol>
-<li>Nodejs内置V8，采用Js语言，是单线程的，故接受任务是单线程，无需进程/线程切换，<strong>非常高效</strong></li>
-<li>EventLoop派发任务给线程池里的I/O去执行，故是多线程执行任务。</li>
-</ol>
-<h3 id="第二部分-配置开发环境"><a href="#第二部分-配置开发环境" class="headerlink" title="第二部分 配置开发环境"></a>第二部分 配置开发环境</h3><h4 id="1-安装-lt-官方文档-gt"><a href="#1-安装-lt-官方文档-gt" class="headerlink" title="1. 安装&lt;官方文档&gt;"></a>1. 安装<a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">&lt;官方文档&gt;</a></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -o- https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;creationix&#x2F;nvm&#x2F;v0.32.0&#x2F;install.sh | bash</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export NVM_DIR&#x3D;&quot;$HOME&#x2F;.nvm&quot;[ -s &quot;$NVM_DIR&#x2F;nvm.sh&quot; ] &amp;&amp; . &quot;$NVM_DIR&#x2F;nvm.sh&quot; # This loads nvm</span><br></pre></td></tr></table></figure>
-
-<p>Mac安装后如果提示<code>nvm: command not found</code>, 是因为没有<code>[.bash_profile file]</code>文件，</p>
-<p>第一种方法： 创建<code>touch ~/.bash_profile</code>, 然后重新执行curl操作；<br>第二种方法： 打开<code>.bash_profile</code>, 添加<code>source ~/.bashrc</code></p>
-<h4 id="2-下载不同版本"><a href="#2-下载不同版本" class="headerlink" title="2 下载不同版本"></a>2 下载不同版本</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">                        now</span><br><span class="line">       (io.js)    v2.0   :          v2.x</span><br><span class="line">          |         |    :            |</span><br><span class="line"> v0.10.x  &#x2F;--------------:-----------------\   Node.js 2.0</span><br><span class="line">____|____&#x2F;               :                  \______|_____</span><br><span class="line">         \               :                  &#x2F;</span><br><span class="line">          \--------------:-----------------&#x2F;</span><br><span class="line">          |         |    :     |       |</span><br><span class="line">       (node.js) v0.12.x :  v0.13.x  v0.14.x</span><br></pre></td></tr></table></figure>
-
-<p>对于nodejs与io.js的版本区别以及渊源，建议大家参考<a href="http://www.infoq.com/cn/articles/node-js-and-io-js/" target="_blank" rel="noopener">Node.js与io.js那些事儿</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#罗列可以安装的版本</span><br><span class="line">$ nvm ls-remote</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">   v6.4.0</span><br><span class="line">   v6.5.0</span><br><span class="line">   v6.6.0</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-下载版本"><a href="#3-下载版本" class="headerlink" title="3 下载版本"></a>3 下载版本</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#为了演示,选择了6.6.0</span><br><span class="line">$ nvm install v6.6.0</span><br><span class="line"></span><br><span class="line">$ nvm install v5.12.0</span><br><span class="line">######################################################################## 100.0%</span><br><span class="line">WARNING: checksums are currently disabled for node.js v4.0 and later</span><br><span class="line">Now using node v5.12.0 (npm v3.8.6)</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-切换版本"><a href="#4-切换版本" class="headerlink" title="4 切换版本"></a>4 切换版本</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ nvm use v5</span><br><span class="line">Now using node v5.12.0 (npm v3.8.6)</span><br><span class="line"></span><br><span class="line">$ nvm use v6</span><br><span class="line">Now using node v6.6.0 (npm v3.10.3)</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="5-常用命令"><a href="#5-常用命令" class="headerlink" title="5 常用命令"></a>5 常用命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载</span><br><span class="line">$ nvm install ***</span><br><span class="line">#切换版本</span><br><span class="line">$ nvm use 版本号</span><br><span class="line">#罗列下载的版本</span><br><span class="line">$nvm ls</span><br><span class="line"># 罗列远程版本</span><br><span class="line">$nvm ls-remote</span><br><span class="line">#设置默认的版本</span><br><span class="line">$nvm alias default 版本</span><br></pre></td></tr></table></figure>
-
-<h3 id="第三部分-注意事项"><a href="#第三部分-注意事项" class="headerlink" title="第三部分 注意事项"></a>第三部分 注意事项</h3><ol>
-<li><p>当关闭终端在此打开时, 输入 <strong>nvm</strong>会提示找不到, 解决办法:<br>在<code>.bash_profile</code>文件中添加<code>source ~/.bashrc</code>;即可;</p>
-</li>
-<li><p><strong>nvm安装</strong>的路径是: <code>~/.nvm</code>;</p>
-</li>
-<li><p>使用nvm安装<strong>node, 会安装在该路径</strong>下: <code>~/.nvm/versions/node</code>;</p>
-</li>
-</ol>
-<p><strong>附加</strong></p>
-<p>Mac 环境变量配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.&#x2F;etc&#x2F;profile: (不建议修改这个文件）全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</span><br><span class="line">2.&#x2F;etc&#x2F;bashrc: 系统级环境变量. 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</span><br><span class="line">3.~&#x2F;.bash_profile: 用户级环境变量.每个用户都可使用该文件输入专用于自己使用的shell信息,当用户登录时,该文件仅仅执行一次!</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">迁移博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>183</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="gt-0001-为何要写博客？"><a href="#gt-0001-为何要写博客？" class="headerlink" title="&gt;0001 为何要写博客？"></a>&gt;0001 为何要写博客？</h2><h1 id="…记录点滴、分享所得。"><a href="#…记录点滴、分享所得。" class="headerlink" title="…记录点滴、分享所得。"></a>…记录点滴、分享所得。</h1><h2 id="gt-0010-为何要自建博客？"><a href="#gt-0010-为何要自建博客？" class="headerlink" title="&gt;0010 为何要自建博客？"></a>&gt;0010 为何要自建博客？</h2><h1 id="…一分为乐趣，一分为自由。"><a href="#…一分为乐趣，一分为自由。" class="headerlink" title="…一分为乐趣，一分为自由。"></a>…一分为乐趣，一分为自由。</h1><h2 id="gt-0011-类似的资源那么多，为何要重复？"><a href="#gt-0011-类似的资源那么多，为何要重复？" class="headerlink" title="&gt;0011 类似的资源那么多，为何要重复？"></a>&gt;0011 类似的资源那么多，为何要重复？</h2><h1 id="…存在不代表拥有，所得才可拥有"><a href="#…存在不代表拥有，所得才可拥有" class="headerlink" title="…存在不代表拥有，所得才可拥有"></a>…存在不代表拥有，所得才可拥有</h1><p><code>Hello World</code></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">System.out.<span class="built_in">println</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">console.<span class="built_in">log</span>(<span class="string">"Hello World"</span>);</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/2019/04/26/index/27-01_kiding.png" alt="asd"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">NexT使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>第一部分</p>
-<p>语言</p>
-<p>rss</p>
-<p>标签、类别、</p>
-<p>账户</p>
-<p>公益</p>
-<p>首页显示</p>
-<h4 id="背景显示"><a href="#背景显示" class="headerlink" title="背景显示"></a>背景显示</h4><p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">参考链接</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd themes&#x2F;next</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-canvas-nest source&#x2F;lib&#x2F;canvas-nest</span><br></pre></td></tr></table></figure>
-
-<p>更改配置文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas_nest:</span><br><span class="line">  enable: true</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">https://github.com/theme-next/theme-next-canvas-nest</a></p>
-<h4 id="侧边栏推荐阅读"><a href="#侧边栏推荐阅读" class="headerlink" title="侧边栏推荐阅读"></a>侧边栏推荐阅读</h4><p><code>theme/next/_config.yml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Blogrolls</span><br><span class="line">links_title: 推荐阅读</span><br><span class="line">#links_layout: block</span><br><span class="line">links_layout: inline</span><br><span class="line">links:</span><br><span class="line">  简单即是美: https:&#x2F;&#x2F;simuty.github.io&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>第二部分</p>
-<p>文章头</p>
-<h4 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h4><p>打开<code>\themes\next\source\css\_custom\custom.styl</code>,向里面加入：(颜色可以自己定义)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>统计字数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/themes/next/layout/_partials/footer.swig</code>文件尾部加上：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;theme-info&quot;&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;powered-by&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-count&quot;&gt;博客全站共&#123;&#123; totalcount(site) &#125;&#125;字&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p>阅读时长</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm i hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
-<p>在<code>hexo/_config.yml</code>中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">	symbols: true</span><br><span class="line">	time: true</span><br><span class="line">	total_symbols: true</span><br><span class="line">	total_time: true</span><br></pre></td></tr></table></figure>
-
-<p>在<code>hexo/theme/next/_config.yml</code>中找到</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Post wordcount display settings</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-symbols-count-time</span><br><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: true</span><br><span class="line">  item_text_post: true</span><br><span class="line">  item_text_total: false</span><br><span class="line">  awl: 4</span><br><span class="line">  wpm: 275</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>代码</p>
-<p>音视频</p>
-<p>post阴影</p>
-<p>打开\themes\next\source\css_custom\custom.styl,向里面加入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 主页文章添加阴影效果</span><br><span class="line"> .post &#123;</span><br><span class="line">   margin-top: 60px;</span><br><span class="line">   margin-bottom: 60px;</span><br><span class="line">   padding: 25px;</span><br><span class="line">   -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);</span><br><span class="line">   -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/" target="_blank" rel="noopener">http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/</a></p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
-
-
-<p>打开 站点配置文件 ,添加配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br><span class="line">打开 主题配置文件 ,搜索关键字local_search,设置为true</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;flashlab&#x2F;hexo-generator-search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br><span class="line">  # if auto, trigger search by changing input</span><br><span class="line">  # if manual, trigger search by pressing enter key or search button</span><br><span class="line">  trigger: auto</span><br><span class="line">  # show top n results per article, show all results by setting to -1</span><br><span class="line">  top_n_per_article: 1</span><br></pre></td></tr></table></figure>
-
-<p>打赏</p>
-<p>文章加密<br><a href="https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md" target="_blank" rel="noopener">https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md</a><br>hexo-blog-encrypt</p>
-<p>参考链接</p>
-<p><a href="https://co5.me/2018/180613-wordcount.html" target="_blank" rel="noopener">†少女癌†</a></p>
-<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E5%9B%9B/" target="_blank" rel="noopener"></a></p>
-<p><a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener"></a></p>
-<p><a href="https://www.vincentqin.tech/" target="_blank" rel="noopener"></a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/26/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/26/index/" class="post-title-link" itemprop="url">NexT使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 23:59:59" itemprop="dateCreated datePublished" datetime="2019-04-26T23:59:59+08:00">2019-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>第一部分</p>
-<p>语言</p>
-<p>rss</p>
-<p>标签、类别、</p>
-<p>账户</p>
-<p>公益</p>
-<p>首页显示</p>
-<h4 id="背景显示"><a href="#背景显示" class="headerlink" title="背景显示"></a>背景显示</h4><p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">参考链接</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd themes&#x2F;next</span><br><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-canvas-nest source&#x2F;lib&#x2F;canvas-nest</span><br></pre></td></tr></table></figure>
-
-<p>更改配置文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas_nest:</span><br><span class="line">  enable: true</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://github.com/theme-next/theme-next-canvas-nest" target="_blank" rel="noopener">https://github.com/theme-next/theme-next-canvas-nest</a></p>
-<h4 id="侧边栏推荐阅读"><a href="#侧边栏推荐阅读" class="headerlink" title="侧边栏推荐阅读"></a>侧边栏推荐阅读</h4><p><code>theme/next/_config.yml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Blogrolls</span><br><span class="line">links_title: 推荐阅读</span><br><span class="line">#links_layout: block</span><br><span class="line">links_layout: inline</span><br><span class="line">links:</span><br><span class="line">  简单即是美: https:&#x2F;&#x2F;simuty.github.io&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>第二部分</p>
-<p>文章头</p>
-<h4 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h4><p>打开<code>\themes\next\source\css\_custom\custom.styl</code>,向里面加入：(颜色可以自己定义)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Custom styles.</span><br><span class="line">code &#123;</span><br><span class="line">    color: #ff7600;</span><br><span class="line">    background: #fbf7f8;</span><br><span class="line">    margin: 2px;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 大代码块的自定义样式</span><br><span class="line">.highlight, pre &#123;</span><br><span class="line">    margin: 5px 0;</span><br><span class="line">    padding: 5px;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">&#125;</span><br><span class="line">.highlight, code, pre &#123;</span><br><span class="line">    border: 1px solid #d6d6d6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>统计字数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/themes/next/layout/_partials/footer.swig</code>文件尾部加上：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;theme-info&quot;&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;powered-by&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-count&quot;&gt;博客全站共&#123;&#123; totalcount(site) &#125;&#125;字&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p>阅读时长</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm i hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
-<p>在<code>hexo/_config.yml</code>中添加</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">	symbols: true</span><br><span class="line">	time: true</span><br><span class="line">	total_symbols: true</span><br><span class="line">	total_time: true</span><br></pre></td></tr></table></figure>
-
-<p>在<code>hexo/theme/next/_config.yml</code>中找到</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Post wordcount display settings</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-symbols-count-time</span><br><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: true</span><br><span class="line">  item_text_post: true</span><br><span class="line">  item_text_total: false</span><br><span class="line">  awl: 4</span><br><span class="line">  wpm: 275</span><br></pre></td></tr></table></figure>
-
-
-
-
-<p>代码</p>
-<p>音视频</p>
-<p>post阴影</p>
-<p>打开\themes\next\source\css_custom\custom.styl,向里面加入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 主页文章添加阴影效果</span><br><span class="line"> .post &#123;</span><br><span class="line">   margin-top: 60px;</span><br><span class="line">   margin-bottom: 60px;</span><br><span class="line">   padding: 25px;</span><br><span class="line">   -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);</span><br><span class="line">   -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/" target="_blank" rel="noopener">http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E4%BA%8C/</a></p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
-
-
-<p>打开 站点配置文件 ,添加配置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br><span class="line">打开 主题配置文件 ,搜索关键字local_search,设置为true</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;flashlab&#x2F;hexo-generator-search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br><span class="line">  # if auto, trigger search by changing input</span><br><span class="line">  # if manual, trigger search by pressing enter key or search button</span><br><span class="line">  trigger: auto</span><br><span class="line">  # show top n results per article, show all results by setting to -1</span><br><span class="line">  top_n_per_article: 1</span><br></pre></td></tr></table></figure>
-
-<p>打赏</p>
-<p>文章加密<br><a href="https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md" target="_blank" rel="noopener">https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.zh.md</a><br>hexo-blog-encrypt</p>
-<p>参考链接</p>
-<p><a href="https://co5.me/2018/180613-wordcount.html" target="_blank" rel="noopener">†少女癌†</a></p>
-<p><a href="http://devinol.com/Hexo/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96-%E5%9B%9B/" target="_blank" rel="noopener"></a></p>
-<p><a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener"></a></p>
-<p><a href="https://www.vincentqin.tech/" target="_blank" rel="noopener"></a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://simuty.com/2019/04/25/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Howard">
-      <meta itemprop="description" content="记录点滴、分享所得">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="简单即是美">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/25/index/" class="post-title-link" itemprop="url">一些美的东西</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-25 18:06:41" itemprop="dateCreated datePublished" datetime="2019-04-25T18:06:41+08:00">2019-04-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-27 01:21:09" itemprop="dateModified" datetime="2020-12-27T01:21:09+08:00">2020-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>193</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          美好句子，值得给大家分享.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/25/index/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1913,7 +1961,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1923,13 +1971,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">338k</span>
+    <span title="站点总字数">360k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:07</span>
+    <span title="站点阅读时长">5:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="生存还是毁灭，这是个问题。 To be or not to be, that is the question.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V8系列二">
+<meta property="og:url" content="https://simuty.com/2021/01/06/v8_2/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="生存还是毁灭，这是个问题。 To be or not to be, that is the question.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2021/005.jpg">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/004.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/005.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/006.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/007.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/008.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/009.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/010.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/011.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/012.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/013.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/014.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/015.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/016.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/017.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/018.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/019.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/020.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/021.gif">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/022.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/023.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/024.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/025.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/026.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/027.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/028.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/029.png">
+<meta property="og:image" content="https://simuty.com/2021/01/06/v8_2/030.png">
+<meta property="article:published_time" content="2021-01-06T14:14:14.000Z">
+<meta property="article:modified_time" content="2021-01-08T06:26:38.992Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="V8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2021/005.jpg">
+
+<link rel="canonical" href="https://simuty.com/2021/01/06/v8_2/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>V8系列二 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时环境"><span class="nav-number">1.</span> <span class="nav-text">运行时环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#宿主环境-vs-V8"><span class="nav-number">1.1.</span> <span class="nav-text">宿主环境 vs V8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆栈"><span class="nav-number">1.2.</span> <span class="nav-text">堆栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局执行上下文和全局作用域"><span class="nav-number">1.3.</span> <span class="nav-text">全局执行上下文和全局作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造事件循环系统"><span class="nav-number">1.4.</span> <span class="nav-text">构造事件循环系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#机器代码"><span class="nav-number">2.</span> <span class="nav-text">机器代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#机器码"><span class="nav-number">2.1.</span> <span class="nav-text">机器码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU执行程序"><span class="nav-number">2.2.</span> <span class="nav-text">CPU执行程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指令类型"><span class="nav-number">2.2.1.</span> <span class="nav-text">指令类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆栈：函数调用是如何影响到内存布局的？"><span class="nav-number">3.</span> <span class="nav-text">堆栈：函数调用是如何影响到内存布局的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为何用栈管理函数调用？"><span class="nav-number">3.1.</span> <span class="nav-text">为何用栈管理函数调用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈管理函数调用"><span class="nav-number">3.2.</span> <span class="nav-text">栈管理函数调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆"><span class="nav-number">3.3.</span> <span class="nav-text">堆</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟解析-amp-amp-闭包"><span class="nav-number">4.</span> <span class="nav-text">延迟解析 &amp;&amp; 闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number">4.1.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预解析器解决闭包问题"><span class="nav-number">4.2.</span> <span class="nav-text">预解析器解决闭包问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节码-机器码"><span class="nav-number">5.</span> <span class="nav-text">字节码 机器码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何生成字节码"><span class="nav-number">5.1.</span> <span class="nav-text">如何生成字节码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解释器的分类"><span class="nav-number">5.2.</span> <span class="nav-text">解释器的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析字节码"><span class="nav-number">5.3.</span> <span class="nav-text">分析字节码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏类"><span class="nav-number">6.</span> <span class="nav-text">隐藏类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态语言-VS-动态语言-的效率"><span class="nav-number">6.1.</span> <span class="nav-text">静态语言 VS 动态语言 的效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏类-1"><span class="nav-number">6.2.</span> <span class="nav-text">隐藏类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对象公用隐藏类"><span class="nav-number">6.3.</span> <span class="nav-text">多对象公用隐藏类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳实践"><span class="nav-number">6.4.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内联缓存"><span class="nav-number">7.</span> <span class="nav-text">内联缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2021/01/06/v8_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          V8系列二
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-06 22:14:14" itemprop="dateCreated datePublished" datetime="2021-01-06T22:14:14+08:00">2021-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-08 14:26:38" itemprop="dateModified" datetime="2021-01-08T14:26:38+08:00">2021-01-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/V8/" itemprop="url" rel="index"><span itemprop="name">V8</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2021/005.jpg" width=80% />
+
+<span class='geyan'>
+生存还是毁灭，这是个问题。
+To be or not to be, that is the question.
+</span>
+<a id="more"></a>
+
+<h2 id="运行时环境"><a href="#运行时环境" class="headerlink" title="运行时环境"></a>运行时环境</h2><blockquote>
+<p>什么是运行是运行时环境？</p>
+</blockquote>
+<p>代码执行时所需的<code>堆空间和栈空间、全局执行上下文、全局作用域、内置的内建函数、*宿主环境*提供的扩展函数和对象，还有消息循环系统</code>; 有了这些环境V8才可以执行JS代码。执行代码时，又包含了<code>解析源码、生成字节码、解释执行或者编译执行这一系列操作</code></p>
+<img data-src='004.png' width='80%' />
+
+
+<h3 id="宿主环境-vs-V8"><a href="#宿主环境-vs-V8" class="headerlink" title="宿主环境 vs V8"></a>宿主环境 vs V8</h3><p><strong>V8和浏览器</strong> 类比与 <strong>病毒🦠与细胞的</strong>，这个类比必须满分💯！</p>
+<div class="note danger">
+
+<p><strong>宿主</strong>是指为病毒等寄生物提供<strong>生存环境</strong>的<strong>生物</strong>，宿主有的自己的完整的代谢系统，而<code>病毒则没有自己的代谢系统</code>，也没有自己的酶系统，它只是由核酸长链和蛋白质外壳构成。</p>
+<p>当病毒离开了宿主细胞，就成了没有任何生命活动，也不能独立自我繁殖的化学物质。同时，如果病毒利用了太 多的宿主细胞资源，也会影响到细胞的正常活动。</p>
+</div>
+
+<blockquote>
+<p>Nodejs、浏览器都是V8的宿主</p>
+</blockquote>
+<img data-src='005.png' width='80%' />
+
+<p>V8 只提供了 ECMAScript 定义的一些对象和一些<strong>核心的函数</strong>，这包括了 <code>Object、Function、String</code>。除此之外，V8 还提供了<code>垃圾回收器</code>、<code>协程</code>等基础内容，不过这些功能依然需要宿主环境的配合才能完整执行。</p>
+<h3 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h3><blockquote>
+<p>宿主在启动 V8 的过程中，会同时创建堆空间和栈空间,再继续往下执行，产生的新数据都 会存放在这两个空间中。</p>
+</blockquote>
+<p><strong>栈空间</strong>主要是用来管理 <strong>JavaScript 函数</strong>调用的，栈是内存中连续的一块空间，同时栈结构是<code>“先进后出”</code>的策略;</p>
+<p><strong>堆空间</strong>是一种树形的存储结构，用来存储<strong>对象类型</strong>的离散的数据;</p>
+<h3 id="全局执行上下文和全局作用域"><a href="#全局执行上下文和全局作用域" class="headerlink" title="全局执行上下文和全局作用域"></a>全局执行上下文和全局作用域</h3><p>V8 用执行上下文来维护执行当前代码所需要的<code>变量声明</code>、<code>this 指向</code>等。执行上下文中主要包含了三部分，<code>变量环境</code>、<code>词法环境</code>、和 <code>this 关键字</code>; <em>全局作用域和全局执行上下文</em>的关系，其实你可以把作用域看成是一个抽象的概念，比如在 ES6 中，<strong>同一个全局执行上下文中，都能存在多个作用域</strong>;</p>
+<img data-src='006.png' width='80%' />
+
+<img data-src='007.png' width='80%' />
+
+<h3 id="构造事件循环系统"><a href="#构造事件循环系统" class="headerlink" title="构造事件循环系统"></a>构造事件循环系统</h3><blockquote>
+<p>有了堆空间和栈空间，生成了全局执行上下文和全局作用域，接下来就可以执行 JavaScript 代码了吗？</p>
+</blockquote>
+<p>答案是<strong>不行</strong>，因为 V8 还需要有一个<em>主线程</em>，用来执行 JavaScript 和执行垃圾回收等工作。<strong>V8</strong> 是寄生在宿主环境中的，它并<strong>没有自己的主线程</strong>，而是使用宿主所提供的主线程， <strong>V8所执行的代码都是在宿主的主线程上执行的。</strong></p>
+<blockquote>
+<p>只有一个线程还不够，执行完就退出了，所以还需要一个事件循环机制。</p>
+<blockquote>
+<p>但是<br>多任务的需求就需要引入消息队列机制，排队执行。</p>
+</blockquote>
+</blockquote>
+<h2 id="机器代码"><a href="#机器代码" class="headerlink" title="机器代码"></a>机器代码</h2><blockquote>
+<p>急需一本《计算机编译原理》</p>
+</blockquote>
+<p>有了<strong>运行时环境</strong>，V8就可以执行JS代码。V8 首先需要将 JavaScript<strong>编译</strong>成字节码或者二进制代码，然后再<strong>执行。</strong></p>
+<img data-src='008.png' width='80%' />
+
+<h3 id="机器码"><a href="#机器码" class="headerlink" title="机器码"></a>机器码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">int main() &#123; </span><br><span class="line">    int x = <span class="number">1</span>; </span><br><span class="line">    int y = <span class="number">2</span>; </span><br><span class="line">    int z = x + y; </span><br><span class="line">    <span class="keyword">return</span> z; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img data-src='009.png' width='80%' />
+
+<h3 id="CPU执行程序"><a href="#CPU执行程序" class="headerlink" title="CPU执行程序"></a>CPU执行程序</h3><img data-src='010.png' width='80%' />
+
+
+<p>分析程序到底是怎么被执行。</p>
+<ol>
+<li>首先，在程序执行之前，我们的程序需要被装进内存。<ol>
+<li><code>快递柜</code>、快递柜中的每个<code>单元格的编号</code>、<code>操作快递柜的人</code>， 你可以把它们对比成点算机中的<code>内存</code>、<code>内存地址</code>和 <code>CPU</code>。</li>
+</ol>
+</li>
+<li>CPU 便可以从内存中<code>取出一条指令</code>，然后<code>分析该指令</code>，最后<code>执行该指令</code>。<ol>
+<li><code>取出指令、分析指令、执行指令</code>这三个过程称为一个 <code>CPU 时钟周期</code>;</li>
+</ol>
+</li>
+<li><strong>指令</strong>保存位置：<em>PC寄存器</em>，<ol>
+<li><strong>通用寄存器</strong>比喻成是你身上的口袋，<em>内存</em>就是你的背包，而<code>硬盘</code>则是你的行李箱;</li>
+<li><code>通用寄存器</code>通常用来存放数据或者内存中某块数据的<code>地址</code>，我们把这个地址又称为指针，通 常情况下寄存器对存放的数据是没有特别的限制的，比如某个通用寄存器既可以存储数据， 也可以存储指针。</li>
+<li>通用寄存器容量小，读写速度快，内存容量 大，读写速度慢。</li>
+</ol>
+</li>
+</ol>
+<h4 id="指令类型"><a href="#指令类型" class="headerlink" title="指令类型"></a>指令类型</h4><div class="note danger">
+
+<p>第一种是<strong>加载的指令</strong>，其作用是从内存中复制指定长度的内容到通用寄存器中，并覆盖寄存器中原来的内容。你可以参看下图：</p>
+<img data-src='011.png' width='80%' />
+
+<p>比如上图使用了 <code>movl 指令</code>，指令后面跟着的第一个参数是要拷贝<code>数据的内存的位置</code>，第二个参数是要<code>拷贝到 ecx 这个寄存器</code>。</p>
+<p>第二种<strong>存储的指令</strong>，和加载类型的指令相反，其作用是将寄存器中的内容复制内存某个位 置，并覆盖掉内存中的这个位置上原来的内容。你可以参看下图：<br><img data-src='012.png' width='80%' /></p>
+<p>上图也是使用 movl 指令，movl 指令后面的 %ecx 就是寄存器地址，-8(%rbp) 是内存中 的地址，这条指令的作用是将寄存器中的值拷贝到内存中。</p>
+<p>第三种是<strong>更新指令</strong>，其作用是复制两个寄存器中的内容到 ALU 中，也可以是一块寄存器和 一块内存中的内容到 ALU 中，ALU 将两个字相加，并将结果存放在其中的一个寄存器中， 并覆盖该寄存器中的内容。具体流程如下图所示：<br><img data-src='013.png' width='80%' /></p>
+<p>观察上图，上图是通过 jmp 来实现的，jmp 后面跟着要跳转的内存中的指令地址。</p>
+<p>除了以上指令之外，还有 IO 读 / 写指令，这些指令可以从一个 IO 设备中复制指定长度的 数据到寄存器中，也可以将一个寄存器中的数据复制到指定的 IO 设备。</p>
+<p>以上就是一些基础的指令类型，这些指令像积木，利用它们可以搭建我们现在复杂的软件大厦。</p>
+</div>
+
+<h2 id="堆栈：函数调用是如何影响到内存布局的？"><a href="#堆栈：函数调用是如何影响到内存布局的？" class="headerlink" title="堆栈：函数调用是如何影响到内存布局的？"></a>堆栈：函数调用是如何影响到内存布局的？</h2><blockquote>
+<p>为何会有：栈溢出的错误？<br>JS执行时的内存布局是怎么样的？</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    foo() <span class="comment">// 是否存在堆栈溢出错误? </span></span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"><span class="comment">// Uncaught RangeError: Maximum call stack size exceeded</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    setTimeout(foo, <span class="number">0</span>) <span class="comment">// 是否存在堆栈溢出错误? </span></span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"><span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve().then(foo) </span><br><span class="line">&#125; </span><br><span class="line">foo()</span><br><span class="line"><span class="comment">// 没有栈溢出 的错误，却会造成页面的卡死呢？</span></span><br></pre></td></tr></table></figure>
+
+<img data-src='014.png' width='80%' />
+
+<h3 id="为何用栈管理函数调用？"><a href="#为何用栈管理函数调用？" class="headerlink" title="为何用栈管理函数调用？"></a>为何用栈管理函数调用？</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getZ</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> z = getZ();</span><br><span class="line">    <span class="keyword">return</span> x + y + z; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">int</span> ret = add(x, y); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>函数调用者的生命周期</strong>总是长于被调用者（后进），并且被调用者的生命周期总是先于调用者的生命周期结束 (先出)。</p>
+<p><strong>函数资源分配和回收</strong>角度来看，被调用函数的资源分配总是晚于调用函数 (后进)，而函数资源的 释放则总是先于调用函数 (先出);</p>
+<img data-src='015.png' width='80%' />
+<img data-src='016.png' width='80%' />
+
+
+<blockquote>
+<p>正好 栈的特性–后进先出【LIFO】满足函数的特性。<br>满足特性，但如何管理函数调用呢？</p>
+</blockquote>
+<h3 id="栈管理函数调用"><a href="#栈管理函数调用" class="headerlink" title="栈管理函数调用"></a>栈管理函数调用</h3><img data-src='017.png' width='80%' />
+
+<p><strong>控制权</strong>从<code>main</code>函数转移到<code>add函数</code>；那么如何归还控制权，回到main函数执行的现场呢？</p>
+<div class="note danger">
+
+<p>寄存器中保存一个永远指向当前<code>栈顶的指针</code>, 通常存放在 <strong>esp</strong> 寄存器中, <strong>作用</strong>: 告诉你应该往哪个位置添加新元素.</p>
+<p><strong>ebp 寄存器</strong>，用来保存<code>当前函数</code>的<strong>起始位置</strong>;，我们把<em>一个函数的起始位置也称为栈帧指针</em>，ebp 寄存器中保存的就是<strong>当前函数</strong>的<code>栈帧指针</code>;</p>
+<blockquote>
+<p>每个函数都有自己的栈帧指针</p>
+</blockquote>
+<div class="note success">
+
+<p>栈帧: 每个栈帧对应着一个<code>未运行完的函数</code>，栈帧中保存了该函数的<code>返回地址</code>和<code>局部变量</code>。</p>
+</div>
+
+<img data-src='018.png' width='80%' />
+
+<ol>
+<li>入栈：esp记录栈顶指针，移动esp指针；</li>
+<li>出栈：esp向下移动，&amp;&amp; 从ebp中找到函数的起始指针。</div>
+
+
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自己调用自己，导致栈无限增长，超出限制！</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    foo() </span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"></span><br><span class="line"><span class="comment">// setTimeout将foo放入消息队列，不影响当前栈</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    setTimeout(foo, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 涉及微任务，之后学习</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve().then(foo) </span><br><span class="line">&#125; </span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p>栈的最大的优点<code>结构性质</code>[快]导致了最大的缺点：获取连续空间<strong>很难</strong>。</p>
+<p>堆不要求存连续内存，堆内存没有固定模式，可以随意分配和释放。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">5</span>; </span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">int</span> *z = <span class="keyword">new</span> <span class="keyword">int</span>; </span><br><span class="line">    *z = <span class="number">20</span>;</span><br><span class="line">    Point p; </span><br><span class="line">    p.x = <span class="number">100</span>; </span><br><span class="line">    p.y = <span class="number">200</span>;</span><br><span class="line">    Point *pp = <span class="keyword">new</span> Point(); </span><br><span class="line">    pp-&gt;y = <span class="number">400</span>; </span><br><span class="line">    pp-&gt;x = <span class="number">500</span>; </span><br><span class="line">    <span class="keyword">delete</span> z; </span><br><span class="line">    <span class="keyword">delete</span> pp; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img data-src='019.png' width='80%' />
+
+
+<h2 id="延迟解析-amp-amp-闭包"><a href="#延迟解析-amp-amp-闭包" class="headerlink" title="延迟解析 &amp;&amp; 闭包"></a>延迟解析 &amp;&amp; 闭包</h2><p>V8执行JS代码分为两步</p>
+<ol>
+<li>编译：V8将js代码转为字节码||二进制机器码</li>
+<li>执行: 解释器解释执行字节码。</li>
+</ol>
+<blockquote>
+<p>V8<strong>不一次性</strong>将js解析为中间代码。采用 <strong>惰性解析</strong>。</p>
+<blockquote>
+<p>过多的代码会增加编译时间；<br>机器码会放在内存中。</p>
+</blockquote>
+</blockquote>
+<p><strong>惰性解析： 遇到函数声明，将之转换为函数对象，但不解析和编译函数内部的代码，也不会为函数的内部代码生成抽象的语法树。</strong></p>
+<img data-src='020.png' width='80%' />
+
+
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>闭包的大三特性</p>
+<ol>
+<li>JavaScript 语言允许在<code>函数</code>内部<code>定义新的函数</code></li>
+<li>内部函数中访问父函数中定义的变量</li>
+<li>因为函数是一等公民，所以<strong>函数可以作为返回值</strong></li>
+</ol>
+<blockquote>
+<p>闭包给惰性解析解析带来的问题—-因为惰性解析时遇到函数只会转为对象，并不知道内部引用函数是否引用外部变量。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> d = <span class="number">20</span> </span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> c = a + b + d </span><br><span class="line">        <span class="keyword">return</span> c</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> f = foo()</span><br></pre></td></tr></table></figure>
+
+<img data-src='021.gif' width='80%' />
+
+<img data-src='022.png' width='80%' />
+
+<ol>
+<li><p>当调用 foo 函数时，foo 函数会将它的<code>内部函数 inner</code> 返回给<code>全局变量 f</code>；</p>
+</li>
+<li><p>然后 <code>foo 函数</code>执行结束，执行上下文被 <code>V8 销毁</code>了；</p>
+</li>
+<li><p>虽然 foo 函数的执行上下文被销毁了，<strong>但是依然存活的 inner 函数引用了 foo 函数作用 域中的变量 d。</strong></p>
+</li>
+</ol>
+<blockquote>
+<p>当 foo 执行结束时，变量 d 该不该被销毁？<br>如果不应该被销毁，那么应该采用什么策略？</p>
+</blockquote>
+<div class="note danger">
+
+<p>如果采用了<code>惰性解析</code>，那么当执行到 foo 函数时，<strong>V8 只会解析 foo 函数</strong>，并<code>不会解析内部的 inner 函数</code>，那么这时候 ``V8 就不知道` inner 函数中是否引用了 foo 函数的变量 d。</p>
+<blockquote>
+<p>如何判断inner函数是否引用外部函数变量？</p>
+</blockquote>
+<p>负责这个模块的就是—-<strong>预解析器</strong></p>
+</div>
+
+<h3 id="预解析器解决闭包问题"><a href="#预解析器解决闭包问题" class="headerlink" title="预解析器解决闭包问题"></a>预解析器解决闭包问题</h3><p>惰性解析遇到函数声明，并不解析函数内部，导致闭包引用不释放问题。V8引入<strong>预解析器</strong>会对函数<strong>做一次快速的预解析</strong>，目的有两个：</p>
+<ol>
+<li>判断当前函数是否存在语法的错误；</li>
+<li>检查函数内部是否引用了<code>外部变量</code>，如果引用了外部的变量，预解析器会将栈中的变量复制到<strong>堆中</strong>，在下次执行到 该函数的时候，直接使用堆中的引用，这样就解决了闭包所带来的问题。</li>
+</ol>
+<blockquote>
+<p>a 分别保存在栈还是堆？</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 没有外部引用，当执行到var a； 会分配在【栈】上</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">0</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">0</span> </span><br><span class="line">    <span class="comment">// 因为内部函数引用，所以在【预解析】阶段copy到【堆】上</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="keyword">return</span> a++ </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="字节码-机器码"><a href="#字节码-机器码" class="headerlink" title="字节码 机器码"></a>字节码 机器码</h2><p><strong>早期</strong>的 V8 为了提升代码的执行速度，<code>直接</code>将 JavaScript 源代码编译成了没有优化的二进制的<code>机器代码</code>; 存在两个问题：</p>
+<ol>
+<li>时间问题：编译时间过久，影响代码启动速度；</li>
+<li>空间问题：缓存编译后的二进制代码占用更多的内存。</li>
+</ol>
+<p>后期引入 <strong>字节码</strong>，有三个优势</p>
+<ol>
+<li>解决启动问题：生成字节码的时间很短</li>
+<li>解决空间问题：字节码占用内存不多，缓存字节码会大大降低内存的使用；</li>
+<li>代码架构清晰：采用字节码，可以简化程序的复杂度，使得 V8 移植到不同的 CPU 架构 平台更加容易。</li>
+</ol>
+<blockquote>
+<p>字节码 VS 机器码</p>
+</blockquote>
+<p>字节码是由V8虚拟机解释执行，是模拟物理CPU的执行过程<br>机器码是直接在物理CPU上执行，速度更快。</p>
+<p>V8 在<strong>执行</strong>一段 JS 代码<strong>之前</strong>，需要将其<code>编译为字节码</code>，然后再<code>解释执行字节码</code>或者<code>将字节码编译为二进制代码</code>然后再执行。</p>
+<img data-src='023.png' width='80%' />
+<img data-src='024.png' width='80%' />
+
+<h3 id="如何生成字节码"><a href="#如何生成字节码" class="headerlink" title="如何生成字节码"></a>如何生成字节码</h3><p>V8 执行一段 JavaScript 代码时；</p>
+<ol>
+<li>先对 JavaScript 代码进行解析 (Parser)， 并生成为 AST 和作用域信息</li>
+<li>AST 和作用域信息被输入到一个称为 <strong>Ignition 的解释器</strong>中</li>
+<li>将其<strong>转化为字节码，</strong></li>
+<li>字节码再由 Ignition 解释器来解释执行。</li>
+</ol>
+<blockquote>
+<p>Ignition解释器生成&amp;执行字节码.</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x, y</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> z = x+y </span><br><span class="line">    <span class="keyword">return</span> z </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<img data-src='025.png' width='80%' />
+
+<ol>
+<li>参数的声明 (PARAMS):参数声明中包括了所有的参数，在这里主要是参数 x 和参数 y，你可以在函数体中使用 arguments 来使用对应的参数</li>
+<li>变量声明节点 (DECLS):参数部分你可以使用 arguments 来调用</li>
+<li>是 x+y 的<strong>表达式节点</strong></li>
+<li>RETURN 节点，它指向了 z 的值，在这里是 local[0]。</li>
+</ol>
+<img data-src='026.png' width='80%' />
+
+
+<h3 id="解释器的分类"><a href="#解释器的分类" class="headerlink" title="解释器的分类"></a>解释器的分类</h3><p>解释器就是模拟物理机器来执行字节码的，通常有两种类型的解释器，<code>基于栈 (Stack-based)</code>和<code>基于寄存器 (Register-based)</code>，</p>
+<ol>
+<li><strong>基于栈</strong>的解释器使用栈来保存函数参数、中间运算结果、变量等，如：Java、.net、早起的V8</li>
+<li><strong>基于寄存器</strong>的虚拟机则支持寄存器的指令操作，使用寄存器来保存参数、中间计算结果。<strong>现在的V8</strong></li>
+</ol>
+<img data-src='027.png' width='80%' />
+
+<h3 id="分析字节码"><a href="#分析字节码" class="headerlink" title="分析字节码"></a>分析字节码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">StackCheck</span><br><span class="line">Ldar a1 </span><br><span class="line">Add a0, [0] </span><br><span class="line">Star r0 </span><br><span class="line">LdaSmi [2] </span><br><span class="line">Star r1 </span><br><span class="line">Ldar r0 </span><br><span class="line">Return</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="隐藏类"><a href="#隐藏类" class="headerlink" title="隐藏类"></a>隐藏类</h2><h3 id="静态语言-VS-动态语言-的效率"><a href="#静态语言-VS-动态语言-的效率" class="headerlink" title="静态语言 VS 动态语言 的效率"></a>静态语言 VS 动态语言 的效率</h3><blockquote>
+<p>静态语言比动态语言的执行效率更高.</p>
+</blockquote>
+<ol>
+<li>静态语言，可以直接通过<code>偏移量</code>来查询对象的属性值; 因为静态语言需要定义好对象的结构【形状】，先编译后执行，编译的时候，每个对象的形状是固定的；</li>
+<li>动态语言，运行时对象的属性可以被修改，先查找再更改，涉及【快慢属性的问题】；</li>
+<li>对比查找速度，静态语言的执行效率高于动态语言。</li>
+</ol>
+<h3 id="隐藏类-1"><a href="#隐藏类-1" class="headerlink" title="隐藏类"></a>隐藏类</h3><p>为了提升代码的执行效率，V8将JS的<code>对象静态化</code>,即：运行JS时默认对象是静态的，包括</p>
+<ol>
+<li>对象创建好后，不会添加新的属性；</li>
+<li>对象创建好后，不会删除属性；</li>
+</ol>
+<p>然后为每个对象，创建<code>隐藏类</code>记录对象的布局信息，如：包含的属性、偏移量。<strong>像不像静态语言中形状</strong>。</p>
+<blockquote>
+<p>V8 中，把隐藏类又称为 map，每个对象都有一个 map 属性，其值指向内存中的隐藏类。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> point = &#123;<span class="attr">x</span>:<span class="number">100</span>,<span class="attr">y</span>:<span class="number">200</span>&#125;</span><br></pre></td></tr></table></figure>
+<img data-src='028.png' width='80%' />
+
+
+<h3 id="多对象公用隐藏类"><a href="#多对象公用隐藏类" class="headerlink" title="多对象公用隐藏类"></a>多对象公用隐藏类</h3><p>每个对象都有一个隐藏类，那么<code>对象相同</code>是否可以公用？<strong>可以</strong></p>
+<p>那么什么才算是<code>对象相同</code>？</p>
+<ol>
+<li>相同的属性名称</li>
+<li>相同的属性个数</li>
+<li>顺序也需要相同</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> point = &#123;<span class="attr">x</span>:<span class="number">100</span>,<span class="attr">y</span>:<span class="number">200</span>&#125;; </span><br><span class="line"><span class="comment">// 执行到建map时候，发现已经有了就公用</span></span><br><span class="line"><span class="keyword">let</span> point2 = &#123;<span class="attr">x</span>:<span class="number">3</span>,<span class="attr">y</span>:<span class="number">4</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>因此，属性的增删，会重新建隐藏类。</p>
+</blockquote>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
+<li>使用字面量初始化对象时，要保证属性的顺序是一致的</li>
+<li>尽量使用字面量一次性初始化完整对象属性</li>
+<li>尽量避免使用 delete 方法</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadX</span>(<span class="params">o</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> o.x </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">var</span> o = &#123; <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>:<span class="number">3</span> &#125;</span><br><span class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">x</span>: <span class="number">3</span>, <span class="attr">y</span>:<span class="number">6</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">90000</span>; i++) &#123;</span><br><span class="line">    loadX(o)</span><br><span class="line">    loadX(o1) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当 V8 调用 loadX 的时候，会先查找参数 o 的隐藏类，然后利用隐藏类中的 x 属性的偏移量查找到 x 的属性值，虽然利用<code>隐藏类能够快速提升对象属性的查找速度</code>，但是依然有一 个查找隐藏类和查找隐藏类中的偏移量两个操作，如果 loadX 在代码中会被重复执行，依然影响到了属性的查找效率。</p>
+<h2 id="内联缓存"><a href="#内联缓存" class="headerlink" title="内联缓存"></a>内联缓存</h2><p>通常 V8 获取 o.x 的流程是这样的：<strong>查找对象 o 的隐藏类，再通过隐藏类查找 x 属性偏移 量，然后根据偏移量获取属性值，</strong></p>
+<blockquote>
+<p>内联缓存 (Inline Cache)，简称为 IC， 是为了优化查找效率。</p>
+</blockquote>
+<p>V8 引入了 <strong>IC</strong>，IC 会监听每个函数的<code>执行过程</code>，并在一些关键的地方埋下<code>监听点</code>， 这些包括了<strong>加载对象属性 (Load)</strong>、给对象属性<strong>赋值 (Store)</strong>、还有函数<strong>调用 (Call)</strong>，V8 会 将监听到的数据写入一个称为<strong>反馈向量 (FeedBack Vector)</strong> 的结构中，同时 V8 会为每个执行的函数维护一个反馈向量。有了反馈向量缓存的临时数据，V8 就可以缩短对象属性的查找路径，从而提升执行效率。</p>
+<img data-src='029.png' width='80%' />
+
+
+<div class="note danger">
+
+<p>如果一个插槽中只包含 1 个隐藏类，那么我们称这种状态为<strong>单态 (monomorphic)</strong>；<br>如果一个插槽中包含了 2～4 个隐藏类，那我们称这种状态为<strong>多态 (polymorphic)</strong>；<br>如果一个插槽中超过 4 个隐藏类，那我们称这种状态为<strong>超态 (magamorphic)</strong>。</p>
+</div>
+<img data-src='030.png' width='80%' />
+
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://time.geekbang.org/column/intro/296" target="_blank" rel="noopener">图解 Google V8</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2021/01/06/v8_2/" title="V8系列二">https://simuty.com/2021/01/06/v8_2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/V8/" rel="tag"># V8</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/04/v8_1/" rel="prev" title="V8系列一">
+      <i class="fa fa-chevron-left"></i> V8系列一
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/08/v8_3/" rel="next" title="V8系列三">
+      V8系列三 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">360k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:27</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : '139406c6a87547d638e7899ff9501df6',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

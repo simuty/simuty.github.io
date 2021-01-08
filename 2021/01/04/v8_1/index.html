@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="女人，你的名字是弱者。 Woman, your name is weak.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V8系列一">
+<meta property="og:url" content="https://simuty.com/2021/01/04/v8_1/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="女人，你的名字是弱者。 Woman, your name is weak.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2021/0004.jpg">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/004.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/005.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/006.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/007.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/008.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/009.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/010.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/011.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/012.png">
+<meta property="og:image" content="https://simuty.com/2021/01/04/v8_1/013.png">
+<meta property="article:published_time" content="2021-01-04T14:14:14.000Z">
+<meta property="article:modified_time" content="2021-01-08T06:26:19.432Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="V8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2021/0004.jpg">
+
+<link rel="canonical" href="https://simuty.com/2021/01/04/v8_1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>V8系列一 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快慢属性"><span class="nav-number">2.</span> <span class="nav-text">快慢属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#属性存储方式"><span class="nav-number">2.1.</span> <span class="nav-text">属性存储方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#思考"><span class="nav-number">2.1.1.</span> <span class="nav-text">思考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数表达式"><span class="nav-number">3.</span> <span class="nav-text">函数表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表达式-VS-语句"><span class="nav-number">3.0.1.</span> <span class="nav-text">表达式 VS 语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考题"><span class="nav-number">3.0.2.</span> <span class="nav-text">思考题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型链"><span class="nav-number">4.</span> <span class="nav-text">原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#采用构造函数创建对象"><span class="nav-number">4.1.</span> <span class="nav-text">采用构造函数创建对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apply-和-call"><span class="nav-number">4.2.</span> <span class="nav-text">apply 和 call</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#区别"><span class="nav-number">4.2.1.</span> <span class="nav-text">区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用法"><span class="nav-number">4.2.2.</span> <span class="nav-text">用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#改变this指向"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">改变this指向</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#借用别的对象的方法"><span class="nav-number">4.2.2.2.</span> <span class="nav-text">借用别的对象的方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调用函数"><span class="nav-number">4.2.2.3.</span> <span class="nav-text">调用函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作用域链"><span class="nav-number">4.3.</span> <span class="nav-text">作用域链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换"><span class="nav-number">4.4.</span> <span class="nav-text">类型转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2021/01/04/v8_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          V8系列一
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-04 22:14:14" itemprop="dateCreated datePublished" datetime="2021-01-04T22:14:14+08:00">2021-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-08 14:26:19" itemprop="dateModified" datetime="2021-01-08T14:26:19+08:00">2021-01-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/V8/" itemprop="url" rel="index"><span itemprop="name">V8</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2021/0004.jpg" width=80% />
+
+<span class='geyan'>
+女人，你的名字是弱者。
+Woman, your name is weak.
+
+</span>
+<a id="more"></a>
+
+
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p><strong>V8</strong>是由 Google 开发的开源 JavaScript <code>引擎</code>，也被称为<code>虚拟机</code>，模拟实际计算机各种功能来<code>实现代码的编译和执行</code>。那么，要想搞清楚 V8 内部的工作流程和原理，我们可以从分析计算机对语言的<code>编译和执行</code>过程入手。</p>
+<p>V8采用<code>混合编译执行和解释执行</code>这两种手段，我们把这种混合使用编译器和解释器的技术称为 <code>JIT（Just In Time）</code>技术。</p>
+<ol>
+<li>解释执行启动速度快，但是执行时速度慢，</li>
+<li>编译执行启动速度慢，但是执行速度快。</li>
+</ol>
+<img data-src="004.png" width=80% />
+
+<h2 id="快慢属性"><a href="#快慢属性" class="headerlink" title="快慢属性"></a>快慢属性</h2><blockquote>
+<p>JS中经常操作离不开对象，那么V8是以什么样的方式存取的对象呢</p>
+</blockquote>
+<h3 id="属性存储方式"><a href="#属性存储方式" class="headerlink" title="属性存储方式"></a>属性存储方式</h3><p>JavaScript 中的对象是由一 组组属性和值组成的，所以最简单的方式是使用一个字典来保存属性和值，但是由于字典是 非线性结构，所以如果使用字典，读取效率会大大降低。</p>
+<p>V8 在对象中添加了两个隐藏属性分为：<code>常规属性 (properties)</code> 和<code>排序属性 (element)</code>；</p>
+<p>ECMAScript 规范中定义了<code>数字属性</code>应该按照<strong>索引值</strong><code>大小</code>升序排列<code>，</code>字符串属性<code>根据**创建时**的顺序</code>升序排列`。</p>
+<p>对象中的数字属性称为<strong>排序属性</strong>，V8 中被称为 elements；<br>字符串属性就被称为<strong>常规属性</strong>，V8中被称为 properties。</p>
+<img data-src="005.png" width=80% />
+
+<img data-src="006.png" width=80% />
+
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><blockquote>
+<p>不建议使用 delete 来删除属性，你能结合文中介绍的快属性和慢属性，给出不 建议使用 delete 的原因吗？</p>
+</blockquote>
+<ol>
+<li>删除常规属性，查找开销较大,可能需要将慢属性重排到快属性。</li>
+<li>删除排序属性，先查找在删除，删除后线性结构会出现间隙，要重新进行排序; </li>
+</ol>
+<h2 id="函数表达式"><a href="#函数表达式" class="headerlink" title="函数表达式"></a>函数表达式</h2><p>函数声明·与·函数表达式的差异：<strong>为何二执行报错？</strong></p>
+<img data-src="007.png" width=80% />
+
+<img data-src="008.png" width=80% />
+
+
+<ol>
+<li>解析到函数声明，V8将<code>函数声明</code>转换为<code>内存中的函数对象</code>， 并将其放到<code>作用域</code>中, <strong>编译阶段放入堆内存</strong>；</li>
+<li>解析到了某个<code>变量声明</code>，也会将其放到作用域中，但是会将其值设置为<code>undefined</code>，表示该变量还未被使用。</li>
+<li>编译阶段将所有变量提升到作用域的过程，叫做：<strong>变量提升</strong>;</li>
+</ol>
+<h4 id="表达式-VS-语句"><a href="#表达式-VS-语句" class="headerlink" title="表达式 VS 语句"></a>表达式 VS 语句</h4><div class="note danger">
+
+<ol>
+<li>表达式：表示值的式子；有返回值；</li>
+<li>语句：操作值的式子；可以操作表达式；</li>
+</ol>
+</div>
+
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 表达式</span></span><br><span class="line">x = <span class="number">5</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 语句</span></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>问题</strong>：V8 执行<code>var x = 5</code>这段代码的执行过程？</p>
+<p>两段代码，一段是定义变量的语句，一段是赋值的表达式， 如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 编译阶段完成</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="literal">undefined</span>;</span><br><span class="line"><span class="comment">// 执行阶段完成</span></span><br><span class="line">x = <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<img data-src="009.png" width=80% />
+
+
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">foo()</span><br><span class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'foo'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/** =====V8编译 **/</span></span><br><span class="line"><span class="comment">// 声明语句，undefined</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="literal">undefined</span>;</span><br><span class="line"><span class="comment">// 函数表达式，编译阶段V8不会处理【函数表达式】，不会将函数表达式提示到作用域中。</span></span><br><span class="line"><span class="comment">// 该行执行阶段才会完成，所以先调用foo()，输出undefined</span></span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'foo'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译阶段决定是否提升到作用域，执行阶段才赋值。</p>
+</blockquote>
+<p>JS中有<code>()</code>运算符，中间可以放一个<code>表达式</code>；</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(a = <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果放一个函数, V8会认为是【函数表达式】而不是【函数声明】</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>小括号之间存放的必须是表达式</code>，所以如果在小阔号里面定义一个<code>函数</code>，那么 V8 就会把这个函数看成是<strong>函数表达式</strong>，执行时它会返回一个<em>函数对象。</em></p>
+<p>存放在括号里面的函数便是一个<code>函数表达式</code>，它会返回一个函数对象，如果我直接在表达式后面加上调用的括号，这就称<strong>立即调用函数表达式（IIFE）</strong>，比如下面代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>)(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<div class="note default">
+
+<p><strong>函数立即表达式</strong>也是一个<strong>表达式</strong>，所以 V8 在<code>编译阶段</code>，并<strong>不会</strong>为该表达式创建函数对象。</p>
+<p>这样的一个好处就是不会污染环境，<strong>函数和函数内部的变量</strong>都不会被其他部分的代码访问到。</p>
+</div>
+
+<h4 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> n = <span class="number">1</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    n = <span class="number">100</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(n)</span><br><span class="line">&#125;)()</span><br><span class="line"><span class="built_in">console</span>.log(n)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>编译阶段，先在全局作用域内声明变量 n 的值为undefined，然后声明函数表达式；</li>
+<li>执行阶段，将 1 赋值给 n，函数表达式“立即执行”，</li>
+<li>想要将 100 赋值给变量n，</li>
+<li>但在当前作用域内没有找到 n 的声明，沿着作用域链向上查找，在全局作用域内找到了变量 n，将 100 赋给它，</li>
+<li>接着执行立即函数调用表达式中的 打印语句，输出 n，为100</li>
+<li>接着执行后面的打印语句，输出 n，为100；</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> n = <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    n = <span class="number">100</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(n)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(n)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>编译阶段：<ol>
+<li>声明变量 n 的值为undefined，</li>
+<li><strong>函数声明</strong>提升到作用域</li>
+</ol>
+</li>
+<li>执行阶段<ol>
+<li>执行倒数第二行，输出1；</li>
+<li>执行foo() –赋值【n=100–打印100】</li>
+</ol>
+</li>
+</ol>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p>不同的语言实现继承的方式是不同的，其中最典型的两种方式是<strong>基于类的设计和基于原型继承的设计。</strong></p>
+<p><strong>继承</strong>就是一个对象可以访问另外一个对象中的属性和方法，在 JavaScript 中，我们通过<code>原型和原型链</code>的方式来<code>实现了继承</code>特性。</p>
+<ol>
+<li>C++、Java、C# 这些语言都是基于经典的类继承的设计模式</li>
+<li>ES2015/ES6 中引入了 class 关键字，但那<strong>只是语法糖</strong>，JavaScript 的继承依然和基于类的继承没有一点关系。<strong>不要以为 JavaScript 也是面向对象语言了</strong></li>
+</ol>
+<img data-src="010.png" width=80% />
+
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> animal = &#123;</span><br><span class="line">    type: <span class="string">"Default"</span>, </span><br><span class="line">    color: <span class="string">"Default"</span>, </span><br><span class="line">    getInfo: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="keyword">return</span> <span class="string">`Type is: <span class="subst">$&#123;<span class="keyword">this</span>.type&#125;</span>，color is <span class="subst">$&#123;<span class="keyword">this</span>.color&#125;</span>.`</span> </span><br><span class="line">        &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">var</span> dog = &#123;</span><br><span class="line">    type: <span class="string">"Dog"</span>,</span><br><span class="line">    color: <span class="string">"Black"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">dog.__proto__ = animal</span><br></pre></td></tr></table></figure>
+
+<div class="note danger">
+
+<p>但是<code>__proto__</code>是隐藏属性，不是标准定义，使用该属性会造成严重的性能问题，所以不应该使用。</p>
+</div>
+
+<h3 id="采用构造函数创建对象"><a href="#采用构造函数创建对象" class="headerlink" title="采用构造函数创建对象"></a>采用构造函数创建对象</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DogFactory</span>(<span class="params">type,color</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">this</span>.type = type </span><br><span class="line">    <span class="keyword">this</span>.color = color </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> DogFactory(<span class="string">'Dog'</span>,<span class="string">'Black'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**--V8背后执行--**/</span></span><br><span class="line"><span class="keyword">var</span> dog = &#123;&#125; </span><br><span class="line">dog.__proto__ = DogFactory.prototype </span><br><span class="line">DogFactory.call(dog,<span class="string">'Dog'</span>,<span class="string">'Black'</span>)</span><br></pre></td></tr></table></figure>
+
+<img data-src="011.png" width=80% />
+
+<ol>
+<li>创建了一个空白对象 dog；</li>
+<li>将 DogFactory 的 <code>prototype</code> 属性设置为 dog 的原型对象</li>
+<li>再使用 dog 来调用 DogFactory，这时候 DogFactory 函数中的 this 就指向了对象 dog，然后在 DogFactory 函数中，利用 this 对对象 dog 执行属性填充操作，最终 就创建了对象 dog。</li>
+</ol>
+<h3 id="apply-和-call"><a href="#apply-和-call" class="headerlink" title="apply 和 call"></a>apply 和 call</h3><p>apply 和 call 作用一模一样，只是传参的形式有区别而已。</p>
+<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ol>
+<li>apply 方法传入两个参数：<ol>
+<li>函数上下文的对象，</li>
+<li>函数参数所组成的<code>数组</code>。</li>
+</ol>
+</li>
+<li>call 方法传入两个参数：<ol>
+<li>函数上下文的对象，</li>
+<li>一个参数列表，而<strong>不是单个数组</strong>。</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name : <span class="string">'狂徒张三'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params">firstName, lastName</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(firstName + <span class="string">' '</span> + <span class="keyword">this</span>.name + <span class="string">' '</span> + lastName);</span><br><span class="line">&#125;</span><br><span class="line">func.apply(obj, [<span class="string">'A'</span>, <span class="string">'B'</span>]);    <span class="comment">// A 狂徒张三 B</span></span><br><span class="line">func.call(obj, <span class="string">'A'</span>, <span class="string">'B'</span>);    <span class="comment">// A 狂徒张三 B</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><h5 id="改变this指向"><a href="#改变this指向" class="headerlink" title="改变this指向"></a>改变this指向</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'狂徒张三'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此时func中的this指向上下文</span></span><br><span class="line">func.call(obj); <span class="comment">// 狂徒张三</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="借用别的对象的方法"><a href="#借用别的对象的方法" class="headerlink" title="借用别的对象的方法"></a>借用别的对象的方法</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Person1  = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">'狂徒张三'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> Person2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.getname = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">    Person1.call(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person2();</span><br><span class="line">person.getname(); <span class="comment">// 狂徒张三</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'狂徒张三'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// apply、call 方法都会使函数立即执行，因此它们也可以用来调用函数。</span></span><br><span class="line">func.call();<span class="comment">// 狂徒张三</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h3><p>JavaScript 的继承是基于原型链的，<strong>原型链</strong>将一个个原型对象串起来， 从而实现<code>对象属性的查找</code>，</p>
+<p><strong>作用域链</strong>就是将一个个作用域串起来，实现<code>变量查找</code>的路径。</p>
+<img data-src="012.png" width=80% />
+
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'极客时间'</span> </span><br><span class="line"><span class="keyword">var</span> type = <span class="string">'global'</span> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> type = <span class="string">'function'</span> </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">        <span class="built_in">console</span>.log(type) </span><br><span class="line">    &#125; </span><br><span class="line">    foo()</span><br><span class="line">&#125;</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://pythontutor.com/live.html#mode=edit" target="_blank" rel="noopener">在线执行</a></p>
+<img data-src="013.png" width=80% />
+
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>参考之前的文章 <a href="https://simuty.github.io/2020/04/12/dataType/" target="_blank" rel="noopener">ES系列-数据类型&lt;1&gt; </a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://juejin.cn/post/6844903837623386126" target="_blank" rel="noopener">用自己的方式（图）理解constructor、prototype、<strong>proto</strong>和原型链 </a><br><a href="https://github.com/lin-xin/blog/issues/7" target="_blank" rel="noopener">JavaScript 中 apply 、call 的详解 #7</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2021/01/04/v8_1/" title="V8系列一">https://simuty.com/2021/01/04/v8_1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/V8/" rel="tag"># V8</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/01/mysql_1-crud/" rel="prev" title="Mysql系列一 你可能不知道的 CRUD">
+      <i class="fa fa-chevron-left"></i> Mysql系列一 你可能不知道的 CRUD
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/06/v8_2/" rel="next" title="V8系列二">
+      V8系列二 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">360k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:27</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : '69da7200103d37c5381beedecf1d6822',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
