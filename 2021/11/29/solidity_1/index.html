@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="形而上者谓之道；形而下者谓之器。（《周易·系辞上》）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solidity语法">
+<meta property="og:url" content="https://simuty.com/2021/11/29/solidity_1/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="形而上者谓之道；形而下者谓之器。（《周易·系辞上》）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2020/057.jpg">
+<meta property="article:published_time" content="2021-11-29T14:22:22.000Z">
+<meta property="article:modified_time" content="2021-12-01T02:53:44.000Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="solidity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2020/057.jpg">
+
+<link rel="canonical" href="https://simuty.com/2021/11/29/solidity_1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Solidity语法 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、编程基础"><span class="nav-number">1.</span> <span class="nav-text">一、编程基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基本"><span class="nav-number">1.1.</span> <span class="nav-text">1 基本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-库"><span class="nav-number">1.2.</span> <span class="nav-text">2 库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-合约文件结构"><span class="nav-number">1.3.</span> <span class="nav-text">3 合约文件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-变量类型"><span class="nav-number">1.4.</span> <span class="nav-text">4. 变量类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-值类型"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">4.1 值类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-引用类型"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">4.2 引用类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-字典、映射"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">4.3 字典、映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-4-特殊情况"><span class="nav-number">1.4.0.4.</span> <span class="nav-text">4.4 特殊情况</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-操作符"><span class="nav-number">1.5.</span> <span class="nav-text">5 操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-语句"><span class="nav-number">1.6.</span> <span class="nav-text">6 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-修饰符"><span class="nav-number">1.7.</span> <span class="nav-text">7 修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#external-amp-public-🚩🚩"><span class="nav-number">1.7.1.</span> <span class="nav-text">external &amp; public 🚩🚩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#internal-amp-external"><span class="nav-number">1.7.2.</span> <span class="nav-text">internal &amp; external</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-自定义修饰符"><span class="nav-number">1.8.</span> <span class="nav-text">8 自定义修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-数据位置"><span class="nav-number">1.9.</span> <span class="nav-text">9 数据位置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构-总结"><span class="nav-number">1.9.1.</span> <span class="nav-text">数据结构-总结</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2021/11/29/solidity_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Solidity语法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-29 22:22:22" itemprop="dateCreated datePublished" datetime="2021-11-29T22:22:22+08:00">2021-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-01 10:53:44" itemprop="dateModified" datetime="2021-12-01T10:53:44+08:00">2021-12-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2020/057.jpg" width=80% />
+
+<span class='geyan'>
+形而上者谓之道；形而下者谓之器。（《周易·系辞上》）
+</span>
+<a id="more"></a>
+
+
+<blockquote>
+<p>疑问：读书时不太懂的。</p>
+</blockquote>
+<h2 id="一、编程基础"><a href="#一、编程基础" class="headerlink" title="一、编程基础"></a>一、编程基础</h2><h3 id="1-基本"><a href="#1-基本" class="headerlink" title="1 基本"></a>1 基本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 单行注释</span></span><br><span class="line"><span class="comment">// 版本控制</span></span><br><span class="line">pragma solidity &gt;= ^<span class="number">0.4</span><span class="number">.0</span> &lt; <span class="number">0.8</span>;</span><br><span class="line"><span class="comment">/** 多行注释 -- 类似ts **/</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> aliceName <span class="keyword">from</span> <span class="string">"filename"</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-库"><a href="#2-库" class="headerlink" title="2 库"></a>2 库</h3><ol>
+<li>库<strong>不</strong>能有：<code>fallback函数</code>、<code>paybale</code>关键字、<code>storage</code>变量、日志；</li>
+<li>库可以：修改和他们相联的合约的storage变量；<strong>分发事件</strong></li>
+</ol>
+<blockquote>
+<p>类比：函数传入C指针 – 库处理合约storage</p>
+</blockquote>
+<p>web3库开发dapp监听eventemittercontract.emit 收到<em>库函数<em>触发事件，但是监听eventemitterLib.emit事件，</em>什么也收不到。</em></p>
+<h3 id="3-合约文件结构"><a href="#3-合约文件结构" class="headerlink" title="3 合约文件结构"></a>3 合约文件结构</h3><ol>
+<li>状态变量：state variables</li>
+<li>结构定义：structure definitions</li>
+<li>修饰符定义：modifier definitions </li>
+<li>事件声明：event definitions</li>
+<li>枚举定义：enumeration definitions</li>
+<li>函数定义：function definitions</li>
+</ol>
+<h3 id="4-变量类型"><a href="#4-变量类型" class="headerlink" title="4. 变量类型"></a>4. 变量类型</h3><ol>
+<li>基础类型（int、uint、struct）、数组类型、映射</li>
+<li>固定变量static、动态变量dynamic</li>
+</ol>
+<h5 id="4-1-值类型"><a href="#4-1-值类型" class="headerlink" title="4.1 值类型"></a>4.1 值类型</h5><ol>
+<li>布尔类型：true\false; <em>不能和整数隐式转换</em></li>
+<li>整型：int\uint；默认256；包含uint8\16\24\32..;默认为<em>十进制</em></li>
+<li>地址：长度20B、160bit,<em>可以用uint160编码</em></li>
+<li>定长字节数组：<em>？？</em> 疑问；</li>
+<li>有理数和整型字面量：literal 本身是<em>值</em> 疑问；</li>
+<li>枚举类型：enums <em>不能和整数隐式转换</em></li>
+<li>函数：可以将函数赋值给变量；函数作为参数；返回函数；</li>
+</ol>
+<h5 id="4-2-引用类型"><a href="#4-2-引用类型" class="headerlink" title="4.2 引用类型"></a>4.2 引用类型</h5><p>为了避免空间占用太大，采用引用类型：</p>
+<ol>
+<li>不定长字节数组：bytes;</li>
+<li>字符串：string； 没有\0结尾，”test”就是<em>4个字节</em></li>
+<li>数组：array: memory不可以更改数组长度，storage可以根据.lengthg更改</li>
+<li>结构体：struct： 自定义数据结构</li>
+</ol>
+<h5 id="4-3-字典、映射"><a href="#4-3-字典、映射" class="headerlink" title="4.3 字典、映射"></a>4.3 字典、映射</h5><p><strong>key的类型允许除【字典】以外的所有类型，数组、合约、枚举、结构体</strong></p>
+<p>mapping(keyType -&gt;valueType) </p>
+<h5 id="4-4-特殊情况"><a href="#4-4-特殊情况" class="headerlink" title="4.4 特殊情况"></a>4.4 特殊情况</h5><p>变量放在<em>栈</em>上，只能容纳<em>16层</em></p>
+<h3 id="5-操作符"><a href="#5-操作符" class="headerlink" title="5 操作符"></a>5 操作符</h3><p>用到再说吧</p>
+<h3 id="6-语句"><a href="#6-语句" class="headerlink" title="6 语句"></a>6 语句</h3><blockquote>
+<p>不支持switch goto<br>单行语句中的大括号可以删除</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition) &#123;</span><br><span class="line">    </span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (condition) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">break</span>: 跳出循环</span><br><span class="line"><span class="keyword">continue</span>: 继续下次</span><br><span class="line"><span class="keyword">return</span>: 返回</span><br><span class="line">？：：:三元</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-修饰符"><a href="#7-修饰符" class="headerlink" title="7 修饰符"></a>7 修饰符</h3><ol>
+<li>函数修饰符：external、internal&lt;默认&gt;、public&lt;默认&gt;、private</li>
+<li>针对状态变量：constant、view、pure、paybale</li>
+</ol>
+<ul>
+<li>internal<ol>
+<li>internal 不能从外部访问，不是接口的一部分</li>
+<li>只能内部调用、或继承的合约中调用；</li>
+<li>不能加this, this代表以外部形式调用</li>
+</ol>
+</li>
+<li>external<ol>
+<li>外部函数是合约的一部分，可以从其他合约或通过交易发起调用</li>
+<li>this.f()</li>
+</ol>
+</li>
+<li>public<ol>
+<li>公开函数为合约接口的一部分</li>
+<li>public 的状态变量，会自动创建一个访问器</li>
+</ol>
+</li>
+<li>private<ol>
+<li>函数和变量仅仅在当前合约可以访问</li>
+<li><em>继承中不能访问</em></li>
+<li>是接口的一部分</li>
+</ol>
+</li>
+<li>constant<ol>
+<li>不能改变状态，只能获取状态返回</li>
+<li><em>似乎没啥用</em></li>
+</ol>
+</li>
+<li>view <ol>
+<li>不能修改状态变量，等同 constant</li>
+</ol>
+</li>
+<li>pure<ol>
+<li>更多的限制；</li>
+<li>不能读写状态量，函数不能读写当前的状态和交易变量</li>
+</ol>
+</li>
+<li><strong>paybale</strong><ol>
+<li>声明的函数可以从调用者那里接受ether;</li>
+<li>一个函数如果声明了payable，说明只能接受ether；</li>
+<li>如果调用者没有eth就报错</li>
+</ol>
+</li>
+</ul>
+<h4 id="external-amp-public-🚩🚩"><a href="#external-amp-public-🚩🚩" class="headerlink" title="external &amp; public 🚩🚩"></a>external &amp; public 🚩🚩</h4><ol>
+<li>可见度：都可以被其他合约通过调用、交易的方式调用</li>
+<li>不同<ol>
+<li>internal <em>消耗最少</em>，用jump命令，参数是以内存指针传递</li>
+<li>public因为不知道调用者是 external ｜ internal； public就会像处理internal一样将<em>参数复制到memory</em>，这样操作很贵</li>
+<li><em>如果可以确信函数只能外部调用，则用external</em></li>
+<li>大多数情况，this.f() 调用方式<em>没有意义</em>，他会调用<code>call()</code></li>
+</ol>
+</li>
+</ol>
+<h4 id="internal-amp-external"><a href="#internal-amp-external" class="headerlink" title="internal &amp; external"></a>internal &amp; external</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pragma solidity &gt;=<span class="number">0.8</span><span class="number">.0</span> &lt;<span class="number">0.9</span><span class="number">.0</span>;</span><br><span class="line">contract TestFun &#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">internalFunc</span>(<span class="params"></span>) <span class="title">internal</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">externalFunc</span>(<span class="params"></span>) <span class="title">external</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">callFunc</span>(<span class="params"></span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 直接使用内部的方式调用</span></span><br><span class="line">        internalFunc();</span><br><span class="line">        <span class="comment">// ❌ 不能内部调用一个外部函数</span></span><br><span class="line">        <span class="comment">// DeclarationError: Undeclared identifier. Did you mean "internalFunc" or "externalFunc"?</span></span><br><span class="line">        <span class="comment">// externalFunc();</span></span><br><span class="line">        <span class="comment">// ❌ 不能通过external的方式调用internal</span></span><br><span class="line">        <span class="comment">// TypeError: Member "internalFunc" not found or not visible after argument-dependent lookup in contract TestFun.</span></span><br><span class="line">        <span class="comment">// this.internalFunc();</span></span><br><span class="line">        <span class="keyword">this</span>.externalFunc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract TestFun1 &#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">externalCall</span>(<span class="params">TestFun tf</span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 调用另一个函数的外部函数</span></span><br><span class="line">       tf.externalFunc();</span><br><span class="line">       <span class="comment">// ❌ 不能调用另外一个合约的内部函数</span></span><br><span class="line">       <span class="comment">// TypeError: Member "internalFunc" not found or not visible after argument-dependent lookup in contract TestFun.</span></span><br><span class="line">    <span class="comment">//    tf.internalFunc();</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-自定义修饰符"><a href="#8-自定义修饰符" class="headerlink" title="8 自定义修饰符"></a>8 自定义修饰符</h3><p>修饰符可以改变函数的行为，类似装饰器。</p>
+<ol>
+<li>执行函数前检查条件</li>
+<li>修饰符可以继承</li>
+<li>可以被派生合约重载</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">contract owned &#123;</span><br><span class="line">	<span class="keyword">constructor</span>() public &#123;</span><br><span class="line">		owner = msg.sender;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	address payable owner;</span><br><span class="line">    <span class="comment">// 合约定义了个 【修饰符】在派生合约里使用</span></span><br><span class="line">    <span class="comment">// 函数体会加入到修饰符定义里的特殊符号 _ 之后</span></span><br><span class="line">	modifier onlyOwner() &#123;</span><br><span class="line">        <span class="built_in">require</span>(msg.sender == owner, <span class="string">'Only owner can call this function'</span>);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract mortal is owned &#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">close</span>(<span class="params"></span>) <span class="title">public</span> <span class="title">onlyOwner</span> </span>&#123;</span><br><span class="line">        self.destruct(owner);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract priced &#123;</span><br><span class="line">    modifier consts(uint price) &#123;</span><br><span class="line">        <span class="keyword">if</span>(msg.value &gt;= price) &#123;</span><br><span class="line">            <span class="comment">// 表示函数体</span></span><br><span class="line">            _;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Register is priced, owned &#123;</span><br><span class="line">    mapping (<span class="function"><span class="params">address</span>=&gt;</span>bool) registeredAddresses;</span><br><span class="line"></span><br><span class="line">    uint price;</span><br><span class="line">    <span class="keyword">constructor</span> (uint initialPrice) public &#123;</span><br><span class="line">        price = initialPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">register</span>(<span class="params"></span>) <span class="title">public</span> <span class="title">payable</span> <span class="title">costs</span>(<span class="params">price</span>) </span>&#123;</span><br><span class="line">        registeredAddresses[msg.sender] = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">changePrice</span>(<span class="params">uint _price</span>) <span class="title">public</span> <span class="title">onlyOwner</span> </span>&#123;</span><br><span class="line">        price = _price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Mutex &#123;</span><br><span class="line">    bool locked;</span><br><span class="line">    modifier noReentrancy ()&#123;</span><br><span class="line">        <span class="built_in">require</span>(!locked, <span class="string">'Reentrant call'</span>);</span><br><span class="line">        locked = <span class="literal">true</span>;</span><br><span class="line">        _;</span><br><span class="line">        locked = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) <span class="title">public</span> <span class="title">noReentrancy</span> <span class="title">returns</span>(<span class="params">uint</span>) </span>&#123;</span><br><span class="line">        (bool, success,) = msg.sender.call(<span class="string">''</span>);</span><br><span class="line">        <span class="built_in">require</span>(succeess);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">7</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-数据位置"><a href="#9-数据位置" class="headerlink" title="9 数据位置"></a>9 数据位置</h3><blockquote>
+<p>evm提供四种数据结构来存储变量；</p>
+</blockquote>
+<ul>
+<li>storage<ol>
+<li><em>链上</em>永久存储；</li>
+<li>可以被所有函数访问的<em>全局变量</em></li>
+</ol>
+</li>
+<li>memory<ol>
+<li><em>合约<em>本地</em>内存变量</em></li>
+<li>生命周期很短，函数执行结束就销毁</li>
+</ol>
+</li>
+<li>calldata<ol>
+<li>所有函数调用你的数据，包含函数参数的保存位置</li>
+<li><em>不可修改</em>的内存位置</li>
+</ol>
+</li>
+<li>stack<ol>
+<li>EVM 维护了个1024级的栈，用来导入变量和以太坊的机器、汇编指令代码交互；</li>
+</ol>
+</li>
+</ul>
+<h4 id="数据结构-总结"><a href="#数据结构-总结" class="headerlink" title="数据结构-总结"></a>数据结构-总结</h4><ol>
+<li>memory：默认的函数参数、返回的参数</li>
+<li>storage: 默认的局部变量、默认的状态变量&lt;合约声明的公有变量&gt;</li>
+<li><strong>外部函数的参数&lt;不包含返回参数&gt;</strong> 被强制指定为<em>calldata</em></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2021/11/29/solidity_1/" title="Solidity语法">https://simuty.com/2021/11/29/solidity_1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/solidity/" rel="tag"># solidity</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/27/black_1/" rel="prev" title="区块链基本概念">
+      <i class="fa fa-chevron-left"></i> 区块链基本概念
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">382k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:48</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : 'edd277abbe09950a6e1b89c179d560fe',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

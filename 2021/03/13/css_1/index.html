@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"simuty.com","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":10,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="You can’t play God without being acquainted with the Devil.想要扮演上帝，你就不能不去了解魔鬼。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS系列一">
+<meta property="og:url" content="https://simuty.com/2021/03/13/css_1/index.html">
+<meta property="og:site_name" content="简单即是美">
+<meta property="og:description" content="You can’t play God without being acquainted with the Devil.想要扮演上帝，你就不能不去了解魔鬼。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simuty.com/images/photos/2021/007.jpg">
+<meta property="og:image" content="https://simuty.com/2021/03/13/css_1/004.png">
+<meta property="article:published_time" content="2021-03-13T14:14:14.000Z">
+<meta property="article:modified_time" content="2021-03-13T07:07:05.000Z">
+<meta property="article:author" content="Howard">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simuty.com/images/photos/2021/007.jpg">
+
+<link rel="canonical" href="https://simuty.com/2021/03/13/css_1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CSS系列一 | 简单即是美</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168603273-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-168603273-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7b295d599a09ce76e6f5d95b315b3519";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">简单即是美</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-基础"><span class="nav-number">1.</span> <span class="nav-text">第一部分 基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染过程"><span class="nav-number">1.1.</span> <span class="nav-text">渲染过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回流-amp-重绘"><span class="nav-number">1.2.</span> <span class="nav-text">回流&amp;重绘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-number">1.2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性分类"><span class="nav-number">1.2.2.</span> <span class="nav-text">属性分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性分类-1"><span class="nav-number">1.3.</span> <span class="nav-text">属性分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#盒子模型"><span class="nav-number">1.4.</span> <span class="nav-text">盒子模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视觉格式化模型"><span class="nav-number">1.5.</span> <span class="nav-text">视觉格式化模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#块级元素"><span class="nav-number">1.5.1.</span> <span class="nav-text">块级元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行内元素"><span class="nav-number">1.5.2.</span> <span class="nav-text">行内元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区别"><span class="nav-number">1.5.3.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局"><span class="nav-number">1.6.</span> <span class="nav-text">布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#flex"><span class="nav-number">1.6.1.</span> <span class="nav-text">flex</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局实例"><span class="nav-number">1.7.</span> <span class="nav-text">布局实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#居中布局"><span class="nav-number">1.7.1.</span> <span class="nav-text">居中布局</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.8.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Howard</p>
+  <div class="site-description" itemprop="description">记录点滴、分享所得</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/simuty" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;simuty" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://simuty.com/2021/03/13/css_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Howard">
+      <meta itemprop="description" content="记录点滴、分享所得">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="简单即是美">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSS系列一
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-13 22:14:14 / 修改时间：15:07:05" itemprop="dateCreated datePublished" datetime="2021-03-13T22:14:14+08:00">2021-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.4k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img data-src="../../../../images/photos/2021/007.jpg" width=80% />
+
+<span class='geyan'>
+
+<p>You can’t play God without being acquainted with the Devil.<br /><br>想要扮演上帝，你就不能不去了解魔鬼。</p>
+</span>
+<a id="more"></a>
+
+
+<h2 id="第一部分-基础"><a href="#第一部分-基础" class="headerlink" title="第一部分 基础"></a>第一部分 基础</h2><h3 id="渲染过程"><a href="#渲染过程" class="headerlink" title="渲染过程"></a>渲染过程</h3><div class="note danger">
+
+<p><strong>解析文件</strong></p>
+<ol>
+<li>将html文件转换为DOM树</li>
+<li>将css文件转换为CSSOM树</li>
+<li>将DOM树和CSSOM树合并生成<em>渲染树</em></li>
+</ol>
+<p><strong>绘制图层</strong></p>
+<ol>
+<li>根据渲染树生成布局渲染树<code>(回流)</code></li>
+<li>根据布局渲染树生成绘制渲染树<code>(重绘)</code></li>
+</ol>
+<p><strong>合成图层</strong></p>
+<ol>
+<li>根据绘制渲染树合成图层显示在屏幕上</li>
+</ol>
+</div>
+
+<h3 id="回流-amp-重绘"><a href="#回流-amp-重绘" class="headerlink" title="回流&amp;重绘"></a>回流&amp;重绘</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ol>
+<li><em>回流又名重排</em>，指<strong>几何属性需改变的渲染</strong>： <code>将整个网页填白，对内容重新渲染一次</code>。</li>
+<li><strong>重绘</strong>指<code>更改外观</code>属性而<code>不影响几何属性</code>的渲染;</li>
+<li>回流对浏览器性能的消耗是高于重绘的，而且回流一定会伴随重绘，重绘却不一定伴随回流。</li>
+</ol>
+<h4 id="属性分类"><a href="#属性分类" class="headerlink" title="属性分类"></a>属性分类</h4><div class="note danger">
+
+<div class="note success">
+
+<p>几何属性：包括<code>布局</code>、<code>尺寸</code>等可用<code>数学几何</code>衡量的属性</p>
+<ol>
+<li>布局：<em>display、float、position、list、table、flex、columns、grid</em></li>
+<li>尺寸：<em>margin、padding、border、width、height</em></li>
+</ol>
+</div>
+
+<div class="note default">
+
+<p>外观属性：包括<code>界面</code>、<code>文字</code>等可用状态向量描述的属性</p>
+<ol>
+<li>界面：<em>appearance、outline、background、mask、box-shadow、box-reflect、filter、opacity、clip</em></li>
+<li>文字：<em>text、font、word</em></li>
+</ol>
+</div>
+
+<div class="note primary">
+
+<p>简单理解：</p>
+<ol>
+<li>回流就是一个队伍重新排队</li>
+<li>重绘就是整个队伍中。其中的两个人调换位置</li>
+</ol>
+</div>
+
+</div>
+
+<h3 id="属性分类-1"><a href="#属性分类-1" class="headerlink" title="属性分类"></a>属性分类</h3><div class="note danger">
+
+<p><strong>布局属性</strong></p>
+<p>显示：display visibility<br>溢出：overflow overflow-x overflow-y<br>浮动：float clear<br>定位：position left right top bottom z-index<br>列表：list-style list-style-type list-style-position list-style-image<br>表格：table-layout border-collapse border-spacing caption-side empty-cells<br>弹性：flex-flow flex-direction flex-wrap justify-content align-content align-items align-self flex flex-grow flex-shrink flex-basis order<br>多列：columns column-width column-count column-gap column-rule column-rule-width column-rule-style column-rule-color column-span column-fill column-break-before column-break-after column-break-inside<br>格栅：grid-columns grid-rows</p>
+<p><strong>尺寸属性</strong></p>
+<p>模型：box-sizing<br>边距：margin margin-left margin-right margin-top margin-bottom<br>填充：padding padding-left padding-right padding-top padding-bottom<br>边框：border border-width border-style border-color border-colors border-[direction]-<param><br>圆角：border-radius border-top-left-radius border-top-right-radius border-bottom-left-radius border-bottom-right-radius<br>框图：border-image border-image-source border-image-slice border-image-width border-image-outset border-image-repeat<br>大小：width min-width max-width height min-height max-height</p>
+<p><strong>界面属性</strong></p>
+<p>外观：appearance<br>轮廓：outline outline-width outline-style outline-color outline-offset outline-radius outline-radius-[direction]<br>背景：background background-color background-image background-repeat background-repeat-x background-repeat-y background-position background-position-x background-position-y background-size background-origin background-clip background-attachment bakground-composite<br>遮罩：mask mask-mode mask-image mask-repeat mask-repeat-x mask-repeat-y mask-position mask-position-x mask-position-y mask-size mask-origin mask-clip mask-attachment mask-composite mask-box-image mask-box-image-source mask-box-image-width mask-box-image-outset mask-box-image-repeat mask-box-image-slice<br>滤镜：box-shadow box-reflect filter mix-blend-mode opacity,<br>裁剪：object-fit clip<br>事件：resize zoom cursor pointer-events touch-callout user-modify user-focus user-input user-select user-drag</p>
+<p><strong>文字属性</strong></p>
+<p>模式：line-height line-clamp vertical-align direction unicode-bidi writing-mode ime-mode<br>文本：text-overflow text-decoration text-decoration-line text-decoration-style text-decoration-color text-decoration-skip text-underline-position text-align text-align-last text-justify text-indent text-stroke text-stroke-width text-stroke-color text-shadow text-transform text-size-adjust<br>字体：src font font-family font-style font-stretch font-weight font-variant font-size font-size-adjust color<br>内容：overflow-wrap word-wrap word-break word-spacing letter-spacing white-space caret-color tab-size content counter-increment counter-reset quotes page page-break-before page-break-after page-break-inside</p>
+<p><strong>交互属性</strong></p>
+<p>模式：will-change perspective perspective-origin backface-visibility<br>变换：transform transform-origin transform-style<br>过渡：transition transition-property transition-duration transition-timing-function transition-delay<br>动画：animation animation-name animation-duration animation-timing-function animation-delay animation-iteration-count animation-direction animation-play-state animation-fill-mode</p>
+</div>
+
+
+<h3 id="盒子模型"><a href="#盒子模型" class="headerlink" title="盒子模型"></a>盒子模型</h3><p>盒模型又名框模型，是一种网页设计思维模型，它把文档节点看成一个盒子。</p>
+<p>盒模型由以下属性组成，由外到内用公式表示就是：<strong>box = margin + border + padding + content</strong>。除了content(不是属性，作为盒模型扩展理解使用)，其余属性都包含<code>left、right、top和bottom</code>等扩展属性。</p>
+<ol>
+<li>margin：边距，外部透明区域，负责隔离相邻盒子</li>
+<li>border：边框，内部着色区域，负责隔离边距和填充，包含width、style、color三个扩展属性</li>
+<li>padding：填充，内部着色区域，负责扩展盒子内部尺寸</li>
+<li>content：内容，以文本或节点存在的占用位置</li>
+</ol>
+<img data-src='004.png' width='80%' />
+
+
+<div class="note danger">
+
+<p>两个快递包裹间的<code>距离</code>就是<strong>margin</strong>，快递包裹的<code>纸皮</code>就是<code>border</code>，打开快递包裹，<code>填充物料</code>就是<code>padding</code>，把填充物料打开看到了你的<code>物品</code>，那就是<code>content</code></p>
+</div>
+
+<h3 id="视觉格式化模型"><a href="#视觉格式化模型" class="headerlink" title="视觉格式化模型"></a>视觉格式化模型</h3><p><strong>视觉格式化模型</strong>指在视觉媒体上处理和显示文档而使用的计算规则。它是一种CSS机制，由大量CSS规范组成，规定了节点在页面中的排版。</p>
+<p>若使用<code>display</code>对这个简单盒模型稍微加工则会进化到<code>视觉格式化模型</code>。</p>
+<h4 id="块级元素"><a href="#块级元素" class="headerlink" title="块级元素"></a>块级元素</h4><p>当节点的<code>display</code>声明为<code>block</code>、<code>list-item</code>、<code>table</code>、<code>flex</code>或<code>grid</code>时，该节点被标记为<code>块级元素</code>。<br>块级元素默认<code>宽</code>度为<code>100%</code>，在垂直方向上按<code>顺序放置</code>，同时参与块格式化上下文。</p>
+<h4 id="行内元素"><a href="#行内元素" class="headerlink" title="行内元素"></a>行内元素</h4><p>当节点的display声明为<code>inline、inline-block、inline-table、inline-flex或inline-grid</code>时，该节点被标记为<code>行内元素</code>。行内元素默认<code>宽度为auto</code>，在水平方向上按顺序放置，同时参与行内格式化上下文。</p>
+<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><p><strong>互相转换</strong></p>
+<ol>
+<li>块级元素转换行内元素：<code>display:inline</code></li>
+<li>行内元素转换块级元素：<code>display:block</code></li>
+</ol>
+<p><strong>占位表现</strong></p>
+<ol>
+<li>块级元素默认独占一行，默认宽度为父节点的100%，可声明边距、填充和宽高</li>
+<li>行内元素默认不独占一行(一行可多个)，默认宽度随内容自动撑开，可声明水平边距和填充，不可声明垂直边距和宽高</li>
+</ol>
+<p><strong>包含关系</strong></p>
+<ol>
+<li>块级元素可包含块级元素和行内元素</li>
+<li>行内元素可包含行内元素，<code>不能包含块级元素</code></li>
+</ol>
+<h3 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h3><div class="note danger">
+
+<ul>
+<li>浮动布局：float:left/right</li>
+<li>定位布局：position:relative/absolute/fixed、left/right/top/bottom/z-index</li>
+<li>弹性布局：display:flex/inline-flex、flex系列属性<a href="https://juejin.im/post/6844904116141948936" target="_blank" rel="noopener">《深度解析CSS弹性布局》</a></li>
+</ul>
+<p>普通布局：display:block/inline<br>表格布局：table系列属性<br>多列布局：column系列属性<br>格栅布局：display:grid/inline-grid、grid系列属性<br>响应式布局：em/rem/vw/vh/vmin/vmax、媒体查询</p>
+</div>
+
+
+<h4 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h4><p><a href="https://juejin.im/post/6844904116141948936" target="_blank" rel="noopener">《深度解析CSS弹性布局》</a></p>
+<p>flex 的值可以是下边几种：</p>
+<ol>
+<li>指定一个数字 - 例如flex: 1，就等同于是flex: 1 1 0，即自动缩放，比例为 1，flex-basis 为 0。</li>
+<li>auto - 等同于flex: 1 1 auto。</li>
+<li>指定两个数字 - 第一个为flex-grow，第二个，如果是数字则认为是 flex-shrink，如果是宽度，则是flex-basis。</li>
+<li>指定三个值 - 分别为flex-grow，flex-shrink 和 flex-basis。</li>
+</ol>
+<ul>
+<li>flex-grow，这个属性是说 flex 容器在有剩余空间的时候，子元素占据剩余空间的占比</li>
+<li>flex-shrink子元素的收缩是说：当它们的宽度超过 flex 容器之后，该如何进行收缩。通过 flex-shrink 来设置一个数值，数值越大，收缩程度也越大，比如flex-shrink: 2的元素会比flex-shrink:1收缩的值大 2 倍</li>
+<li>所以说，通过flex属性可以方便的同时设置flex-grow、flex-shrink 和 flex-basis 这三个值。</li>
+</ul>
+<h3 id="布局实例"><a href="#布局实例" class="headerlink" title="布局实例"></a>布局实例</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"bruce flex-ct-x"</span> <span class="attr">data-title</span>=<span class="string">"使用flexbox排版各种布局"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"layout-box"</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fullscreen-layout"</span> <span class="attr">title</span>=<span class="string">"全屏布局"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">header</span>&gt;</span><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">main</span>&gt;</span><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">footer</span>&gt;</span><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"two-column-layout"</span> <span class="attr">title</span>=<span class="string">"多列布局-两列布局"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"left"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"three-column-layout"</span> <span class="attr">title</span>=<span class="string">"多列布局-三列布局"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"left"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"center"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">   </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"grail-layout"</span> <span class="attr">title</span>=<span class="string">"多列布局-圣杯布局"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"left"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"center"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"average-layout"</span> <span class="attr">title</span>=<span class="string">"多列布局-均分布局"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"one"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"two"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"three"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"four"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"center-layout"</span> <span class="attr">title</span>=<span class="string">"居中布局"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.layout-box</span> &#123;</span><br><span class="line">	<span class="attribute">display</span>: flex;</span><br><span class="line">	<span class="attribute">overflow-x</span>: auto;</span><br><span class="line">	<span class="attribute">flex-wrap</span>: nowrap;</span><br><span class="line">	<span class="attribute">justify-content</span>: space-between;</span><br><span class="line">	<span class="attribute">margin</span>: <span class="number">0</span> <span class="number">50px</span>;</span><br><span class="line">	&gt; div &#123;</span><br><span class="line">		<span class="selector-tag">flex-shrink</span>: 0;</span><br><span class="line">		<span class="selector-tag">flex-basis</span>: 400<span class="selector-tag">px</span>;</span><br><span class="line">		&amp; + <span class="selector-tag">div</span> &#123;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">50px</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.fullscreen-layout</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#f69</span>;</span><br><span class="line">  header &#123;</span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-id">#f66</span>;</span><br><span class="line">    <span class="selector-tag">height</span>: 50<span class="selector-tag">px</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">footer</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#66f</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">main</span> &#123;</span><br><span class="line">    <span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#3c9</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.two-column-layout</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#3c9</span>;</span><br><span class="line">  .left &#123;</span><br><span class="line">    <span class="selector-tag">width</span>: 100<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-id">#f66</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.right</span> &#123;</span><br><span class="line">		<span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">		<span class="attribute">background-color</span>: <span class="number">#66f</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.three-column-layout</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  .left &#123;</span><br><span class="line">    <span class="selector-tag">width</span>: 50<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-id">#f66</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.center</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#66f</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.right</span> &#123;</span><br><span class="line">    <span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#3c9</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.grail-layout</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  .left &#123;</span><br><span class="line">    <span class="selector-tag">width</span>: 80<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-id">#f66</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.center</span> &#123;</span><br><span class="line">    <span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#3c9</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.right</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">80px</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#66f</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.average-layout</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  div &#123;</span><br><span class="line">    <span class="selector-tag">flex</span>: 1;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.one</span> &#123;</span><br><span class="line">		<span class="attribute">background-color</span>: <span class="number">#f66</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="selector-class">.two</span> &#123;</span><br><span class="line">		<span class="attribute">background-color</span>: <span class="number">#66f</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="selector-class">.three</span> &#123;</span><br><span class="line">		<span class="attribute">background-color</span>: <span class="number">#f90</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="selector-class">.four</span> &#123;</span><br><span class="line">		<span class="attribute">background-color</span>: <span class="number">#09f</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.center-layout</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#f66</span>;</span><br><span class="line">  div &#123;</span><br><span class="line">    <span class="selector-tag">margin</span>: <span class="selector-tag">auto</span>;</span><br><span class="line">    <span class="selector-tag">border</span>: 10<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">width</span>: 100<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">height</span>: 100<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">padding</span>: 10<span class="selector-tag">px</span>;</span><br><span class="line">    <span class="selector-tag">background-color</span>: <span class="selector-id">#66f</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="居中布局"><a href="#居中布局" class="headerlink" title="居中布局"></a>居中布局</h4><div class="note danger">
+
+<div class="note success">
+
+<p><strong>水平居中</strong></p>
+<ul>
+<li>margin:0 auto + width:fit-content：全部元素</li>
+<li>块级元素 + margin:0 auto + width：块级元素<ul>
+<li>若节点不是块级元素需声明display:block</li>
+<li>若节点宽度已隐式声明则无需显式声明width</li>
+</ul>
+</li>
+<li>行内元素 + text-aligin:center：行内元素<ul>
+<li>父节点上声明text-align</li>
+<li>若节点不是行内元素需声明display:inline/inline-block</li>
+</ul>
+</li>
+<li>position + left/right + margin-left/right + width：全部元素</li>
+<li>position + left/right + transform:translateX(-50%)：全部元素</li>
+<li>display:flex + justify-content:center：全部元素<ul>
+<li>父节点上声明display和justify-content</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div class="note info">
+
+<p><strong>垂直居中</strong></p>
+<ul>
+<li>块级元素 + padding-top/bottom：块级元素<ul>
+<li>父节点高度未声明或自适应</li>
+<li>若节点不是块级元素需声明display:block</li>
+</ul>
+</li>
+<li>行内元素 + line-height：行内元素<ul>
+<li>父节点上声明line-height</li>
+<li>若节点不是行内元素需声明display:inline/inline-block</li>
+</ul>
+</li>
+<li>display:table + display:table-cell + vertical-align:middle：全部元素<ul>
+<li>父节点上声明display:table</li>
+</ul>
+</li>
+<li>display:table-cell + vertical-align:middle：全部元素<ul>
+<li>父节点上声明display和vertical-align</li>
+</ul>
+</li>
+<li>position + top/bottom + margin-top/bottom + height：全部元素</li>
+<li>position + top/bottom + transform:translateY(-50%)：全部元素</li>
+<li>display:flex + align-items:center：全部元素<ul>
+<li>父节点上声明display和align-items</li>
+</ul>
+</li>
+<li>display:flex + margin:auto 0：全部元素<ul>
+<li>父节点上声明display</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://juejin.im/post/6844904116141948936" target="_blank" rel="noopener">《深度解析CSS弹性布局》</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Howard
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://simuty.com/2021/03/13/css_1/" title="CSS系列一">https://simuty.com/2021/03/13/css_1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/13/index/" rel="prev" title="2021/03/test/html">
+      <i class="fa fa-chevron-left"></i> 2021/03/test/html
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/27/black_1/" rel="next" title="区块链基本概念">
+      区块链基本概念 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Howard</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">382k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:48</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyAw-MAkCIHtrUzbfhgfXaE2q2QCCJDTbAY',
+      projectId: 'blog-bcc62'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f88581d92eb32794b280',
+      clientSecret: '6d2e34f93d6b826420cf3cfe9ab04f736dd78ae6',
+      repo        : 'simutyComment',
+      owner       : 'simuty',
+      admin       : ['simuty'],
+      id          : 'e0cee831ff1320c688b63a2cc755ca42',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
